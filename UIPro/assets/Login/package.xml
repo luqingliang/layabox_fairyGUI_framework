@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<packageDescription id="wgdhhfkr">
+  <resources>
+    <component id="r71t0" name="Login.xml" path="/" exported="true"/>
+    <image id="r71t1" name="bg.png" path="/res/" scale="9grid" scale9grid="60,32,120,64"/>
+    <component id="empj2" name="Button1.xml" path="/"/>
+  </resources>
+  <publish name=""/>
+</packageDescription>

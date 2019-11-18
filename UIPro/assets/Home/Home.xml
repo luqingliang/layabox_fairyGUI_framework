@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="640,1136">
+  <controller name="menu" pages="0,,1,,2,,3," selected="0">
+    <remark page="0" value="副本"/>
+    <remark page="1" value="英雄"/>
+    <remark page="2" value="装备"/>
+    <remark page="3" value="商城"/>
+  </controller>
+  <displayList>
+    <image id="n8_xr3c" name="n8" src="xr3c0" fileName="res/bg.png" xy="0,0" size="640,1136"/>
+    <text id="n0_empj" name="text" xy="0,536" size="640,64" fontSize="52" align="center" autoSize="none" text="我是主界面"/>
+    <component id="n2_empj" name="labUser" src="empj4" fileName="LableUser.xml" xy="0,0"/>
+    <component id="n4_empj" name="n4" src="empj5" fileName="Select.xml" xy="5,1055">
+      <Button checked="true" title="副本" controller="menu" page="0"/>
+    </component>
+    <component id="n5_empj" name="n5" src="empj5" fileName="Select.xml" xy="165,1055">
+      <Button title="英雄" controller="menu" page="1"/>
+    </component>
+    <component id="n6_empj" name="n6" src="empj5" fileName="Select.xml" xy="325,1055">
+      <Button title="装备" controller="menu" page="2"/>
+    </component>
+    <component id="n7_empj" name="n7" src="empj5" fileName="Select.xml" xy="485,1055">
+      <Button title="商城" controller="menu" page="3"/>
+    </component>
+    <component id="n9_pvxt" name="btnBack" src="empj5" fileName="Select.xml" xy="472,19">
+      <Button title="back"/>
+    </component>
+  </displayList>
+</component>

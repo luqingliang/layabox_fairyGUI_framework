@@ -1,0 +1,25 @@
+{
+    "x":0,
+    "type":"Scene",
+    "selectedBox":2,
+    "searchKey":"Scene",
+    "props":{"width":640,"sceneColor":"#5d5d5d","height":1136},
+    "nodeParent":-1,
+    "maxID":3,
+    "label":"Scene",
+    "isDirectory":false,
+    "isAniNode":true,
+    "hasChild":false,
+    "compId":2,
+    "child":[
+        ],
+    "animations":[
+        {
+            "nodes":[
+                ],
+            "name":"ani1",
+            "id":1,
+            "frameRate":24,
+            "action":0
+        }]
+}

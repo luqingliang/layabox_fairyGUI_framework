@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="300,150" extention="Label">
+  <displayList>
+    <text id="n0_empj" name="title" xy="150,95" size="150,55" fontSize="22" color="#ffffff" align="center" vAlign="middle" autoSize="none" singleLine="true" text="PlayerName">
+      <relation target="" sidePair="width-width,height-height"/>
+    </text>
+    <graph id="n2_empj" name="n2" xy="0,0" size="150,150" type="rect" lineSize="5" fillColor="#ffffff00" corner="13"/>
+    <text id="n3_empj" name="n3" xy="31,54" size="87,42" fontSize="33" text="ICON"/>
+  </displayList>
+</component>

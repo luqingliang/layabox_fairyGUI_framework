@@ -1,0 +1,4 @@
+<page>
+   <item name="Login.scene" props="" ifExport="默认" aName="Login"/>
+   <item name="Main.scene" props="" ifExport="默认" aName="Main"/>
+</page>

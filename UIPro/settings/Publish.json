@@ -1,0 +1,21 @@
+{
+	"atlasSetting":{
+		"paging":true,
+		"sizeOption":"pot",
+		"trimImage":true
+	},
+	"binaryFormat":true,
+	"codeGeneration":{
+		"classNamePrefix":"",
+		"codePath":"",
+		"codeType":"TS-2.0",
+		"getMemberByName":false,
+		"ignoreNoname":true,
+		"memberNamePrefix":"_",
+		"packageName":null
+	},
+	"compressDesc":true,
+	"fileExtension":"fui",
+	"packageCount":2,
+	"path":"../Code/Code/bin/res/fgui"
+}
