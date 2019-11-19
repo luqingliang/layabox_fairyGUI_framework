@@ -3,8 +3,8 @@ import UserVO from "./vo/UserVO";
 import { ObjectPool } from "../../utils/ObjectPool";
 
 export default class UserModel extends BaseModel {
-    public static EVENT_RENAMETEST:string = "EVENT_RENAMETEST";
-    public static EVENT_LOGINSUCCESS:string = "EVENT_LOGINSUCCESS";
+    public static readonly EVENT_RENAMETEST:string = "EVENT_RENAMETEST";
+    public static readonly EVENT_LOGINSUCCESS:string = "EVENT_LOGINSUCCESS";
 
     private _userData:UserVO;
 

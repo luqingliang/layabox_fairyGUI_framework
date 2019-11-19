@@ -10,7 +10,7 @@ export default class FLoadManager {
     private priority:number = 1;
 
     /**
-     * 混合加载（待测试）
+     * 混合加载 
      * @param resKey 
      * @param otherLoadData 
      * @param complete 

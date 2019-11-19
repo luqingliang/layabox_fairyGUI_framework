@@ -2,6 +2,7 @@ import GameConfig from "./GameConfig";
 import LoginView from "./game/login/LoginView";
 import Model from "./common/mvc/model/Model";
 import ViewManager from "./common/mvc/view/ViewManager";
+import JsonTemplate from "./common/templates/core/JsonTemplate";
 class Main {
 	constructor() {
 		//根据IDE设置初始化引擎		
@@ -35,6 +36,8 @@ class Main {
 		//加载IDE指定的场景
 		// GameConfig.startScene && Laya.Scene.open(GameConfig.startScene);
 
+		JsonTemplate.instance.initialize();
+		
 		Model.initialize();
 
 		Laya.stage.addChild(fgui.GRoot.inst.displayObject);

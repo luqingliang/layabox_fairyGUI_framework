@@ -555,6 +555,96 @@
         }
     }
 
+    class TestTemplate {
+        get id() {
+            return this._id;
+        }
+        get name() {
+            return this._name;
+        }
+        get hp() {
+            return this._hp;
+        }
+        decode(data) {
+            this._id = data.id;
+            this._name = data.name;
+            this._hp = data.hp;
+        }
+    }
+
+    class JsonTemplateMap {
+        static initialize() {
+            this._templates.set(this.TEST_JSON, TestTemplate);
+        }
+        static getTemplateClass(name) {
+            return this._templates.get(name);
+        }
+        static getJsonResArr() {
+            let res = [];
+            let keys = [...this._templates.keys()];
+            for (let i = 0; i < keys.length; i++) {
+                res.push({ url: "res/config/" + keys[i], type: Laya.Loader.JSON, jsonFileName: keys[i] });
+            }
+            return res;
+        }
+    }
+    JsonTemplateMap.TEST_JSON = "test.json";
+    JsonTemplateMap._templates = new Map();
+
+    class JsonTemplate {
+        static get instance() {
+            if (!this._instance) {
+                this._instance = new JsonTemplate();
+            }
+            return this._instance;
+        }
+        initialize() {
+            this._templates = new Map();
+            JsonTemplateMap.initialize();
+            let arr = JsonTemplateMap.getJsonResArr();
+            Laya.loader.load(arr, Laya.Handler.create(this, (data) => {
+                for (let i = 0; i < arr.length; i++) {
+                    let json = Laya.loader.getRes(arr[i].url);
+                    if (json) {
+                        this.decodeJson(arr[i].jsonFileName, json, JsonTemplateMap.getTemplateClass(arr[i].jsonFileName));
+                    }
+                }
+            }));
+        }
+        decodeJson(name, json, template) {
+            let arr = [];
+            for (let key in json) {
+                let obj = new template();
+                obj.decode(json[key]);
+                arr.push(obj);
+            }
+            this._templates.set(name, arr);
+            console.log(this.getTemplate(JsonTemplateMap.TEST_JSON, "id", 1003));
+        }
+        getTemplates(name) {
+            return this._templates.get(name);
+        }
+        getTemplate(name, property, value) {
+            let arr = this._templates.get(name);
+            for (let i = 0; i < arr.length; i++) {
+                if (arr[i][property] && arr[i][property] == value) {
+                    return arr[i];
+                }
+            }
+            return null;
+        }
+        getTemplateList(name, property, value) {
+            let list = [];
+            let arr = this._templates.get(name);
+            for (let i = 0; i < arr.length; i++) {
+                if (arr[i][property] && arr[i][property] == value) {
+                    list.push(arr[i]);
+                }
+            }
+            return list;
+        }
+    }
+
     class Main {
         constructor() {
             if (window["Laya3D"])
@@ -581,6 +671,7 @@
             Laya.AtlasInfoManager.enable("fileconfig.json", Laya.Handler.create(this, this.onConfigLoaded));
         }
         onConfigLoaded() {
+            JsonTemplate.instance.initialize();
             Model.initialize();
             Laya.stage.addChild(fgui.GRoot.inst.displayObject);
             ViewManager.instance.open(LoginView);
