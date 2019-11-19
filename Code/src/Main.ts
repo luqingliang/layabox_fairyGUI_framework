@@ -37,12 +37,13 @@ class Main {
 		// GameConfig.startScene && Laya.Scene.open(GameConfig.startScene);
 
 		JsonTemplate.instance.initialize();
-		
+
 		Model.initialize();
 
 		Laya.stage.addChild(fgui.GRoot.inst.displayObject);
 
 		ViewManager.instance.open(LoginView);
+		console.log("测试Protobuf: ", com.tingtong.server.game.proto.LoginType.ACCOUNT);
 	}
 }
 //激活启动类

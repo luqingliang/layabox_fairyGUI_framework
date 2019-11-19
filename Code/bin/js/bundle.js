@@ -675,6 +675,7 @@
             Model.initialize();
             Laya.stage.addChild(fgui.GRoot.inst.displayObject);
             ViewManager.instance.open(LoginView);
+            console.log("测试Protobuf: ", com.tingtong.server.game.proto.LoginType.ACCOUNT);
         }
     }
     new Main();

@@ -1,0 +1,26 @@
+package com.tingtong.server.game.proto;
+
+enum LoginType {
+    ACCOUNT = 1; // 账号密码验证
+    DEVICE = 2; // 设备号
+    PLATFORM = 3; // 平台登录方式
+}
+
+message LoginMsg {
+    optional LoginType loginType = 1; // 登录方式
+    optional string accountName = 2; // 账号名
+    optional string password = 3; // 密码
+    optional int32 serverId = 4 [default = 1]; //服务器id
+    optional string version = 5;
+    optional string ext = 6; // 扩展字段 json 格式
+    optional string deviceId = 7; // 设备ID
+    optional int64 uid = 8; // 登录服务器-账号ID
+    optional int32 platformId = 9; //  平台ID
+    optional int32 appId = 10; //  应用ID
+    optional string os = 11; //   操作系统类型
+    optional string source = 12; //  来源方式
+}
+
+message RspLogOut {
+
+}

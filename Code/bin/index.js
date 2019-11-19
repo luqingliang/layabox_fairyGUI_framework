@@ -14,5 +14,8 @@ loadLib("libs/laya.physics.js")
 
 loadLib("libs/fairygui/rawinflate.min.js");
 loadLib("libs/fairygui/fairygui.js");
+
+loadLib("protobuf/library/protobuf-library.js");
+loadLib("protobuf/bundles/protobuf-bundles.js");
 //-----libs-end-------
 loadLib("js/bundle.js");
