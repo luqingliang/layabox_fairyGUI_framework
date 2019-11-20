@@ -4,6 +4,8 @@ import ViewManager from "../../common/mvc/view/ViewManager";
 import Model from "../../common/mvc/model/Model";
 import UserModel from "../../common/mvc/model/UserModel";
 import HomeView from "../home/HomeView";
+import GameSocket from "../../common/net/GameSocket";
+import NetManager from "../../common/net/NetManager";
 
 export default class LoginMediator extends Mediator {
     constructor(view:IView) {
@@ -26,6 +28,10 @@ export default class LoginMediator extends Mediator {
     }
 
     public login(username:string):void {
-        Model.User.login(username);
+        // Model.User.login(username);
+        //测试websocket连接
+        NetManager.instance.connect("localhost", 2333, this, () => {
+            console.log("23333333333333");
+        })
     }
 }

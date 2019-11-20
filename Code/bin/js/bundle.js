@@ -16,7 +16,7 @@
     GameConfig.startScene = "Login.scene";
     GameConfig.sceneRoot = "";
     GameConfig.debug = false;
-    GameConfig.stat = true;
+    GameConfig.stat = false;
     GameConfig.physicsDebug = false;
     GameConfig.exportSceneToJson = true;
     GameConfig.init();
@@ -510,6 +510,85 @@
         }
     }
 
+    class GameSocket extends Laya.Socket {
+        constructor() {
+            super();
+            this._byte = new Laya.Byte();
+            this._byte.endian = Laya.Byte.LITTLE_ENDIAN;
+            this.endian = Laya.Byte.LITTLE_ENDIAN;
+        }
+        connect(host, port, isTLS = false) {
+            this._host = host;
+            this._port = port;
+            let url = (!isTLS ? "ws://" : "wss://") + host + ":" + port;
+            super.connectByUrl(url);
+        }
+        _onError(event = null) {
+            console.error("Socket IO Error: ", event);
+        }
+        onConnected(call, callback) {
+            this.on(Laya.Event.OPEN, call, callback);
+        }
+        onSocketClose(caller, callback) {
+            this.on(Laya.Event.CLOSE, caller, callback);
+        }
+        onMessage(caller, callback) {
+            this.on(Laya.Event.MESSAGE, caller, callback);
+        }
+        sendMsg(msg) {
+            let by = new Laya.Byte();
+            by.endian = Laya.Byte.LITTLE_ENDIAN;
+            this._byte.writeArrayBuffer(by.buffer);
+            this.send(this._byte.buffer);
+            this._byte.clear();
+        }
+        get host() {
+            return this._host;
+        }
+        get port() {
+            return this._port;
+        }
+        close() {
+            this.offAll(Laya.Event.OPEN);
+            this.offAll(Laya.Event.ERROR);
+            this.offAll(Laya.Event.MESSAGE);
+            this.offAll(Laya.Event.CLOSE);
+            this.cleanSocket();
+            this._byte = null;
+            this._host = null;
+            this._port = null;
+        }
+    }
+
+    class NetManager extends Laya.EventDispatcher {
+        static get instance() {
+            if (!this._instance)
+                this._instance = new NetManager();
+            return this._instance;
+        }
+        constructor() {
+            super();
+        }
+        connect(host, port, caller = null, complete = null, isTLS = false) {
+            if (this._gameSocket) {
+                console.warn("重复发起WebSocket连接请求");
+                return;
+            }
+            this._gameSocket = new GameSocket();
+            this._gameSocket.connect(host, port, isTLS);
+            this._gameSocket.onConnected(this, () => {
+                complete.call(caller);
+            });
+            this._gameSocket.onSocketClose(this, () => {
+                console.log("Socket连接关闭");
+            });
+        }
+        close() {
+            this._gameSocket.close();
+            this._gameSocket = null;
+        }
+    }
+
     class LoginMediator extends Mediator {
         constructor(view) {
             super(view);
@@ -528,7 +607,9 @@
             }
         }
         login(username) {
-            Model.User.login(username);
+            NetManager.instance.connect("localhost", 2333, this, () => {
+                console.log("23333333333333");
+            });
         }
     }
 
