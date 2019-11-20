@@ -460,7 +460,6 @@
             ];
         }
         onEvent(eventName, data) {
-            console.log("enentName:", eventName, "data:", data);
             if (eventName == UserModel.EVENT_RENAMETEST) {
                 this.view._text.text = "我是玩家：" + data;
             }
@@ -495,6 +494,7 @@
             this._mediator = new HomeMediator(this);
             this._btnBack.onClick(this, this.backHandler);
             this._labUser.title = Model.User.userData.uid;
+            console.log("??????????", Model.User.userData.username);
             this._text.text = "我是玩家：" + Model.User.userData.username;
             this._menuCtrl.on(fgui.Events.STATE_CHANGED, this, () => {
                 ViewManager.instance.open(HomeView, Math.floor(Math.random() * 100).toString());
@@ -502,90 +502,10 @@
         }
         opening() {
             console.log("反复打开界面HomeView，data：", this.data);
-            this._mediator.sendNotification(UserModel.EVENT_RENAMETEST, this.data);
         }
         backHandler() {
             this.close();
             ViewManager.instance.open(LoginView);
-        }
-    }
-
-    class GameSocket extends Laya.Socket {
-        constructor() {
-            super();
-            this._byte = new Laya.Byte();
-            this._byte.endian = Laya.Byte.LITTLE_ENDIAN;
-            this.endian = Laya.Byte.LITTLE_ENDIAN;
-        }
-        connect(host, port, isTLS = false) {
-            this._host = host;
-            this._port = port;
-            let url = (!isTLS ? "ws://" : "wss://") + host + ":" + port;
-            super.connectByUrl(url);
-        }
-        _onError(event = null) {
-            console.error("Socket IO Error: ", event);
-        }
-        onConnected(call, callback) {
-            this.on(Laya.Event.OPEN, call, callback);
-        }
-        onSocketClose(caller, callback) {
-            this.on(Laya.Event.CLOSE, caller, callback);
-        }
-        onMessage(caller, callback) {
-            this.on(Laya.Event.MESSAGE, caller, callback);
-        }
-        sendMsg(msg) {
-            let by = new Laya.Byte();
-            by.endian = Laya.Byte.LITTLE_ENDIAN;
-            this._byte.writeArrayBuffer(by.buffer);
-            this.send(this._byte.buffer);
-            this._byte.clear();
-        }
-        get host() {
-            return this._host;
-        }
-        get port() {
-            return this._port;
-        }
-        close() {
-            this.offAll(Laya.Event.OPEN);
-            this.offAll(Laya.Event.ERROR);
-            this.offAll(Laya.Event.MESSAGE);
-            this.offAll(Laya.Event.CLOSE);
-            this.cleanSocket();
-            this._byte = null;
-            this._host = null;
-            this._port = null;
-        }
-    }
-
-    class NetManager extends Laya.EventDispatcher {
-        static get instance() {
-            if (!this._instance)
-                this._instance = new NetManager();
-            return this._instance;
-        }
-        constructor() {
-            super();
-        }
-        connect(host, port, caller = null, complete = null, isTLS = false) {
-            if (this._gameSocket) {
-                console.warn("重复发起WebSocket连接请求");
-                return;
-            }
-            this._gameSocket = new GameSocket();
-            this._gameSocket.connect(host, port, isTLS);
-            this._gameSocket.onConnected(this, () => {
-                complete.call(caller);
-            });
-            this._gameSocket.onSocketClose(this, () => {
-                console.log("Socket连接关闭");
-            });
-        }
-        close() {
-            this._gameSocket.close();
-            this._gameSocket = null;
         }
     }
 
@@ -607,9 +527,7 @@
             }
         }
         login(username) {
-            NetManager.instance.connect("localhost", 2333, this, () => {
-                console.log("23333333333333");
-            });
+            Model.User.login(username);
         }
     }
 

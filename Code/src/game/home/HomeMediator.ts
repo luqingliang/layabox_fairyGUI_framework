@@ -18,7 +18,6 @@ export default class HomeMediator extends Mediator {
         ];
     }
     onEvent(eventName:string, data:any):void {
-        console.log("enentName:", eventName, "data:", data);
         if(eventName == UserModel.EVENT_RENAMETEST) {
             this.view._text.text = "我是玩家：" + data;
         }

@@ -28,10 +28,10 @@ export default class LoginMediator extends Mediator {
     }
 
     public login(username:string):void {
-        // Model.User.login(username);
+        Model.User.login(username);
         //测试websocket连接
-        NetManager.instance.connect("localhost", 2333, this, () => {
-            console.log("23333333333333");
-        })
+        // NetManager.instance.connect("localhost", 2333, this, () => {
+        //     console.log("23333333333333");
+        // })
     }
 }

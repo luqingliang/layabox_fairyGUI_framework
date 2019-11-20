@@ -43,7 +43,6 @@ export default class HomeView extends BaseView {
 
     opening():void {
         console.log("反复打开界面HomeView，data：", this.data);
-        this._mediator.sendNotification(UserModel.EVENT_RENAMETEST, this.data);
     }
 
     private backHandler():void {
