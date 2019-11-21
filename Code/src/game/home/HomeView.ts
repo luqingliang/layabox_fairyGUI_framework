@@ -4,6 +4,7 @@ import Model from "../../common/mvc/model/Model";
 import ViewManager from "../../common/mvc/view/ViewManager";
 import HomeMediator from "./HomeMediator";
 import UserModel from "../../common/mvc/model/UserModel";
+import BagView from "../bag/BagView";
 
 export default class HomeView extends BaseView {
 
@@ -37,7 +38,10 @@ export default class HomeView extends BaseView {
         this._labUser.title = Model.User.userData.uid;
         this._text.text = "我是玩家：" + Model.User.userData.username;
         this._menuCtrl.on(fgui.Events.STATE_CHANGED, this, () => {
-            ViewManager.instance.open(HomeView, Math.floor(Math.random() * 100).toString());
+            // ViewManager.instance.open(HomeView, Math.floor(Math.random() * 100).toString()); //测试反复打开界面
+            if(this,this._menuCtrl.selectedIndex == 2) {
+                ViewManager.instance.open(BagView);
+            }
         });
     }
 

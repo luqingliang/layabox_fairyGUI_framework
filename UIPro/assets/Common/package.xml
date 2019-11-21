@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<packageDescription id="inezl2ev">
+  <resources>
+    <component id="h3iw0" name="BtnBack.xml" path="/button/" exported="true"/>
+    <image id="h3iw2" name="n0.png" path="/"/>
+    <image id="y4893" name="bg.png" path="/res/"/>
+  </resources>
+  <publish name="Common" genCode="true"/>
+</packageDescription>

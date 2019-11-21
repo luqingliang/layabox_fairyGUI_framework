@@ -1,11 +1,16 @@
 import TestTemplate from "../TestTemplate";
+import ItemTemplate from "../ItemTemplate";
 
 export default class JsonTemplateMap {
     public static readonly TEST_JSON:string = "test.json";
+    public static readonly ITEM_JSON:string = "item.json";
+
     private static _templates:Map<string, any> = new Map();
     public static initialize():void {
         this._templates.set(this.TEST_JSON, TestTemplate);
+        this._templates.set(this.ITEM_JSON, ItemTemplate);
     }
+    
     public static getTemplateClass(name:string):any {
 		return this._templates.get(name);
     }

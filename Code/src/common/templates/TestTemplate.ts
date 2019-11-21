@@ -1,6 +1,4 @@
-import ITemplate from "./core/ITemplate";
-
-export default class TestTemplate implements ITemplate {
+export default class TestTemplate {
     private _id:number;
     private _name:string;
     private _hp:number;

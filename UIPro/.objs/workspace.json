@@ -1,20 +1,22 @@
 {
 	"backgroundColor": 6710886,
+	"canvasColor": 10066329,
+	"doc.activeDoc": "ui://inezl2evh3iw0",
+	"libview.currentGroup": "",
+	"libview.twoColumn": false,
+	"auxline1": true,
+	"doc.openedDocs": [
+		"ui://ie8na7w3h3iw0",
+		"ui://inezl2evh3iw0",
+		"ui://4h44hmx7empj3",
+		"ui://ie8na7w3h3iw1"
+	],
+	"libview.firstColumnWidth": 283,
 	"libview.expandedNodes": [
-		"4h44hmx7",
+		"ie8na7w3",
 		"/",
-		"wgdhhfkr",
+		"inezl2ev",
 		"/"
 	],
-	"doc.openedDocs": [
-		"ui://wgdhhfkrr71t0",
-		"ui://wgdhhfkrempj2"
-	],
-	"libview.twoColumn": false,
-	"auxline2": true,
-	"canvasColor": 10066329,
-	"auxline1": true,
-	"libview.currentGroup": "",
-	"libview.firstColumnWidth": 283,
-	"doc.activeDoc": "ui://wgdhhfkrr71t0"
+	"auxline2": true
 }

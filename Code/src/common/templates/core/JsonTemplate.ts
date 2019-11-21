@@ -1,4 +1,3 @@
-import ITemplate from "./ITemplate";
 import JsonTemplateMap from "./JsonTemplateMap";
 
 export default class JsonTemplate {
@@ -10,7 +9,7 @@ export default class JsonTemplate {
         return this._instance;
     }
 
-    private _templates:Map<string, Array<ITemplate>>;
+    private _templates:Map<string, Array<any>>;
 
     public initialize():void {
         this._templates = new Map();
@@ -27,9 +26,9 @@ export default class JsonTemplate {
     }
 
     private decodeJson(name:string, json:any, template:any):void {
-        let arr:Array<ITemplate> = [];
+        let arr:Array<any> = [];
         for(let key in json) {
-            let obj:ITemplate = new template();
+            let obj:any = new template();
             obj.decode(json[key]);
             arr.push(obj);
         }
@@ -41,7 +40,7 @@ export default class JsonTemplate {
      * 获取某个配置文件的所有配置信息
      * @param name 
      */
-    public getTemplates(name:string):Array<ITemplate> {
+    public getTemplates(name:string):Array<any> {
         return this._templates.get(name);
     }
 
@@ -51,8 +50,8 @@ export default class JsonTemplate {
      * @param property 
      * @param value 
      */
-    public getTemplate(name:string, property:string, value:any):ITemplate {
-        let arr:Array<ITemplate> = this._templates.get(name);
+    public getTemplate(name:string, property:string, value:any):any {
+        let arr:Array<any> = this._templates.get(name);
         for(let i:number = 0; i < arr.length; i ++) {
             if(arr[i][property] && arr[i][property] == value) {
                 return arr[i];
@@ -67,9 +66,9 @@ export default class JsonTemplate {
      * @param property 
      * @param value 
      */
-    public getTemplateList(name:string, property:string, value:any):Array<ITemplate> {
-        let list:Array<ITemplate> = [];
-        let arr:Array<ITemplate> = this._templates.get(name);
+    public getTemplateList(name:string, property:string, value:any):Array<any> {
+        let list:Array<any> = [];
+        let arr:Array<any> = this._templates.get(name);
         for(let i:number = 0; i < arr.length; i ++) {
             if(arr[i][property] && arr[i][property] == value) {
                 list.push(arr[i]);

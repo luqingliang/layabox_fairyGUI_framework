@@ -6,5 +6,5 @@
     <component id="empj5" name="Select.xml" path="/"/>
     <image id="xr3c0" name="bg.png" path="/res/"/>
   </resources>
-  <publish name="Home"/>
+  <publish name="Home" genCode="true"/>
 </packageDescription>

@@ -3,7 +3,7 @@
   <controller name="menu" pages="0,,1,,2,,3," selected="0">
     <remark page="0" value="副本"/>
     <remark page="1" value="英雄"/>
-    <remark page="2" value="装备"/>
+    <remark page="2" value="背包"/>
     <remark page="3" value="商城"/>
   </controller>
   <displayList>
@@ -17,7 +17,7 @@
       <Button title="英雄" controller="menu" page="1"/>
     </component>
     <component id="n6_empj" name="n6" src="empj5" fileName="Select.xml" xy="325,1055">
-      <Button title="装备" controller="menu" page="2"/>
+      <Button title="背包" controller="menu" page="2"/>
     </component>
     <component id="n7_empj" name="n7" src="empj5" fileName="Select.xml" xy="485,1055">
       <Button title="商城" controller="menu" page="3"/>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<packageDescription id="ie8na7w3">
+  <resources>
+    <component id="h3iw0" name="Bag.xml" path="/" exported="true"/>
+    <component id="h3iw1" name="Item.xml" path="/" exported="true"/>
+    <image id="h3iw2" name="5.png" path="/res/"/>
+    <image id="h3iw3" name="4.png" path="/res/"/>
+    <image id="h3iw4" name="3.png" path="/res/"/>
+    <image id="h3iw5" name="2.png" path="/res/"/>
+    <image id="h3iw6" name="105.png" path="/res/"/>
+    <image id="h3iw7" name="104.png" path="/res/"/>
+    <image id="h3iw8" name="103.png" path="/res/"/>
+    <image id="h3iw9" name="102.png" path="/res/"/>
+    <image id="h3iwa" name="101.png" path="/res/"/>
+    <image id="h3iwb" name="1.png" path="/res/"/>
+  </resources>
+  <publish name="Bag" genCode="true"/>
+</packageDescription>

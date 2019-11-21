@@ -16,7 +16,7 @@
     GameConfig.startScene = "Login.scene";
     GameConfig.sceneRoot = "";
     GameConfig.debug = false;
-    GameConfig.stat = false;
+    GameConfig.stat = true;
     GameConfig.physicsDebug = false;
     GameConfig.exportSceneToJson = true;
     GameConfig.init();
@@ -475,84 +475,23 @@
         }
     }
 
-    class HomeView extends BaseView {
+    class Item extends fairygui.GButton {
         constructor() {
             super();
-            this._packageName = "Home";
-            this._compName = "Home";
+            this._test = 1111111111;
         }
-        get otherRes() {
-            return [
-                { url: "res/img/test.png", type: Laya.Loader.IMAGE }
-            ];
+        static createInstance() {
+            return (fairygui.UIPackage.createObject("Bag", "Item"));
         }
-        onUICreated() {
-            this._btnBack = this.getButton("btnBack").asButton;
-            this._labUser = this.getChild("labUser").asLabel;
-            this._text = this.getChild("text").asTextField;
-            this._menuCtrl = this.getController("menu");
-            this._mediator = new HomeMediator(this);
-            this._btnBack.onClick(this, this.backHandler);
-            this._labUser.title = Model.User.userData.uid;
-            console.log("??????????", Model.User.userData.username);
-            this._text.text = "我是玩家：" + Model.User.userData.username;
-            this._menuCtrl.on(fgui.Events.STATE_CHANGED, this, () => {
-                ViewManager.instance.open(HomeView, Math.floor(Math.random() * 100).toString());
-            });
-        }
-        opening() {
-            console.log("反复打开界面HomeView，data：", this.data);
-        }
-        backHandler() {
-            this.close();
-            ViewManager.instance.open(LoginView);
+        onConstruct() {
+            this._ItemQuality = this.getControllerAt(0);
+            this._showName = this.getControllerAt(1);
+            this._effect = (this.getChildAt(3));
+            this._textNum = (this.getChildAt(4));
+            console.log(this._textNum);
         }
     }
-
-    class LoginMediator extends Mediator {
-        constructor(view) {
-            super(view);
-            this._mediatorName = "LoginMediator";
-            ViewManager.registerMediator(this);
-        }
-        eventList() {
-            return [
-                UserModel.EVENT_LOGINSUCCESS
-            ];
-        }
-        onEvent(eventName, data) {
-            if (eventName == UserModel.EVENT_LOGINSUCCESS) {
-                this.view.close();
-                ViewManager.instance.open(HomeView);
-            }
-        }
-        login(username) {
-            Model.User.login(username);
-        }
-    }
-
-    class LoginView extends BaseView {
-        constructor() {
-            super();
-            this._packageName = "Login";
-            this._compName = "Login";
-            this._closeClearRes = true;
-        }
-        onUICreated() {
-            this._text = this.getText("text");
-            this._inputUsername = this.getInput("inputUsername");
-            this._btnStart = this.getButton("btnStart");
-            this._mediator = new LoginMediator(this);
-            this._text.text = "Hello World";
-            this._btnStart.onClick(this, this.startHandler);
-        }
-        startHandler() {
-            this.mediator.login(this._inputUsername.text);
-        }
-        get mediator() {
-            return this._mediator;
-        }
-    }
+    Item.URL = "ui://ie8na7w3h3iw1";
 
     class TestTemplate {
         get id() {
@@ -571,9 +510,40 @@
         }
     }
 
+    class ItemTemplate {
+        get id() {
+            return this._id;
+        }
+        get itemName() {
+            return this._itemName;
+        }
+        get icon() {
+            return this._icon;
+        }
+        get stackingCount() {
+            return this._stackingCount;
+        }
+        decode(data) {
+            this._id = data.id;
+            this._itemName = data.itemName;
+            this._itemType = data.itemType;
+            this._itemQuality = data.itemQuality;
+            this._stackingCount = data.stackingCount;
+            this._canSell = data.canSell;
+            this._canUse = data.canUse;
+            this._part1 = data.part1;
+            this._part2 = data.part2;
+            this._icon = data.icon;
+            this._specialEffects = data.specialEffects;
+            this._getWay = data.getWay;
+            this._itemDec = data.itemDec;
+        }
+    }
+
     class JsonTemplateMap {
         static initialize() {
             this._templates.set(this.TEST_JSON, TestTemplate);
+            this._templates.set(this.ITEM_JSON, ItemTemplate);
         }
         static getTemplateClass(name) {
             return this._templates.get(name);
@@ -588,6 +558,7 @@
         }
     }
     JsonTemplateMap.TEST_JSON = "test.json";
+    JsonTemplateMap.ITEM_JSON = "item.json";
     JsonTemplateMap._templates = new Map();
 
     class JsonTemplate {
@@ -644,6 +615,127 @@
         }
     }
 
+    class BagView extends BaseView {
+        constructor() {
+            super();
+            this._packageName = "Bag";
+            this._compName = "Bag";
+            this._closeClearRes = true;
+        }
+        onUICreated() {
+            this._itemList = this.getList("itemList");
+            this._btnBack = this.getButton("btnBack");
+            this._btnBack.onClick(this, () => {
+                this.close();
+            });
+            this._itemList.on(fgui.Events.CLICK_ITEM, this, this.onClickItem);
+            this._itemList.itemRenderer = Laya.Handler.create(this, this.itemListHandler, null, false);
+            this._itemList.setVirtual();
+        }
+        itemListHandler(index, obj) {
+            let itemJson;
+            if (index < this._itemArr.length) {
+                itemJson = this._itemArr[index];
+            }
+            else {
+                let randomNum = Math.floor(Math.random() * this._itemArr.length);
+                itemJson = this._itemArr[randomNum];
+            }
+            obj.icon = "res/icon/item/" + itemJson.icon + ".png";
+            obj.getChild("textNum").asTextField.text = itemJson.stackingCount > 99999999 ? "99999999" : itemJson.stackingCount.toString();
+            obj.title = itemJson.itemName;
+        }
+        onClickItem(item) {
+            let newItem = Item.createInstance();
+            newItem.icon = item.icon;
+            this.viewComponent.addChild(newItem);
+        }
+        opening() {
+            this._itemArr = JsonTemplate.instance.getTemplates(JsonTemplateMap.ITEM_JSON);
+            this._itemList.numItems = 10000;
+        }
+    }
+
+    class HomeView extends BaseView {
+        constructor() {
+            super();
+            this._packageName = "Home";
+            this._compName = "Home";
+        }
+        get otherRes() {
+            return [
+                { url: "res/img/test.png", type: Laya.Loader.IMAGE }
+            ];
+        }
+        onUICreated() {
+            this._btnBack = this.getButton("btnBack").asButton;
+            this._labUser = this.getChild("labUser").asLabel;
+            this._text = this.getChild("text").asTextField;
+            this._menuCtrl = this.getController("menu");
+            this._mediator = new HomeMediator(this);
+            this._btnBack.onClick(this, this.backHandler);
+            this._labUser.title = Model.User.userData.uid;
+            this._text.text = "我是玩家：" + Model.User.userData.username;
+            this._menuCtrl.on(fgui.Events.STATE_CHANGED, this, () => {
+                if (this._menuCtrl.selectedIndex == 2) {
+                    ViewManager.instance.open(BagView);
+                }
+            });
+        }
+        opening() {
+            console.log("反复打开界面HomeView，data：", this.data);
+        }
+        backHandler() {
+            this.close();
+            ViewManager.instance.open(LoginView);
+        }
+    }
+
+    class LoginMediator extends Mediator {
+        constructor(view) {
+            super(view);
+            this._mediatorName = "LoginMediator";
+            ViewManager.registerMediator(this);
+        }
+        eventList() {
+            return [
+                UserModel.EVENT_LOGINSUCCESS
+            ];
+        }
+        onEvent(eventName, data) {
+            if (eventName == UserModel.EVENT_LOGINSUCCESS) {
+                this.view.close();
+                ViewManager.instance.open(HomeView);
+            }
+        }
+        login(username) {
+            Model.User.login(username);
+        }
+    }
+
+    class LoginView extends BaseView {
+        constructor() {
+            super();
+            this._packageName = "Login";
+            this._compName = "Login";
+            this._closeClearRes = true;
+        }
+        onUICreated() {
+            this._text = this.getText("text");
+            this._inputUsername = this.getInput("inputUsername");
+            this._btnStart = this.getButton("btnStart");
+            this._mediator = new LoginMediator(this);
+            this._text.text = "Hello World";
+            this._btnStart.onClick(this, this.startHandler);
+        }
+        startHandler() {
+            this.mediator.login(this._inputUsername.text);
+        }
+        get mediator() {
+            return this._mediator;
+        }
+    }
+
     class Main {
         constructor() {
             if (window["Laya3D"])
@@ -664,10 +756,7 @@
             if (GameConfig.stat)
                 Laya.Stat.show();
             Laya.alertGlobalError = true;
-            Laya.ResourceVersion.enable("version.json", Laya.Handler.create(this, this.onVersionLoaded), Laya.ResourceVersion.FILENAME_VERSION);
-        }
-        onVersionLoaded() {
-            Laya.AtlasInfoManager.enable("fileconfig.json", Laya.Handler.create(this, this.onConfigLoaded));
+            fgui.UIPackage.loadPackage("res/fgui/Common", Laya.Handler.create(this, this.onConfigLoaded));
         }
         onConfigLoaded() {
             JsonTemplate.instance.initialize();

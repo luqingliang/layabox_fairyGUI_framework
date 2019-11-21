@@ -7,7 +7,7 @@
 	"binaryFormat":true,
 	"codeGeneration":{
 		"classNamePrefix":"",
-		"codePath":"",
+		"codePath":"./script",
 		"codeType":"TS-2.0",
 		"getMemberByName":false,
 		"ignoreNoname":true,
@@ -17,5 +17,5 @@
 	"compressDesc":true,
 	"fileExtension":"fui",
 	"packageCount":2,
-	"path":"../Code/Code/bin/res/fgui"
+	"path":"../Code/bin/res/fgui"
 }
