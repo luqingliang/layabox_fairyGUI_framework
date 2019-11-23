@@ -444,6 +444,7 @@
 
     var Model;
     (function (Model) {
+        Model.protocol = com.tingtong.server.game.proto;
     })(Model || (Model = {}));
     class GameModel {
         static initialize() {
@@ -571,7 +572,7 @@
             }
             return this._instance;
         }
-        initialize() {
+        initialize(complete = null) {
             this._templates = new Map();
             JsonTemplateMap.initialize();
             let arr = JsonTemplateMap.getJsonResArr();
@@ -582,6 +583,8 @@
                         this.decodeJson(arr[i].jsonFileName, json, JsonTemplateMap.getTemplateClass(arr[i].jsonFileName));
                     }
                 }
+                if (complete)
+                    complete.run();
             }));
         }
         decodeJson(name, json, template) {
@@ -592,7 +595,6 @@
                 arr.push(obj);
             }
             this._templates.set(name, arr);
-            console.log(this.getTemplate(JsonTemplateMap.TEST_JSON, "id", 1003));
         }
         getTemplates(name) {
             return this._templates.get(name);
@@ -762,11 +764,13 @@
             fgui.UIPackage.loadPackage("res/fgui/Common", Laya.Handler.create(this, this.onConfigLoaded));
         }
         onConfigLoaded() {
-            JsonTemplate.instance.initialize();
+            JsonTemplate.instance.initialize(Laya.Handler.create(this, () => {
+                console.log("测试读Json配置表", JsonTemplate.instance.getTemplate(JsonTemplateMap.TEST_JSON, "id", 1003));
+            }));
             GameModel.initialize();
             Laya.stage.addChild(fgui.GRoot.inst.displayObject);
             ViewManager.instance.open(LoginView);
-            console.log("测试Protobuf: ", com.tingtong.server.game.proto.LoginType.ACCOUNT);
+            console.log("测试Protobuf: ", Model.protocol.LoginType.ACCOUNT);
         }
     }
     new Main();

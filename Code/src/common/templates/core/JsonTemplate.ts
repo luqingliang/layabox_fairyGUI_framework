@@ -11,7 +11,11 @@ export default class JsonTemplate {
 
     private _templates:Map<string, Array<any>>;
 
-    public initialize():void {
+    /**
+     * 加载并解析配置表到内存中
+     * @param complete 
+     */
+    public initialize(complete:Laya.Handler = null):void {
         this._templates = new Map();
         JsonTemplateMap.initialize();
         let arr:Array<any> = JsonTemplateMap.getJsonResArr();
@@ -22,6 +26,8 @@ export default class JsonTemplate {
                     this.decodeJson(arr[i].jsonFileName, json, JsonTemplateMap.getTemplateClass(arr[i].jsonFileName));
                 }
             }
+            if(complete)
+                complete.run();
         }));
     }
 
@@ -33,7 +39,6 @@ export default class JsonTemplate {
             arr.push(obj);
         }
         this._templates.set(name, arr);
-        console.log(this.getTemplate(JsonTemplateMap.TEST_JSON, "id", 1003));
     }
 
     /**

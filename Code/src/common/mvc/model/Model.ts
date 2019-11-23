@@ -1,6 +1,9 @@
 import UserModel from "./UserModel";
 
 export namespace Model {
+    /**协议别名 方便调用 */
+    export let protocol = com.tingtong.server.game.proto;
+
     export let User:UserModel;
 }
 

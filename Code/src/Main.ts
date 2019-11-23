@@ -2,7 +2,8 @@ import GameConfig from "./GameConfig";
 import LoginView from "./game/login/LoginView";
 import ViewManager from "./common/mvc/view/ViewManager";
 import JsonTemplate from "./common/templates/core/JsonTemplate";
-import { GameModel } from "./common/mvc/model/Model";
+import { GameModel, Model } from "./common/mvc/model/Model";
+import JsonTemplateMap from "./common/templates/core/JsonTemplateMap";
 class Main {
 	constructor() {
 		//根据IDE设置初始化引擎		
@@ -39,14 +40,16 @@ class Main {
 		//加载IDE指定的场景
 		// GameConfig.startScene && Laya.Scene.open(GameConfig.startScene);
 
-		JsonTemplate.instance.initialize();
+		JsonTemplate.instance.initialize(Laya.Handler.create(this, () => {
+			console.log("测试读Json配置表", JsonTemplate.instance.getTemplate(JsonTemplateMap.TEST_JSON, "id", 1003));
+		}));
 
 		GameModel.initialize();
 
 		Laya.stage.addChild(fgui.GRoot.inst.displayObject);
 
 		ViewManager.instance.open(LoginView);
-		console.log("测试Protobuf: ", com.tingtong.server.game.proto.LoginType.ACCOUNT);
+		console.log("测试Protobuf: ", Model.protocol.LoginType.ACCOUNT);
 	}
 }
 //激活启动类
