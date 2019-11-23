@@ -1,6 +1,6 @@
 import LoginView from "../login/LoginView";
 import BaseView from "../../common/mvc/view/BaseView";
-import Model from "../../common/mvc/model/Model";
+import { Model } from "../../common/mvc/model/Model";
 import ViewManager from "../../common/mvc/view/ViewManager";
 import HomeMediator from "./HomeMediator";
 import UserModel from "../../common/mvc/model/UserModel";

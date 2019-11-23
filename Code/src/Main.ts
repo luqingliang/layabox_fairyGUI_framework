@@ -1,8 +1,8 @@
 import GameConfig from "./GameConfig";
 import LoginView from "./game/login/LoginView";
-import Model from "./common/mvc/model/Model";
 import ViewManager from "./common/mvc/view/ViewManager";
 import JsonTemplate from "./common/templates/core/JsonTemplate";
+import { GameModel } from "./common/mvc/model/Model";
 class Main {
 	constructor() {
 		//根据IDE设置初始化引擎		
@@ -41,7 +41,7 @@ class Main {
 
 		JsonTemplate.instance.initialize();
 
-		Model.initialize();
+		GameModel.initialize();
 
 		Laya.stage.addChild(fgui.GRoot.inst.displayObject);
 

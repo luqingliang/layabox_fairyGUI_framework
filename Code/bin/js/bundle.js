@@ -442,7 +442,10 @@
     UserModel.EVENT_RENAMETEST = "EVENT_RENAMETEST";
     UserModel.EVENT_LOGINSUCCESS = "EVENT_LOGINSUCCESS";
 
-    class Model {
+    var Model;
+    (function (Model) {
+    })(Model || (Model = {}));
+    class GameModel {
         static initialize() {
             Model.User = new UserModel();
         }
@@ -760,7 +763,7 @@
         }
         onConfigLoaded() {
             JsonTemplate.instance.initialize();
-            Model.initialize();
+            GameModel.initialize();
             Laya.stage.addChild(fgui.GRoot.inst.displayObject);
             ViewManager.instance.open(LoginView);
             console.log("测试Protobuf: ", com.tingtong.server.game.proto.LoginType.ACCOUNT);

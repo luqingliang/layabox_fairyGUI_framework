@@ -1,7 +1,7 @@
 import Mediator from "../../common/mvc/patterns/Mediator";
 import IView from "../../common/mvc/interface/IView";
 import ViewManager from "../../common/mvc/view/ViewManager";
-import Model from "../../common/mvc/model/Model";
+import { Model } from "../../common/mvc/model/Model";
 import UserModel from "../../common/mvc/model/UserModel";
 import HomeView from "../home/HomeView";
 import GameSocket from "../../common/net/GameSocket";
