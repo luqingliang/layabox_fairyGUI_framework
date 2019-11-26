@@ -4,7 +4,9 @@
     <component id="empj3" name="Home.xml" path="/" exported="true"/>
     <component id="empj4" name="LableUser.xml" path="/"/>
     <component id="empj5" name="Select.xml" path="/"/>
-    <image id="xr3c0" name="bg.png" path="/res/"/>
+    <image id="xr3c0" name="bg.png" path="/res/" scale="9grid" scale9grid="11,7,22,14"/>
+    <component id="eu8o6" name="HomeTop.xml" path="/"/>
+    <component id="eu8o7" name="HomeBottom.xml" path="/"/>
   </resources>
   <publish name="Home" genCode="true"/>
 </packageDescription>

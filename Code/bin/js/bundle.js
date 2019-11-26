@@ -10,7 +10,7 @@
     GameConfig.width = 640;
     GameConfig.height = 1136;
     GameConfig.scaleMode = "fixedauto";
-    GameConfig.screenMode = "vertical";
+    GameConfig.screenMode = "none";
     GameConfig.alignV = "middle";
     GameConfig.alignH = "center";
     GameConfig.startScene = "Login.scene";
@@ -200,8 +200,13 @@
         }
         createUI() {
             this._viewComponent = fgui.UIPackage.createObject(this._packageName, this._compName).asCom;
+            Laya.stage.on(Laya.Event.RESIZE, this, this.resized);
+            this.resized();
             this.onUICreated();
             this.addToParent();
+        }
+        resized() {
+            this._viewComponent.center();
         }
         onUICreated() {
         }
@@ -252,6 +257,7 @@
             ViewManager.instance.close(this);
         }
         dispose() {
+            Laya.stage.off(Laya.Event.RESIZE, this, this.resized);
             if (this._closeClearRes) {
                 let resArr = this.otherRes;
                 for (let i = 0; i < resArr.length; i++) {
@@ -673,13 +679,9 @@
             ];
         }
         onUICreated() {
-            this._btnBack = this.getButton("btnBack").asButton;
-            this._labUser = this.getChild("labUser").asLabel;
             this._text = this.getChild("text").asTextField;
             this._menuCtrl = this.getController("menu");
             this._mediator = new HomeMediator(this);
-            this._btnBack.onClick(this, this.backHandler);
-            this._labUser.title = Model.User.userData.uid;
             this._text.text = "我是玩家：" + Model.User.userData.username;
             this._menuCtrl.on(fgui.Events.STATE_CHANGED, this, () => {
                 if (this._menuCtrl.selectedIndex == 2) {
@@ -689,10 +691,6 @@
         }
         opening() {
             console.log("反复打开界面HomeView，data：", this.data);
-        }
-        backHandler() {
-            this.close();
-            ViewManager.instance.open(LoginView);
         }
     }
 

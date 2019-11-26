@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="640,150">
+  <displayList>
+    <component id="n2_empj" name="labUser" src="empj4" fileName="LableUser.xml" xy="0,0"/>
+    <text id="n10_eu8o" name="n10" xy="411,18" size="213,54" fontSize="44" color="#ffffff" text="金币: 3000"/>
+  </displayList>
+</component>

@@ -20,9 +20,15 @@ export default class BaseView implements IView {
 
     private createUI():void {
         this._viewComponent = fgui.UIPackage.createObject(this._packageName, this._compName).asCom;
+        Laya.stage.on(Laya.Event.RESIZE, this, this.resized);
 
+        this.resized();
         this.onUICreated();
         this.addToParent();
+    }
+
+    private resized():void {
+        this._viewComponent.center();
     }
     
     protected onUICreated():void {
@@ -95,6 +101,7 @@ export default class BaseView implements IView {
     }
 
     protected dispose():void {
+        Laya.stage.off(Laya.Event.RESIZE, this, this.resized);
         if(this._closeClearRes) {
             let resArr:Array<any> = this.otherRes;
             for(let i:number = 0; i < resArr.length; i ++) {

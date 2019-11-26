@@ -1,11 +1,19 @@
 {
 	"backgroundColor": 6710886,
-	"auxline1": true,
-	"libview.currentGroup": "",
 	"auxline2": true,
-	"doc.activeDoc": "ui://ie8na7w3h3iw0",
+	"doc.activeDoc": "ui://4h44hmx7empj3",
 	"canvasColor": 10066329,
 	"libview.twoColumn": false,
+	"libview.firstColumnWidth": 283,
+	"doc.openedDocs": [
+		"ui://ie8na7w3h3iw1",
+		"ui://ie8na7w3h3iw0",
+		"ui://4h44hmx7empj3",
+		"ui://4h44hmx7eu8o7",
+		"ui://4h44hmx7eu8o6"
+	],
+	"auxline1": true,
+	"libview.currentGroup": "",
 	"libview.expandedNodes": [
 		"ie8na7w3",
 		"/",
@@ -14,11 +22,8 @@
 		"inezl2ev",
 		"/button/",
 		"inezl2ev",
-		"/res/"
-	],
-	"doc.openedDocs": [
-		"ui://ie8na7w3h3iw1",
-		"ui://ie8na7w3h3iw0"
-	],
-	"libview.firstColumnWidth": 283
+		"/res/",
+		"4h44hmx7",
+		"/"
+	]
 }
