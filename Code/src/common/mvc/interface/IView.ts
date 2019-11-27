@@ -1,7 +1,7 @@
 import IMediator from "./IMediator";
 
 export default interface IView {
-    viewComponent:fgui.GComponent;
+    view:fgui.GComponent;
     /**
      * 打开界面时传过来的参数
      */

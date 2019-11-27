@@ -18,7 +18,7 @@ export default class Bag extends fairygui.GComponent {
 	}
 
 	protected onConstruct(): void {
-		this._itemList = <fairygui.GList><any>(this.getChildAt(2));
-		this._btnBack = <fairygui.GButton><any>(this.getChildAt(3));
+		this._itemList = <fairygui.GList><any>(this.getChild("itemList"));
+		this._btnBack = <fairygui.GButton><any>(this.getChild("btnBack"));
 	}
 }

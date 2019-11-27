@@ -5,14 +5,15 @@ import HomeMediator from "./HomeMediator";
 import UserModel from "../../common/mvc/model/UserModel";
 import BagView from "../bag/BagView";
 import ViewManager from "../../common/mvc/view/ViewManager";
+import Home from "../../ui/fgui/Home/Home";
+import HomeBinder from "../../ui/fgui/Home/HomeBinder";
 
 export default class HomeView extends BaseView {
-
-    public _text:fgui.GTextField;
-    public _menuCtrl:fgui.Controller;
+    public view:Home;
 
     constructor() {
         super();
+        HomeBinder.bindAll();
         this._packageName = "Home";
         this._compName = "Home";
     }
@@ -24,15 +25,13 @@ export default class HomeView extends BaseView {
     }
 
     protected onUICreated():void {
-        this._text = this.getChild("text").asTextField;
-        this._menuCtrl = this.getController("menu");
 
-        this._mediator = new HomeMediator(this);
+        this._mediator = new HomeMediator(this); //注册中介者
 
-        this._text.text = "我是玩家：" + Model.User.userData.username;
-        this._menuCtrl.on(fgui.Events.STATE_CHANGED, this, () => {
+        this.view._text.text = "我是玩家：" + Model.User.userData.username;
+        this.view._menu.on(fgui.Events.STATE_CHANGED, this, () => {
             // ViewManager.instance.open(HomeView, Math.floor(Math.random() * 100).toString()); //测试反复打开界面
-            if(this,this._menuCtrl.selectedIndex == 2) {
+            if(this,this.view._menu.selectedIndex == 2) {
                 ViewManager.instance.open(BagView);
             }
         });

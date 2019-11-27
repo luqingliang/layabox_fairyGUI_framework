@@ -3,7 +3,8 @@ import IView from "../interface/IView";
 import IMediator from "../interface/IMediator";
 
 export default class BaseView implements IView {
-    private _viewComponent:fgui.GComponent;
+    public view:fgui.GComponent;
+
     protected _mediator:IMediator;
     protected _packageName:string;
     protected _compName:string;
@@ -19,7 +20,7 @@ export default class BaseView implements IView {
     }
 
     private createUI():void {
-        this._viewComponent = fgui.UIPackage.createObject(this._packageName, this._compName).asCom;
+        this.view = fgui.UIPackage.createObject(this._packageName, this._compName).asCom;
         Laya.stage.on(Laya.Event.RESIZE, this, this.resized);
 
         this.resized();
@@ -28,7 +29,7 @@ export default class BaseView implements IView {
     }
 
     private resized():void {
-        this._viewComponent.center();
+        this.view.center();
     }
     
     protected onUICreated():void {
@@ -43,40 +44,37 @@ export default class BaseView implements IView {
     }
 
     private addToParent():void {
-        fgui.GRoot.inst.addChild(this._viewComponent);
+        fgui.GRoot.inst.addChild(this.view);
         this.opening();
     }
 
     public removeFromParent():void {
-        this._viewComponent.removeFromParent();
+        this.view.removeFromParent();
         this.dispose();
     }
 
     public getChild(name:string):fgui.GObject {
-        return this._viewComponent.getChild(name);
+        return this.view.getChild(name);
     }
     public getButton(name:string):fgui.GButton {
-        return this._viewComponent.getChild(name).asButton;
+        return this.view.getChild(name).asButton;
     }
     public getText(name:string):fgui.GTextField {
-        return this._viewComponent.getChild(name).asTextField;
+        return this.view.getChild(name).asTextField;
     }
     public getInput(name:string):fgui.GTextInput {
-        return this._viewComponent.getChild(name).asTextInput;
+        return this.view.getChild(name).asTextInput;
     }
     public getLabel(name:string):fgui.GLabel {
-        return this._viewComponent.getChild(name).asLabel;
+        return this.view.getChild(name).asLabel;
     }
     public getList(name:string):fgui.GList {
-        return this._viewComponent.getChild(name).asList;
+        return this.view.getChild(name).asList;
     }
     public getController(name:string):fgui.Controller {
-        return this._viewComponent.getController(name);
+        return this.view.getController(name);
     }
 
-    public get viewComponent():fgui.GComponent {
-        return this._viewComponent;
-    }
     public get mediator():IMediator {
         return this._mediator;
     }
@@ -124,8 +122,8 @@ export default class BaseView implements IView {
             ViewManager.removeMediator(this._mediator.getMediatorName());
             this._mediator = null;
         }
-        this._viewComponent.dispose();
-        this._viewComponent = null;
+        this.view.dispose();
+        this.view = null;
         this.data = null;
     }
 }

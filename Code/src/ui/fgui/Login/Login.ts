@@ -19,8 +19,8 @@ export default class Login extends fairygui.GComponent {
 	}
 
 	protected onConstruct(): void {
-		this._text = <fairygui.GTextField><any>(this.getChildAt(1));
-		this._btnStart = <fairygui.GButton><any>(this.getChildAt(2));
-		this._inputUsername = <fairygui.GTextInput><any>(this.getChildAt(3));
+		this._text = <fairygui.GTextField><any>(this.getChild("text"));
+		this._btnStart = <fairygui.GButton><any>(this.getChild("btnStart"));
+		this._inputUsername = <fairygui.GTextInput><any>(this.getChild("inputUsername"));
 	}
 }

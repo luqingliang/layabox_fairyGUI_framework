@@ -7,9 +7,9 @@
 	"binaryFormat":true,
 	"codeGeneration":{
 		"classNamePrefix":"",
-		"codePath":"./script",
+		"codePath":"../Code/src/ui/fgui",
 		"codeType":"TS-2.0",
-		"getMemberByName":false,
+		"getMemberByName":true,
 		"ignoreNoname":true,
 		"memberNamePrefix":"_",
 		"packageName":null

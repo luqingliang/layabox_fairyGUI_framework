@@ -17,6 +17,6 @@ export default class HomeTop extends fairygui.GComponent {
 	}
 
 	protected onConstruct(): void {
-		this._labUser = <fairygui.GLabel><any>(this.getChildAt(0));
+		this._labUser = <fairygui.GLabel><any>(this.getChild("labUser"));
 	}
 }

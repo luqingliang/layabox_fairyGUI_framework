@@ -18,7 +18,7 @@ export default class Home extends fairygui.GComponent {
 	}
 
 	protected onConstruct(): void {
-		this._menu = this.getControllerAt(0);
-		this._text = <fairygui.GTextField><any>(this.getChildAt(1));
+		this._menu = this.getController("menu");
+		this._text = <fairygui.GTextField><any>(this.getChild("text"));
 	}
 }

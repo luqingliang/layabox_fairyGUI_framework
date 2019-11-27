@@ -17,6 +17,6 @@ export default class HomeBottom extends fairygui.GComponent {
 	}
 
 	protected onConstruct(): void {
-		this._menu = this.getControllerAt(0);
+		this._menu = this.getController("menu");
 	}
 }

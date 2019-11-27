@@ -20,9 +20,9 @@ export default class Item extends fairygui.GButton {
 	}
 
 	protected onConstruct(): void {
-		this._ItemQuality = this.getControllerAt(0);
-		this._showName = this.getControllerAt(1);
-		this._effect = <fairygui.GLoader><any>(this.getChildAt(3));
-		this._textNum = <fairygui.GTextField><any>(this.getChildAt(4));
+		this._ItemQuality = this.getController("ItemQuality");
+		this._showName = this.getController("showName");
+		this._effect = <fairygui.GLoader><any>(this.getChild("effect"));
+		this._textNum = <fairygui.GTextField><any>(this.getChild("textNum"));
 	}
 }

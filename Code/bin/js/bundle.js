@@ -199,50 +199,47 @@
             this.createUI();
         }
         createUI() {
-            this._viewComponent = fgui.UIPackage.createObject(this._packageName, this._compName).asCom;
+            this.view = fgui.UIPackage.createObject(this._packageName, this._compName).asCom;
             Laya.stage.on(Laya.Event.RESIZE, this, this.resized);
             this.resized();
             this.onUICreated();
             this.addToParent();
         }
         resized() {
-            this._viewComponent.center();
+            this.view.center();
         }
         onUICreated() {
         }
         opening() {
         }
         addToParent() {
-            fgui.GRoot.inst.addChild(this._viewComponent);
+            fgui.GRoot.inst.addChild(this.view);
             this.opening();
         }
         removeFromParent() {
-            this._viewComponent.removeFromParent();
+            this.view.removeFromParent();
             this.dispose();
         }
         getChild(name) {
-            return this._viewComponent.getChild(name);
+            return this.view.getChild(name);
         }
         getButton(name) {
-            return this._viewComponent.getChild(name).asButton;
+            return this.view.getChild(name).asButton;
         }
         getText(name) {
-            return this._viewComponent.getChild(name).asTextField;
+            return this.view.getChild(name).asTextField;
         }
         getInput(name) {
-            return this._viewComponent.getChild(name).asTextInput;
+            return this.view.getChild(name).asTextInput;
         }
         getLabel(name) {
-            return this._viewComponent.getChild(name).asLabel;
+            return this.view.getChild(name).asLabel;
         }
         getList(name) {
-            return this._viewComponent.getChild(name).asList;
+            return this.view.getChild(name).asList;
         }
         getController(name) {
-            return this._viewComponent.getController(name);
-        }
-        get viewComponent() {
-            return this._viewComponent;
+            return this.view.getController(name);
         }
         get mediator() {
             return this._mediator;
@@ -280,8 +277,8 @@
                 ViewManager.removeMediator(this._mediator.getMediatorName());
                 this._mediator = null;
             }
-            this._viewComponent.dispose();
-            this._viewComponent = null;
+            this.view.dispose();
+            this.view = null;
             this.data = null;
         }
     }
@@ -667,9 +664,58 @@
         }
     }
 
+    class Home extends fairygui.GComponent {
+        constructor() {
+            super();
+        }
+        static createInstance() {
+            return (fairygui.UIPackage.createObject("Home", "Home"));
+        }
+        onConstruct() {
+            this._menu = this.getController("menu");
+            this._text = (this.getChild("text"));
+        }
+    }
+    Home.URL = "ui://4h44hmx7empj3";
+
+    class HomeTop extends fairygui.GComponent {
+        constructor() {
+            super();
+        }
+        static createInstance() {
+            return (fairygui.UIPackage.createObject("Home", "HomeTop"));
+        }
+        onConstruct() {
+            this._labUser = (this.getChild("labUser"));
+        }
+    }
+    HomeTop.URL = "ui://4h44hmx7eu8o6";
+
+    class HomeBottom extends fairygui.GComponent {
+        constructor() {
+            super();
+        }
+        static createInstance() {
+            return (fairygui.UIPackage.createObject("Home", "HomeBottom"));
+        }
+        onConstruct() {
+            this._menu = this.getController("menu");
+        }
+    }
+    HomeBottom.URL = "ui://4h44hmx7eu8o7";
+
+    class HomeBinder {
+        static bindAll() {
+            fairygui.UIObjectFactory.setPackageItemExtension(Home.URL, Home);
+            fairygui.UIObjectFactory.setPackageItemExtension(HomeTop.URL, HomeTop);
+            fairygui.UIObjectFactory.setPackageItemExtension(HomeBottom.URL, HomeBottom);
+        }
+    }
+
     class HomeView extends BaseView {
         constructor() {
             super();
+            HomeBinder.bindAll();
             this._packageName = "Home";
             this._compName = "Home";
         }
@@ -679,12 +725,10 @@
             ];
         }
         onUICreated() {
-            this._text = this.getChild("text").asTextField;
-            this._menuCtrl = this.getController("menu");
             this._mediator = new HomeMediator(this);
-            this._text.text = "我是玩家：" + Model.User.userData.username;
-            this._menuCtrl.on(fgui.Events.STATE_CHANGED, this, () => {
-                if (this._menuCtrl.selectedIndex == 2) {
+            this.view._text.text = "我是玩家：" + Model.User.userData.username;
+            this.view._menu.on(fgui.Events.STATE_CHANGED, this, () => {
+                if (this.view._menu.selectedIndex == 2) {
                     ViewManager.instance.open(BagView);
                 }
             });
@@ -783,29 +827,49 @@
         }
     }
 
+    class Login extends fairygui.GComponent {
+        constructor() {
+            super();
+        }
+        static createInstance() {
+            return (fairygui.UIPackage.createObject("Login", "Login"));
+        }
+        onConstruct() {
+            this._text = (this.getChild("text"));
+            this._btnStart = (this.getChild("btnStart"));
+            this._inputUsername = (this.getChild("inputUsername"));
+        }
+    }
+    Login.URL = "ui://wgdhhfkrr71t0";
+
+    class LoginBinder {
+        static bindAll() {
+            fairygui.UIObjectFactory.setPackageItemExtension(Login.URL, Login);
+        }
+    }
+
     class LoginView extends BaseView {
         constructor() {
             super();
+            LoginBinder.bindAll();
             this._packageName = "Login";
             this._compName = "Login";
             this._closeClearRes = true;
         }
         onUICreated() {
-            this._text = this.getText("text");
-            this._inputUsername = this.getInput("inputUsername");
-            this._btnStart = this.getButton("btnStart");
             this._mediator = new LoginMediator(this);
-            this._text.text = "Hello World";
-            this._btnStart.onClick(this, this.startHandler);
+            console.log(this.view);
+            this.view._text.text = "Hello World";
+            this.view._btnStart.onClick(this, this.startHandler);
         }
         startHandler() {
-            let name = this._inputUsername.text;
+            let name = this.view._inputUsername.text;
             let newStr = WordFilter.filter(name);
             if (newStr != name) {
                 console.error("含有敏感词，请重新输入！");
                 return;
             }
-            this.mediator.login(this._inputUsername.text);
+            this.mediator.login(name);
         }
         get mediator() {
             return this._mediator;
