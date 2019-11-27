@@ -4,6 +4,7 @@ import ViewManager from "./common/mvc/view/ViewManager";
 import JsonTemplate from "./common/templates/core/JsonTemplate";
 import { GameModel, Model } from "./common/mvc/model/Model";
 import JsonTemplateMap from "./common/templates/core/JsonTemplateMap";
+import WordFilter from "./common/utils/WordFilter";
 class Main {
 	constructor() {
 		//根据IDE设置初始化引擎		
@@ -29,6 +30,9 @@ class Main {
 	}
 
 	onConfigLoaded(): void {
+		WordFilter.initlize(Laya.Handler.create(this, () => {
+			console.log("敏感字库初始化完成");
+		}));
 		JsonTemplate.instance.initialize(Laya.Handler.create(this, () => {
 			console.log("测试读Json配置表", JsonTemplate.instance.getTemplate(JsonTemplateMap.TEST_JSON, "id", 1003));
 		}));

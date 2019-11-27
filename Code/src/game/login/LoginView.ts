@@ -1,6 +1,7 @@
 import HomeView from "../home/HomeView";
 import BaseView from "../../common/mvc/view/BaseView";
 import LoginMediator from "./LoginMediator";
+import WordFilter from "../../common/utils/WordFilter";
 
 export default class LoginView extends BaseView {
     public _text:fgui.GTextField;
@@ -27,6 +28,12 @@ export default class LoginView extends BaseView {
     }
 
     private startHandler():void {
+        let name:string = this._inputUsername.text;
+        let newStr:string = WordFilter.filter(name);
+        if(newStr != name) {
+            console.error("含有敏感词，请重新输入！");
+            return;
+        }
         this.mediator.login(this._inputUsername.text);
     }
 

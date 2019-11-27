@@ -716,6 +716,73 @@
         }
     }
 
+    class WordFilter {
+        static initlize(complete = null) {
+            this._wordsList = [];
+            let url = "res/config/filterWords.json";
+            Laya.loader.load(url, Laya.Handler.create(this, () => {
+                let arr = Laya.loader.getRes(url);
+                for (let i = 0; i < arr.length; i++) {
+                    this._wordsList.push(arr[i].word);
+                }
+                Laya.loader.clearRes(url);
+                if (complete) {
+                    complete.run();
+                }
+            }));
+        }
+        static filter(str) {
+            for (let i = 0; i < this._wordsList.length; i++) {
+                let reg = new RegExp(this._wordsList[i], "g");
+                if (str.indexOf(this._wordsList[i]) != -1) {
+                    str = str.replace(reg, "*");
+                }
+            }
+            return str;
+        }
+        static makeMap(arr) {
+            let result = new Map();
+            for (let i = 0; i < arr.length; i++) {
+                let str = arr[i];
+                let map = result;
+                for (let j = 0; j < str.length; j++) {
+                    let char = str.charAt(j);
+                    if (map.get(char)) {
+                        map = map.get(char);
+                    }
+                    else {
+                        if (map.get("isEnd") == true) {
+                            map.set("isEnd", (j == str.length - 1) ? true : false);
+                        }
+                        let node = new Map();
+                        node.set("isEnd", true);
+                        map.set(char, node);
+                        map = node;
+                    }
+                }
+            }
+            return result;
+        }
+        static check(str) {
+            let result = false;
+            let map = this._wordsMap;
+            for (let i = 0; i < str.length; i++) {
+                let char = str.charAt(i);
+                map = map.get(char);
+                if (map) {
+                    if (map.get("isEnd") == true) {
+                        result = true;
+                        break;
+                    }
+                }
+                else {
+                    break;
+                }
+            }
+            return result;
+        }
+    }
+
     class LoginView extends BaseView {
         constructor() {
             super();
@@ -732,6 +799,12 @@
             this._btnStart.onClick(this, this.startHandler);
         }
         startHandler() {
+            let name = this._inputUsername.text;
+            let newStr = WordFilter.filter(name);
+            if (newStr != name) {
+                console.error("含有敏感词，请重新输入！");
+                return;
+            }
             this.mediator.login(this._inputUsername.text);
         }
         get mediator() {
@@ -762,6 +835,9 @@
             fgui.UIPackage.loadPackage("res/fgui/Common", Laya.Handler.create(this, this.onConfigLoaded));
         }
         onConfigLoaded() {
+            WordFilter.initlize(Laya.Handler.create(this, () => {
+                console.log("敏感字库初始化完成");
+            }));
             JsonTemplate.instance.initialize(Laya.Handler.create(this, () => {
                 console.log("测试读Json配置表", JsonTemplate.instance.getTemplate(JsonTemplateMap.TEST_JSON, "id", 1003));
             }));
