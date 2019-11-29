@@ -29,10 +29,11 @@ export default class HomeView extends BaseView {
         this._mediator = new HomeMediator(this); //注册中介者
 
         this.view._text.text = "我是玩家：" + Model.User.userData.username;
-        this.view._menu.on(fgui.Events.STATE_CHANGED, this, () => {
+        this.view._bottom._menu.on(fgui.Events.STATE_CHANGED, this, () => {
             // ViewManager.instance.open(HomeView, Math.floor(Math.random() * 100).toString()); //测试反复打开界面
-            if(this,this.view._menu.selectedIndex == 2) {
+            if(this.view._bottom._menu.selectedIndex == 2) {
                 ViewManager.instance.open(BagView);
+                console.log("?????????")
             }
         });
     }

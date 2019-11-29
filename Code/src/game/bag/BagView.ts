@@ -3,27 +3,27 @@ import Item from "./Item";
 import ItemTemplate from "../../common/templates/ItemTemplate";
 import JsonTemplate from "../../common/templates/core/JsonTemplate";
 import JsonTemplateMap from "../../common/templates/core/JsonTemplateMap";
+import Bag from "../../ui/fgui/Bag/Bag";
+import BagBinder from "../../ui/fgui/Bag/BagBinder";
 
 export default class BagView extends BaseView {
-    private _itemList:fgui.GList;
-    private _btnBack:fgui.GButton;
+    public view:Bag;
 
     constructor() {
         super();
+        BagBinder.bindAll();
         this._packageName = "Bag";
         this._compName = "Bag";
         this._closeClearRes = true;
     }
 
     protected onUICreated():void {
-        this._itemList = this.getList("itemList");
-        this._btnBack = this.getButton("btnBack");
-        this._btnBack.onClick(this, () => {
+        this.view._btnBack.onClick(this, () => {
             this.close();
         });
-        this._itemList.on(fgui.Events.CLICK_ITEM, this, this.onClickItem);
-        this._itemList.itemRenderer = Laya.Handler.create(this, this.itemListHandler, null, false);
-        this._itemList.setVirtual(); //虚拟列表，动态调度创建加载item对象
+        this.view._itemList.on(fgui.Events.CLICK_ITEM, this, this.onClickItem);
+        this.view._itemList.itemRenderer = Laya.Handler.create(this, this.itemListHandler, null, false);
+        this.view._itemList.setVirtual(); //虚拟列表，动态调度创建加载item对象
     }
 
     private itemListHandler(index:number, obj:Item):void {
@@ -41,9 +41,8 @@ export default class BagView extends BaseView {
     }
 
     private onClickItem(item:Item):void {
-        let newItem:Item = Item.createInstance();
-        newItem.icon = item.icon;
-        this.viewComponent.addChild(newItem);
+        // let newItem:Item = Item.createInstance();
+        // newItem.icon = item.icon;
     }
 
     private _itemArr:Array<ItemTemplate>;
@@ -51,6 +50,6 @@ export default class BagView extends BaseView {
         this._itemArr = JsonTemplate.instance.getTemplates(JsonTemplateMap.ITEM_JSON);
         // this._itemList.numItems = this._itemArr.length < 25 ? 25 : this._itemArr.length;
         //测试物品特别多的情况虚拟列表的效果
-        this._itemList.numItems = 10000;
+        this.view._itemList.numItems = 10000;
     }
 }

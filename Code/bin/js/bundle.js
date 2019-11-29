@@ -623,22 +623,58 @@
         }
     }
 
+    class Bag extends fairygui.GComponent {
+        constructor() {
+            super();
+        }
+        static createInstance() {
+            return (fairygui.UIPackage.createObject("Bag", "Bag"));
+        }
+        onConstruct() {
+            this._itemList = (this.getChild("itemList"));
+            this._btnBack = (this.getChild("btnBack"));
+        }
+    }
+    Bag.URL = "ui://ie8na7w3h3iw0";
+
+    class Item$1 extends fairygui.GButton {
+        constructor() {
+            super();
+        }
+        static createInstance() {
+            return (fairygui.UIPackage.createObject("Bag", "Item"));
+        }
+        onConstruct() {
+            this._ItemQuality = this.getController("ItemQuality");
+            this._showName = this.getController("showName");
+            this._effect = (this.getChild("effect"));
+            this._textNum = (this.getChild("textNum"));
+        }
+    }
+    Item$1.URL = "ui://ie8na7w3h3iw1";
+
+    class BagBinder {
+        static bindAll() {
+            fairygui.UIObjectFactory.setPackageItemExtension(Bag.URL, Bag);
+            fairygui.UIObjectFactory.setPackageItemExtension(Item$1.URL, Item$1);
+        }
+    }
+
     class BagView extends BaseView {
         constructor() {
             super();
+            BagBinder.bindAll();
             this._packageName = "Bag";
             this._compName = "Bag";
             this._closeClearRes = true;
         }
         onUICreated() {
-            this._itemList = this.getList("itemList");
-            this._btnBack = this.getButton("btnBack");
-            this._btnBack.onClick(this, () => {
+            this.view._btnBack.onClick(this, () => {
                 this.close();
             });
-            this._itemList.on(fgui.Events.CLICK_ITEM, this, this.onClickItem);
-            this._itemList.itemRenderer = Laya.Handler.create(this, this.itemListHandler, null, false);
-            this._itemList.setVirtual();
+            this.view._itemList.on(fgui.Events.CLICK_ITEM, this, this.onClickItem);
+            this.view._itemList.itemRenderer = Laya.Handler.create(this, this.itemListHandler, null, false);
+            this.view._itemList.setVirtual();
         }
         itemListHandler(index, obj) {
             let itemJson;
@@ -656,11 +692,10 @@
         onClickItem(item) {
             let newItem = Item.createInstance();
             newItem.icon = item.icon;
-            this.viewComponent.addChild(newItem);
         }
         opening() {
             this._itemArr = JsonTemplate.instance.getTemplates(JsonTemplateMap.ITEM_JSON);
-            this._itemList.numItems = 10000;
+            this.view._itemList.numItems = 10000;
         }
     }
 
@@ -672,8 +707,8 @@
             return (fairygui.UIPackage.createObject("Home", "Home"));
         }
         onConstruct() {
-            this._menu = this.getController("menu");
             this._text = (this.getChild("text"));
+            this._bottom = (this.getChild("bottom"));
         }
     }
     Home.URL = "ui://4h44hmx7empj3";
@@ -727,9 +762,10 @@
         onUICreated() {
             this._mediator = new HomeMediator(this);
             this.view._text.text = "我是玩家：" + Model.User.userData.username;
-            this.view._menu.on(fgui.Events.STATE_CHANGED, this, () => {
-                if (this.view._menu.selectedIndex == 2) {
+            this.view._bottom._menu.on(fgui.Events.STATE_CHANGED, this, () => {
+                if (this.view._bottom._menu.selectedIndex == 2) {
                     ViewManager.instance.open(BagView);
+                    console.log("?????????");
                 }
             });
         }
@@ -858,7 +894,6 @@
         }
         onUICreated() {
             this._mediator = new LoginMediator(this);
-            console.log(this.view);
             this.view._text.text = "Hello World";
             this.view._btnStart.onClick(this, this.startHandler);
         }

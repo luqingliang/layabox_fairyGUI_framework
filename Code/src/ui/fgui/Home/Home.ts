@@ -1,11 +1,11 @@
 /** This is an automatically generated class by FairyGUI. Please do not modify it. **/
 
-
+import HomeBottom from "./HomeBottom";
 
 export default class Home extends fairygui.GComponent {
 
-	public _menu:fairygui.Controller;
 	public _text:fairygui.GTextField;
+	public _bottom:HomeBottom;
 
 	public static URL:string = "ui://4h44hmx7empj3";
 
@@ -18,7 +18,7 @@ export default class Home extends fairygui.GComponent {
 	}
 
 	protected onConstruct(): void {
-		this._menu = this.getController("menu");
 		this._text = <fairygui.GTextField><any>(this.getChild("text"));
+		this._bottom = <HomeBottom><any>(this.getChild("bottom"));
 	}
 }

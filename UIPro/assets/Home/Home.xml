@@ -1,15 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <component size="640,1136">
-  <controller name="menu" pages="0,,1,,2,,3," selected="0">
-    <remark page="0" value="副本"/>
-    <remark page="1" value="英雄"/>
-    <remark page="2" value="背包"/>
-    <remark page="3" value="商城"/>
-  </controller>
   <displayList>
     <image id="n8_xr3c" name="n8" src="xr3c0" fileName="res/bg.png" xy="0,0" size="640,1136"/>
     <text id="n0_empj" name="text" xy="0,536" size="640,64" fontSize="52" align="center" autoSize="none" text="我是主界面"/>
-    <component id="n11_eu8o" name="n11" src="eu8o7" fileName="HomeBottom.xml" xy="0,1055"/>
+    <component id="n11_eu8o" name="bottom" src="eu8o7" fileName="HomeBottom.xml" xy="0,1055"/>
     <component id="n12_eu8o" name="n12" src="eu8o6" fileName="HomeTop.xml" xy="0,0"/>
   </displayList>
 </component>
