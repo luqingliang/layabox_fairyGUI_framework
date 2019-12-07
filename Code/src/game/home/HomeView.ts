@@ -13,7 +13,6 @@ export default class HomeView extends BaseView {
 
     constructor() {
         super();
-        HomeBinder.bindAll();
         this._packageName = "Home";
         this._compName = "Home";
     }
@@ -33,7 +32,6 @@ export default class HomeView extends BaseView {
             // ViewManager.instance.open(HomeView, Math.floor(Math.random() * 100).toString()); //测试反复打开界面
             if(this.view._bottom._menu.selectedIndex == 2) {
                 ViewManager.instance.open(BagView);
-                console.log("?????????")
             }
         });
     }

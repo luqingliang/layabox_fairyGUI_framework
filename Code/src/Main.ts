@@ -5,6 +5,7 @@ import JsonTemplate from "./common/templates/core/JsonTemplate";
 import { GameModel, Model } from "./common/mvc/model/Model";
 import JsonTemplateMap from "./common/templates/core/JsonTemplateMap";
 import WordFilter from "./common/utils/WordFilter";
+import SceneManager from "./common/manager/SceneManager";
 class Main {
 	constructor() {
 		//根据IDE设置初始化引擎		
@@ -38,6 +39,7 @@ class Main {
 		}));
 
 		GameModel.initialize();
+		SceneManager.initialize();
 
 		Laya.stage.addChild(fgui.GRoot.inst.displayObject);
 

@@ -482,24 +482,6 @@
         }
     }
 
-    class Item extends fairygui.GButton {
-        constructor() {
-            super();
-            this._test = 1111111111;
-        }
-        static createInstance() {
-            return (fairygui.UIPackage.createObject("Bag", "Item"));
-        }
-        onConstruct() {
-            this._ItemQuality = this.getControllerAt(0);
-            this._showName = this.getControllerAt(1);
-            this._effect = (this.getChildAt(3));
-            this._textNum = (this.getChildAt(4));
-            console.log(this._textNum);
-        }
-    }
-    Item.URL = "ui://ie8na7w3h3iw1";
-
     class TestTemplate {
         get id() {
             return this._id;
@@ -623,47 +605,9 @@
         }
     }
 
-    class Bag extends fairygui.GComponent {
-        constructor() {
-            super();
-        }
-        static createInstance() {
-            return (fairygui.UIPackage.createObject("Bag", "Bag"));
-        }
-        onConstruct() {
-            this._itemList = (this.getChild("itemList"));
-            this._btnBack = (this.getChild("btnBack"));
-        }
-    }
-    Bag.URL = "ui://ie8na7w3h3iw0";
-
-    class Item$1 extends fairygui.GButton {
-        constructor() {
-            super();
-        }
-        static createInstance() {
-            return (fairygui.UIPackage.createObject("Bag", "Item"));
-        }
-        onConstruct() {
-            this._ItemQuality = this.getController("ItemQuality");
-            this._showName = this.getController("showName");
-            this._effect = (this.getChild("effect"));
-            this._textNum = (this.getChild("textNum"));
-        }
-    }
-    Item$1.URL = "ui://ie8na7w3h3iw1";
-
-    class BagBinder {
-        static bindAll() {
-            fairygui.UIObjectFactory.setPackageItemExtension(Bag.URL, Bag);
-            fairygui.UIObjectFactory.setPackageItemExtension(Item$1.URL, Item$1);
-        }
-    }
-
     class BagView extends BaseView {
         constructor() {
             super();
-            BagBinder.bindAll();
             this._packageName = "Bag";
             this._compName = "Bag";
             this._closeClearRes = true;
@@ -685,13 +629,9 @@
                 let randomNum = Math.floor(Math.random() * this._itemArr.length);
                 itemJson = this._itemArr[randomNum];
             }
-            obj.icon = "res/icon/item/" + itemJson.icon + ".png";
-            obj.getChild("textNum").asTextField.text = itemJson.stackingCount > 99999999 ? "99999999" : itemJson.stackingCount.toString();
-            obj.title = itemJson.itemName;
+            obj.setData(itemJson);
         }
-        onClickItem(item) {
-            let newItem = Item.createInstance();
-            newItem.icon = item.icon;
+        onClickItem(index) {
         }
         opening() {
             this._itemArr = JsonTemplate.instance.getTemplates(JsonTemplateMap.ITEM_JSON);
@@ -699,58 +639,9 @@
         }
     }
 
-    class Home extends fairygui.GComponent {
-        constructor() {
-            super();
-        }
-        static createInstance() {
-            return (fairygui.UIPackage.createObject("Home", "Home"));
-        }
-        onConstruct() {
-            this._text = (this.getChild("text"));
-            this._bottom = (this.getChild("bottom"));
-        }
-    }
-    Home.URL = "ui://4h44hmx7empj3";
-
-    class HomeTop extends fairygui.GComponent {
-        constructor() {
-            super();
-        }
-        static createInstance() {
-            return (fairygui.UIPackage.createObject("Home", "HomeTop"));
-        }
-        onConstruct() {
-            this._labUser = (this.getChild("labUser"));
-        }
-    }
-    HomeTop.URL = "ui://4h44hmx7eu8o6";
-
-    class HomeBottom extends fairygui.GComponent {
-        constructor() {
-            super();
-        }
-        static createInstance() {
-            return (fairygui.UIPackage.createObject("Home", "HomeBottom"));
-        }
-        onConstruct() {
-            this._menu = this.getController("menu");
-        }
-    }
-    HomeBottom.URL = "ui://4h44hmx7eu8o7";
-
-    class HomeBinder {
-        static bindAll() {
-            fairygui.UIObjectFactory.setPackageItemExtension(Home.URL, Home);
-            fairygui.UIObjectFactory.setPackageItemExtension(HomeTop.URL, HomeTop);
-            fairygui.UIObjectFactory.setPackageItemExtension(HomeBottom.URL, HomeBottom);
-        }
-    }
-
     class HomeView extends BaseView {
         constructor() {
             super();
-            HomeBinder.bindAll();
             this._packageName = "Home";
             this._compName = "Home";
         }
@@ -765,7 +656,6 @@
             this.view._bottom._menu.on(fgui.Events.STATE_CHANGED, this, () => {
                 if (this.view._bottom._menu.selectedIndex == 2) {
                     ViewManager.instance.open(BagView);
-                    console.log("?????????");
                 }
             });
         }
@@ -911,6 +801,111 @@
         }
     }
 
+    class Home extends fairygui.GComponent {
+        constructor() {
+            super();
+        }
+        static createInstance() {
+            return (fairygui.UIPackage.createObject("Home", "Home"));
+        }
+        onConstruct() {
+            this._text = (this.getChild("text"));
+            this._bottom = (this.getChild("bottom"));
+        }
+    }
+    Home.URL = "ui://4h44hmx7empj3";
+
+    class HomeTop extends fairygui.GComponent {
+        constructor() {
+            super();
+        }
+        static createInstance() {
+            return (fairygui.UIPackage.createObject("Home", "HomeTop"));
+        }
+        onConstruct() {
+            this._labUser = (this.getChild("labUser"));
+        }
+    }
+    HomeTop.URL = "ui://4h44hmx7eu8o6";
+
+    class HomeBottom extends fairygui.GComponent {
+        constructor() {
+            super();
+        }
+        static createInstance() {
+            return (fairygui.UIPackage.createObject("Home", "HomeBottom"));
+        }
+        onConstruct() {
+            this._menu = this.getController("menu");
+        }
+    }
+    HomeBottom.URL = "ui://4h44hmx7eu8o7";
+
+    class HomeBinder {
+        static bindAll() {
+            fairygui.UIObjectFactory.setPackageItemExtension(Home.URL, Home);
+            fairygui.UIObjectFactory.setPackageItemExtension(HomeTop.URL, HomeTop);
+            fairygui.UIObjectFactory.setPackageItemExtension(HomeBottom.URL, HomeBottom);
+        }
+    }
+
+    class Bag extends fairygui.GComponent {
+        constructor() {
+            super();
+        }
+        static createInstance() {
+            return (fairygui.UIPackage.createObject("Bag", "Bag"));
+        }
+        onConstruct() {
+            this._itemList = (this.getChild("itemList"));
+            this._btnBack = (this.getChild("btnBack"));
+        }
+    }
+    Bag.URL = "ui://ie8na7w3h3iw0";
+
+    class Item extends fairygui.GButton {
+        constructor() {
+            super();
+        }
+        static createInstance() {
+            return (fairygui.UIPackage.createObject("Bag", "Item"));
+        }
+        onConstruct() {
+            this._ItemQuality = this.getController("ItemQuality");
+            this._showName = this.getController("showName");
+            this._effect = (this.getChild("effect"));
+            this._textNum = (this.getChild("textNum"));
+        }
+    }
+    Item.URL = "ui://ie8na7w3h3iw1";
+
+    class BagBinder {
+        static bindAll() {
+            fairygui.UIObjectFactory.setPackageItemExtension(Bag.URL, Bag);
+            fairygui.UIObjectFactory.setPackageItemExtension(Item.URL, Item);
+        }
+    }
+
+    class ItemIcon extends Item {
+        setData(config) {
+            this.icon = "res/icon/item/" + config.icon + ".png";
+            this._textNum.text = config.stackingCount > 99999999 ? "99999999" : config.stackingCount.toString();
+            this.title = config.itemName;
+        }
+    }
+
+    class SceneManager {
+        static initialize() {
+            this.bindFgui();
+        }
+        static bindFgui() {
+            LoginBinder.bindAll();
+            HomeBinder.bindAll();
+            BagBinder.bindAll();
+            fairygui.UIObjectFactory.setPackageItemExtension(Item.URL, ItemIcon);
+        }
+    }
+
     class Main {
         constructor() {
             if (window["Laya3D"])
@@ -941,6 +936,7 @@
                 console.log("测试读Json配置表", JsonTemplate.instance.getTemplate(JsonTemplateMap.TEST_JSON, "id", 1003));
             }));
             GameModel.initialize();
+            SceneManager.initialize();
             Laya.stage.addChild(fgui.GRoot.inst.displayObject);
             ViewManager.instance.open(LoginView);
             console.log("测试Protobuf: ", Model.protocol.LoginType.ACCOUNT);
