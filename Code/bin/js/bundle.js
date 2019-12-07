@@ -193,6 +193,7 @@
 
     class BaseView {
         constructor() {
+            this._isModal = false;
             this.data = null;
         }
         onUILoaded() {
@@ -200,6 +201,16 @@
         }
         createUI() {
             this.view = fgui.UIPackage.createObject(this._packageName, this._compName).asCom;
+            if (this._isModal) {
+                this._modalLayer = new fgui.GGraph();
+                this._modalLayer.setSize(fgui.GRoot.inst.width, fgui.GRoot.inst.height);
+                this._modalLayer.drawRect(0, null, fgui.UIConfig.modalLayerColor);
+                this.view.addChildAt(this._modalLayer, 0);
+                this._modalLayer.center();
+                this._modalLayer.onClick(this, () => {
+                    this.close();
+                });
+            }
             Laya.stage.on(Laya.Event.RESIZE, this, this.resized);
             this.resized();
             this.onUICreated();
@@ -276,6 +287,11 @@
             if (this._mediator) {
                 ViewManager.removeMediator(this._mediator.getMediatorName());
                 this._mediator = null;
+            }
+            if (this._modalLayer) {
+                this._modalLayer.removeFromParent();
+                this._modalLayer.dispose();
+                this._modalLayer = null;
             }
             this.view.dispose();
             this.view = null;
@@ -894,11 +910,17 @@
         }
     }
 
+    class CommonBinder {
+        static bindAll() {
+        }
+    }
+
     class SceneManager {
         static initialize() {
             this.bindFgui();
         }
         static bindFgui() {
+            CommonBinder.bindAll();
             LoginBinder.bindAll();
             HomeBinder.bindAll();
             BagBinder.bindAll();

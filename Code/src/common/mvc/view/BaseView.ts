@@ -2,13 +2,25 @@ import ViewManager from "./ViewManager";
 import IView from "../interface/IView";
 import IMediator from "../interface/IMediator";
 
+/**
+ * 界面基类
+ * @author luqingliang1996[at]foxmail.com
+ */
 export default class BaseView implements IView {
     public view:fgui.GComponent;
 
+    private _modalLayer:fgui.GGraph;
+
+    /**中介者 */
     protected _mediator:IMediator;
+    /**包名 */
     protected _packageName:string;
+    /**组件名 */
     protected _compName:string;
+    /**是否关闭后释放资源 */
     protected _closeClearRes:boolean;
+    /**是否显示模态 */
+    protected _isModal:boolean = false;
 
     /**
      * 打开界面时传过来的参数
@@ -21,6 +33,18 @@ export default class BaseView implements IView {
 
     private createUI():void {
         this.view = fgui.UIPackage.createObject(this._packageName, this._compName).asCom;
+
+        if(this._isModal) {
+            this._modalLayer = new fgui.GGraph();
+            this._modalLayer.setSize(fgui.GRoot.inst.width, fgui.GRoot.inst.height);
+            this._modalLayer.drawRect(0, null, fgui.UIConfig.modalLayerColor);
+            this.view.addChildAt(this._modalLayer, 0);
+            this._modalLayer.center();
+            this._modalLayer.onClick(this, () => {
+                this.close();
+            });
+        }
+
         Laya.stage.on(Laya.Event.RESIZE, this, this.resized);
 
         this.resized();
@@ -121,6 +145,11 @@ export default class BaseView implements IView {
         if(this._mediator) {
             ViewManager.removeMediator(this._mediator.getMediatorName());
             this._mediator = null;
+        }
+        if(this._modalLayer) {
+            this._modalLayer.removeFromParent();
+            this._modalLayer.dispose();
+            this._modalLayer = null;
         }
         this.view.dispose();
         this.view = null;

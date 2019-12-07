@@ -3,6 +3,7 @@ import HomeBinder from "../../ui/fgui/Home/HomeBinder";
 import BagBinder from "../../ui/fgui/Bag/BagBinder";
 import Item from "../../ui/fgui/Bag/Item";
 import ItemIcon from "../../game/bag/ItemIcon";
+import CommonBinder from "../../ui/fgui/Common/CommonBinder";
 
 /**
  * 场景管理器
@@ -15,6 +16,7 @@ export default class SceneManager {
     }
     
     private static bindFgui():void {
+        CommonBinder.bindAll();
         LoginBinder.bindAll();
         HomeBinder.bindAll();
         BagBinder.bindAll();
