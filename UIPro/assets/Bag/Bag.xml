@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <component size="640,1136">
   <displayList>
-    <graph id="n2_h3iw" name="n2" xy="0,0" size="640,1136" type="rect" fillColor="#ff999999"/>
-    <text id="n0_h3iw" name="n0" xy="270,52" size="99,56" fontSize="46" color="#ff0000" text="背包"/>
+    <graph id="n2_h3iw" name="n2" xy="0,0" size="640,1136" type="rect" fillColor="#ff999999">
+      <relation target="" sidePair="width-width,height-height"/>
+    </graph>
+    <text id="n0_h3iw" name="n0" xy="270,52" size="97,56" fontSize="46" color="#ff0000" text="背包">
+      <relation target="" sidePair="center-center"/>
+    </text>
     <list id="n1_h3iw" name="itemList" xy="0,288" size="640,644" layout="flow_hz" overflow="scroll" lineGap="5" colGap="5" lineItemCount="5" defaultItem="ui://ie8na7w3h3iw1">
+      <relation target="" sidePair="center-center"/>
       <item/>
       <item/>
       <item/>
@@ -30,6 +35,8 @@
       <item/>
       <item/>
     </list>
-    <component id="n4_h3iw" name="btnBack" src="h3iw0" fileName="button/BtnBack.xml" pkg="inezl2ev" xy="13,948"/>
+    <component id="n4_h3iw" name="btnBack" src="h3iw0" fileName="button/BtnBack.xml" pkg="inezl2ev" xy="13,948">
+      <relation target="" sidePair="left-left"/>
+    </component>
   </displayList>
 </component>

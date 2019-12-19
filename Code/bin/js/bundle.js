@@ -211,13 +211,8 @@
                     this.close();
                 });
             }
-            Laya.stage.on(Laya.Event.RESIZE, this, this.resized);
-            this.resized();
             this.onUICreated();
             this.addToParent();
-        }
-        resized() {
-            this.view.center();
         }
         onUICreated() {
         }
@@ -225,7 +220,15 @@
         }
         addToParent() {
             fgui.GRoot.inst.addChild(this.view);
+            this.setSize();
+            Laya.stage.on(Laya.Event.RESIZE, this, this.setSize);
             this.opening();
+        }
+        setSize() {
+            if (this.view) {
+                this.view.setSize(fgui.GRoot.inst.width, fgui.GRoot.inst.height, false);
+                this.view.center();
+            }
         }
         removeFromParent() {
             this.view.removeFromParent();
@@ -265,7 +268,7 @@
             ViewManager.instance.close(this);
         }
         dispose() {
-            Laya.stage.off(Laya.Event.RESIZE, this, this.resized);
+            Laya.stage.off(Laya.Event.RESIZE, this, this.setSize);
             if (this._closeClearRes) {
                 let resArr = this.otherRes;
                 for (let i = 0; i < resArr.length; i++) {

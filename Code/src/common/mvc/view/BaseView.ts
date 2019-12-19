@@ -45,15 +45,8 @@ export default class BaseView implements IView {
             });
         }
 
-        Laya.stage.on(Laya.Event.RESIZE, this, this.resized);
-
-        this.resized();
         this.onUICreated();
         this.addToParent();
-    }
-
-    private resized():void {
-        this.view.center();
     }
     
     protected onUICreated():void {
@@ -69,7 +62,16 @@ export default class BaseView implements IView {
 
     private addToParent():void {
         fgui.GRoot.inst.addChild(this.view);
+        this.setSize();
+        Laya.stage.on(Laya.Event.RESIZE, this, this.setSize);
         this.opening();
+    }
+
+    private setSize():void {
+        if(this.view) {
+            this.view.setSize(fgui.GRoot.inst.width, fgui.GRoot.inst.height, false);
+            this.view.center();
+        }
     }
 
     public removeFromParent():void {
@@ -123,7 +125,7 @@ export default class BaseView implements IView {
     }
 
     protected dispose():void {
-        Laya.stage.off(Laya.Event.RESIZE, this, this.resized);
+        Laya.stage.off(Laya.Event.RESIZE, this, this.setSize);
         if(this._closeClearRes) {
             let resArr:Array<any> = this.otherRes;
             for(let i:number = 0; i < resArr.length; i ++) {

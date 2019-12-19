@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <component size="640,1136">
   <displayList>
-    <image id="n1_r71t" name="n1" src="r71t1" fileName="res/bg.png" xy="0,0" size="640,1136"/>
-    <text id="n0_r71t" name="text" xy="0,220" size="640,64" fontSize="53" color="#ff0000" align="center" autoSize="none" text="test"/>
+    <image id="n1_r71t" name="n1" src="r71t1" fileName="res/bg.png" xy="0,0" size="640,1136">
+      <relation target="" sidePair="width-width,height-height"/>
+    </image>
+    <text id="n0_r71t" name="text" xy="0,220" size="640,64" fontSize="53" color="#ff0000" align="center" autoSize="none" text="test">
+      <relation target="" sidePair="center-center"/>
+    </text>
     <component id="n2_empj" name="btnStart" src="empj2" fileName="Button1.xml" xy="195,543" size="248,49">
+      <relation target="" sidePair="center-center"/>
       <Button title="START" titleFontSize="38"/>
     </component>
-    <text id="n3_by0x" name="inputUsername" xy="149,444" size="341,45" input="true" prompt="请输入用户名" fontSize="36" color="#ffffff" align="center" autoSize="none" text=""/>
+    <text id="n3_by0x" name="inputUsername" xy="149,444" size="341,45" input="true" prompt="请输入用户名" fontSize="36" color="#ffffff" align="center" autoSize="none" text="">
+      <relation target="" sidePair="center-center"/>
+    </text>
   </displayList>
 </component>
