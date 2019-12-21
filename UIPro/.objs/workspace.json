@@ -1,12 +1,10 @@
 {
 	"backgroundColor": 6710886,
-	"auxline1": true,
-	"doc.openedDocs": [
-		"ui://ie8na7w3h3iw1",
-		"ui://ie8na7w3h3iw0",
-		"ui://4h44hmx7empj3",
-		"ui://4h44hmx7eu8o6"
-	],
+	"canvasColor": 10066329,
+	"libview.currentGroup": "",
+	"libview.twoColumn": false,
+	"doc.activeDoc": "ui://ie8na7w3h3iw0",
+	"libview.firstColumnWidth": 447,
 	"libview.expandedNodes": [
 		"ie8na7w3",
 		"/",
@@ -17,12 +15,17 @@
 		"inezl2ev",
 		"/res/",
 		"4h44hmx7",
+		"/",
+		"wgdhhfkr",
 		"/"
 	],
-	"libview.twoColumn": false,
-	"libview.currentGroup": "",
-	"doc.activeDoc": "ui://4h44hmx7empj3",
-	"auxline2": true,
-	"canvasColor": 10066329,
-	"libview.firstColumnWidth": 447
+	"doc.openedDocs": [
+		"ui://ie8na7w3h3iw1",
+		"ui://ie8na7w3h3iw0",
+		"ui://4h44hmx7empj3",
+		"ui://wgdhhfkrr71t0",
+		"ui://4h44hmx7eu8o6"
+	],
+	"auxline1": true,
+	"auxline2": true
 }
