@@ -2,7 +2,8 @@
     'use strict';
 
     class GameConfig {
-        constructor() { }
+        constructor() {
+        }
         static init() {
             var reg = Laya.ClassUtils.regClass;
         }
@@ -10,26 +11,26 @@
     GameConfig.width = 640;
     GameConfig.height = 1136;
     GameConfig.scaleMode = "fixedauto";
-    GameConfig.screenMode = "none";
+    GameConfig.screenMode = "vertical";
     GameConfig.alignV = "middle";
     GameConfig.alignH = "center";
     GameConfig.startScene = "Login.scene";
     GameConfig.sceneRoot = "";
     GameConfig.debug = false;
-    GameConfig.stat = true;
+    GameConfig.stat = false;
     GameConfig.physicsDebug = false;
     GameConfig.exportSceneToJson = true;
     GameConfig.init();
 
     class Observer {
+        constructor() {
+            this._eventDispatcher = new Laya.EventDispatcher();
+        }
         static get instance() {
             if (!this._instance) {
                 this._instance = new Observer();
             }
             return this._instance;
-        }
-        constructor() {
-            this._eventDispatcher = new Laya.EventDispatcher();
         }
         notify(eventName, data) {
             this._eventDispatcher.event(eventName, data);
@@ -487,7 +488,7 @@
         }
         onEvent(eventName, data) {
             if (eventName == UserModel.EVENT_RENAMETEST) {
-                this.view._text.text = "我是玩家：" + data;
+                this.view.rename(data);
             }
         }
         onRegister() {
@@ -680,6 +681,9 @@
         }
         opening() {
             console.log("反复打开界面HomeView，data：", this.data);
+        }
+        rename(name) {
+            this.view._text.text = "我是玩家：" + name;
         }
     }
 

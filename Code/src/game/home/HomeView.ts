@@ -36,7 +36,11 @@ export default class HomeView extends BaseView {
         });
     }
 
-    opening():void {
+    public opening():void {
         console.log("反复打开界面HomeView，data：", this.data);
+    }
+
+    public rename(name: string): void {
+        this.view._text.text = "我是玩家：" + name;
     }
 }
