@@ -1,0 +1,23 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "编译",
+            "type": "shell",
+            "command": "layaair2-cmd compile",
+            "problemMatcher": []
+        },
+        {
+            "label": "发布",
+            "type": "shell",
+            "command": "layaair2-cmd publish -c web"
+        },
+        {
+            "label": "版本发布",
+            "type": "shell",
+            "command": "node ReleaseVersion.js"
+        }
+    ]
+}
