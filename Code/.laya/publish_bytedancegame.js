@@ -1,4 +1,4 @@
-// v1.1.0
+// v1.1.3
 const ideModuleDir = global.ideModuleDir;
 const workSpaceDir = global.workSpaceDir;
 
@@ -58,6 +58,35 @@ gulp.task("modifyFile_ByteDance", versiontask, function() {
 	let content = fs.readFileSync(gameJsonPath, "utf8");
 	let conJson = JSON.parse(content);
 	conJson.deviceOrientation = config.bytedanceInfo.orientation;
+	if (config.bytedanceInfo.subpack) { // 分包
+		conJson.subPackages = config.bytedanceSubpack;
+			
+		// 检测分包目录是否有入口文件
+		console.log('检查分包文件...');
+		if (conJson.subPackages) { 
+			for(let i = 0; i < conJson.subPackages.length; i ++) {
+				let conf = conJson.subPackages[i];
+				if (conf.root) {
+					let rootPath = path.join(releaseDir, conf.root);
+					if (!fs.existsSync(rootPath)) {
+
+						throw new Error(`分包文件/目录 ${rootPath} 不存在！`);
+					}
+					let jsIndex = rootPath.lastIndexOf('.js');
+					let jsPath = rootPath;
+					if (jsIndex < 0 || jsIndex !=  rootPath.length - 3) {
+						jsPath =  path.join(rootPath, 'game.js'); 
+					}
+					if (!fs.existsSync(jsPath)) {
+
+						throw new Error(`分包文件/目录 ${jsPath} 不存在！`);
+					}
+				}
+			}
+		}
+	} else {
+		delete conJson.subPackages;
+	}
 	content = JSON.stringify(conJson, null, 4);
 	fs.writeFileSync(gameJsonPath, content, "utf8");
 
@@ -114,7 +143,20 @@ gulp.task("version_ByteDance", ["modifyMinJs_ByteDance"], function() {
 });
 
 gulp.task("pluginEngin_ByteDance", ["version_ByteDance"], function(cb) {
-	if (!config.uesEnginePlugin) { // 没有使用微信引擎插件，还是像以前一样发布
+	if (!config.uesEnginePlugin) { // 没有使用引擎插件，还是像以前一样发布
+		let gameJsonPath = path.join(releaseDir, "game.json");
+		let gameJsonContent = fs.readFileSync(gameJsonPath, "utf8");
+		let conJson = JSON.parse(gameJsonContent);
+		if (conJson.plugins) {
+			delete conJson.plugins;
+			gameJsonContent = JSON.stringify(conJson, null, 4);
+			fs.writeFileSync(gameJsonPath, gameJsonContent, "utf8");
+
+			let gameJsPath = path.join(releaseDir, "game.js");
+			let gameJscontent = fs.readFileSync(gameJsPath, "utf8");
+			gameJscontent = gameJscontent.replace(/requirePlugin\("[\w\/\.]+"\);?\n?/mg, "");
+			fs.writeFileSync(gameJsPath, gameJscontent, "utf8");
+		}
 		return cb();
 	}
 	if (config.version) {

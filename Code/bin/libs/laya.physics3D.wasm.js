@@ -1,646 +1,3077 @@
-
-  // This is laya.physics3D.js, a port of Bullet Physics to JavaScript. zlib licensed.
-  var Physics3D = window.Physics3D=function(memorySize) {
-    Physics3D={}
-  var Module = Physics3D;
-
-var b;b||(b=eval("(function() { try { return Physics3D || {} } catch(e) { return {} } })()"));var aa={},ba;for(ba in b)b.hasOwnProperty(ba)&&(aa[ba]=b[ba]);var ca=!1,da=!1,ea=!1,fa=!1;
-if(b.ENVIRONMENT)if("WEB"===b.ENVIRONMENT)ca=!0;else if("WORKER"===b.ENVIRONMENT)da=!0;else if("NODE"===b.ENVIRONMENT)ea=!0;else if("SHELL"===b.ENVIRONMENT)fa=!0;else throw Error("The provided Module['ENVIRONMENT'] value is not valid. It must be one of: WEB|WORKER|NODE|SHELL.");else ca="object"===typeof window,da="function"===typeof importScripts,ea="object"===typeof process&&"function"===typeof require&&!ca&&!da,fa=!ca&&!ea&&!da;
-if(ea){b.print||(b.print=console.log);b.printErr||(b.printErr=console.warn);var ga,ha;b.read=function(a,c){ga||(ga=require("fs"));ha||(ha=require("path"));a=ha.normalize(a);var d=ga.readFileSync(a);return c?d:d.toString()};b.readBinary=function(a){a=b.read(a,!0);a.buffer||(a=new Uint8Array(a));assert(a.buffer);return a};b.load=function(a){ia(read(a))};b.thisProgram||(b.thisProgram=1<process.argv.length?process.argv[1].replace(/\\/g,"/"):"unknown-program");b.arguments=process.argv.slice(2);"undefined"!==
-typeof module&&(module.exports=b);process.on("uncaughtException",function(a){if(!(a instanceof ja))throw a;});b.inspect=function(){return"[Emscripten Module object]"}}else if(fa)b.print||(b.print=print),"undefined"!=typeof printErr&&(b.printErr=printErr),b.read="undefined"!=typeof read?read:function(){throw"no read() available";},b.readBinary=function(a){if("function"===typeof readbuffer)return new Uint8Array(readbuffer(a));a=read(a,"binary");assert("object"===typeof a);return a},"undefined"!=typeof scriptArgs?
-b.arguments=scriptArgs:"undefined"!=typeof arguments&&(b.arguments=arguments),"function"===typeof quit&&(b.quit=function(a){quit(a)}),eval("if (typeof gc === 'function' && gc.toString().indexOf('[native code]') > 0) var gc = undefined");else if(ca||da)b.read=function(a){var c=new XMLHttpRequest;c.open("GET",a,!1);c.send(null);return c.responseText},da&&(b.readBinary=function(a){var c=new XMLHttpRequest;c.open("GET",a,!1);c.responseType="arraybuffer";c.send(null);return c.response}),b.readAsync=function(a,
-c,d){var e=new XMLHttpRequest;e.open("GET",a,!0);e.responseType="arraybuffer";e.onload=function(){200==e.status||0==e.status&&e.response?c(e.response):d()};e.onerror=d;e.send(null)},"undefined"!=typeof arguments&&(b.arguments=arguments),"undefined"!==typeof console?(b.print||(b.print=function(a){console.log(a)}),b.printErr||(b.printErr=function(a){console.warn(a)})):b.print||(b.print=function(){}),da&&(b.load=importScripts),"undefined"===typeof b.setWindowTitle&&(b.setWindowTitle=function(a){document.title=
-a});else throw"Unknown runtime environment. Where are we?";function ia(a){eval.call(null,a)}!b.load&&b.read&&(b.load=function(a){ia(b.read(a))});b.print||(b.print=function(){});b.printErr||(b.printErr=b.print);b.arguments||(b.arguments=[]);b.thisProgram||(b.thisProgram="./this.program");b.quit||(b.quit=function(a,c){throw c;});b.print=b.print;b.h=b.printErr;b.preRun=[];b.postRun=[];for(ba in aa)aa.hasOwnProperty(ba)&&(b[ba]=aa[ba]);
-var aa=void 0,h={e:function(a){return tempRet0=a},J:function(){return tempRet0},N:function(){return ka},M:function(a){ka=a},t:function(a){switch(a){case "i1":case "i8":return 1;case "i16":return 2;case "i32":return 4;case "i64":return 8;case "float":return 4;case "double":return 8;default:return"*"===a[a.length-1]?h.j:"i"===a[0]?(a=parseInt(a.substr(1)),assert(0===a%8),a/8):0}},H:function(a){return Math.max(h.t(a),h.j)},O:16,aa:function(a,c){"double"===c||"i64"===c?a&7&&(assert(4===(a&7)),a+=4):assert(0===
-(a&3));return a},U:function(a,c,d){return d||"i64"!=a&&"double"!=a?a?Math.min(c||(a?h.H(a):0),h.j):Math.min(c,8):8},l:function(a,c,d){return d&&d.length?b["dynCall_"+a].apply(null,[c].concat(d)):b["dynCall_"+a].call(null,c)},g:[],A:function(a){for(var c=0;c<h.g.length;c++)if(!h.g[c])return h.g[c]=a,2*(1+c);throw"Finished up all reserved function pointers. Use a higher value for RESERVED_FUNCTION_POINTERS.";},L:function(a){h.g[(a-2)/2]=null},f:function(a){h.f.n||(h.f.n={});h.f.n[a]||(h.f.n[a]=1,b.h(a))},
-m:{},W:function(a,c){assert(c);h.m[c]||(h.m[c]={});var d=h.m[c];d[a]||(d[a]=1===c.length?function(){return h.l(c,a)}:2===c.length?function(d){return h.l(c,a,[d])}:function(){return h.l(c,a,Array.prototype.slice.call(arguments))});return d[a]},V:function(){throw"You must build with -s RETAIN_COMPILER_SETTINGS=1 for Runtime.getCompilerSetting or emscripten_get_compiler_setting to work";},u:function(a){var c=ka;ka=ka+a|0;ka=ka+15&-16;return c},v:function(a){var c=la;la=la+a|0;la=la+15&-16;return c},
-G:function(a){var c=l[ma>>2];a=(c+a+15|0)&-16;l[ma>>2]=a;return a>=na&&!pa()?(l[ma>>2]=c,0):c},p:function(a,c){return Math.ceil(a/(c?c:16))*(c?c:16)},$:function(a,c,d){return d?+(a>>>0)+4294967296*+(c>>>0):+(a>>>0)+4294967296*+(c|0)},i:1024,j:4,P:0};h.addFunction=h.A;h.removeFunction=h.L;var qa=0;function assert(a,c){a||ra("Assertion failed: "+c)}
-function ta(a){var c;c="i32";"*"===c.charAt(c.length-1)&&(c="i32");switch(c){case "i1":return ua[a>>0];case "i8":return ua[a>>0];case "i16":return va[a>>1];case "i32":return l[a>>2];case "i64":return l[a>>2];case "float":return wa[a>>2];case "double":return xa[a>>3];default:ra("invalid type for setValue: "+c)}return null}
-function ya(a,c,d){var e,f,g;"number"===typeof a?(f=!0,g=a):(f=!1,g=a.length);var k="string"===typeof c?c:null,m;4==d?m=e:m=["function"===typeof za?za:h.v,h.u,h.v,h.G][void 0===d?2:d](Math.max(g,k?1:c.length));if(f){e=m;assert(0==(m&3));for(a=m+(g&-4);e<a;e+=4)l[e>>2]=0;for(a=m+g;e<a;)ua[e++>>0]=0;return m}if("i8"===k)return a.subarray||a.slice?Aa.set(a,m):Aa.set(new Uint8Array(a),m),m;e=0;for(var v,u;e<g;){var A=a[e];"function"===typeof A&&(A=h.X(A));d=k||c[e];if(0===d)e++;else{"i64"==d&&(d="i32");
-f=m+e;var C=d,C=C||"i8";"*"===C.charAt(C.length-1)&&(C="i32");switch(C){case "i1":ua[f>>0]=A;break;case "i8":ua[f>>0]=A;break;case "i16":va[f>>1]=A;break;case "i32":l[f>>2]=A;break;case "i64":tempI64=[A>>>0,(tempDouble=A,1<=+Ba(tempDouble)?0<tempDouble?(Ca(+Da(tempDouble/4294967296),4294967295)|0)>>>0:~~+Ea((tempDouble-+(~~tempDouble>>>0))/4294967296)>>>0:0)];l[f>>2]=tempI64[0];l[f+4>>2]=tempI64[1];break;case "float":wa[f>>2]=A;break;case "double":xa[f>>3]=A;break;default:ra("invalid type for setValue: "+
-C)}u!==d&&(v=h.t(d),u=d);e+=v}}return m}function Fa(a){var c;if(0===c||!a)return"";for(var d=0,e,f=0;;){e=Aa[a+f>>0];d|=e;if(0==e&&!c)break;f++;if(c&&f==c)break}c||(c=f);e="";if(128>d){for(;0<c;)d=String.fromCharCode.apply(String,Aa.subarray(a,a+Math.min(c,1024))),e=e?e+d:d,a+=1024,c-=1024;return e}return b.UTF8ToString(a)}var Ga="undefined"!==typeof TextDecoder?new TextDecoder("utf8"):void 0;
-function Ha(a,c,d,e){if(0<e){e=d+e-1;for(var f=0;f<a.length;++f){var g=a.charCodeAt(f);55296<=g&&57343>=g&&(g=65536+((g&1023)<<10)|a.charCodeAt(++f)&1023);if(127>=g){if(d>=e)break;c[d++]=g}else{if(2047>=g){if(d+1>=e)break;c[d++]=192|g>>6}else{if(65535>=g){if(d+2>=e)break;c[d++]=224|g>>12}else{if(2097151>=g){if(d+3>=e)break;c[d++]=240|g>>18}else{if(67108863>=g){if(d+4>=e)break;c[d++]=248|g>>24}else{if(d+5>=e)break;c[d++]=252|g>>30;c[d++]=128|g>>24&63}c[d++]=128|g>>18&63}c[d++]=128|g>>12&63}c[d++]=
-128|g>>6&63}c[d++]=128|g&63}}c[d]=0}}function Ia(a){for(var c=0,d=0;d<a.length;++d){var e=a.charCodeAt(d);55296<=e&&57343>=e&&(e=65536+((e&1023)<<10)|a.charCodeAt(++d)&1023);127>=e?++c:c=2047>=e?c+2:65535>=e?c+3:2097151>=e?c+4:67108863>=e?c+5:c+6}return c}"undefined"!==typeof TextDecoder&&new TextDecoder("utf-16le");
-function Ja(a){return a.replace(/__Z[\w\d_]+/g,function(a){var d;a:{var e=b.___cxa_demangle||b.__cxa_demangle;if(e)try{var f=a.substr(1),g=Ia(f)+1,k=za(g);Ha(f,Aa,k,g);var m=za(4),v=e(k,0,0,m);if(0===ta(m)&&v){d=Fa(v);break a}}catch(u){}finally{k&&Ka(k),m&&Ka(m),v&&Ka(v)}else h.f("warning: build with  -s DEMANGLE_SUPPORT=1  to link in libcxxabi demangling");d=a}return a===d?a:a+" ["+d+"]"})}
-function La(){var a;a:{a=Error();if(!a.stack){try{throw Error(0);}catch(c){a=c}if(!a.stack){a="(no stack trace available)";break a}}a=a.stack.toString()}b.extraStackTrace&&(a+="\n"+b.extraStackTrace());return Ja(a)}var Ma=65536,Na=16777216,Oa=16777216;function Pa(a,c){0<a%c&&(a+=c-a%c);return a}var buffer,ua,Aa,va,Ra,l,Sa,wa,xa;
-function Ta(){b.HEAP8=ua=new Int8Array(buffer);b.HEAP16=va=new Int16Array(buffer);b.HEAP32=l=new Int32Array(buffer);b.HEAPU8=Aa=new Uint8Array(buffer);b.HEAPU16=Ra=new Uint16Array(buffer);b.HEAPU32=Sa=new Uint32Array(buffer);b.HEAPF32=wa=new Float32Array(buffer);b.HEAPF64=xa=new Float64Array(buffer)}var Ua,la,Va,ka,Wa,Xa,ma;Ua=la=Va=ka=Wa=Xa=ma=0;
-b.reallocBuffer||(b.reallocBuffer=function(a){var c;try{if(ArrayBuffer.d)c=ArrayBuffer.d(buffer,a);else{var d=ua;c=new ArrayBuffer(a);(new Int8Array(c)).set(d)}}catch(e){return!1}return Ya(c)?c:!1});function pa(){var a=b.usingWasm?Ma:Na,c=2147483648-a;if(l[ma>>2]>c)return!1;for(na=Math.max(na,Oa);na<l[ma>>2];)536870912>=na?na=Pa(2*na,a):na=Math.min(Pa((3*na+2147483648)/4,a),c);a=b.reallocBuffer(na);if(!a||a.byteLength!=na)return!1;b.buffer=buffer=a;Ta();return!0}var Za;
-try{Za=Function.prototype.call.bind(Object.getOwnPropertyDescriptor(ArrayBuffer.prototype,"byteLength").get),Za(new ArrayBuffer(4))}catch($a){Za=function(a){return a.byteLength}}var ab=b.TOTAL_STACK||5242880,na=b.TOTAL_MEMORY||memorySize;na<ab&&b.h("TOTAL_MEMORY should be larger than TOTAL_STACK, was "+na+"! (TOTAL_STACK="+ab+")");
-b.buffer?buffer=b.buffer:"object"===typeof WebAssembly&&"function"===typeof WebAssembly.Memory?(b.wasmMemory=new WebAssembly.Memory({initial:na/Ma}),buffer=b.wasmMemory.buffer):buffer=new ArrayBuffer(na);Ta();l[0]=1668509029;va[1]=25459;if(115!==Aa[2]||99!==Aa[3])throw"Runtime error: expected the system to be little-endian!";b.HEAP=void 0;b.buffer=buffer;b.HEAP8=ua;b.HEAP16=va;b.HEAP32=l;b.HEAPU8=Aa;b.HEAPU16=Ra;b.HEAPU32=Sa;b.HEAPF32=wa;b.HEAPF64=xa;
-function bb(a){for(;0<a.length;){var c=a.shift();if("function"==typeof c)c();else{var d=c.s;"number"===typeof d?void 0===c.k?b.dynCall_v(d):b.dynCall_vi(d,c.k):d(void 0===c.k?null:c.k)}}}var cb=[],db=[],eb=[],gb=[],hb=[],ib=!1;function jb(){var a=b.preRun.shift();cb.unshift(a)}function kb(a){var c=Array(Ia(a)+1);Ha(a,c,0,c.length);return c}Math.imul&&-5===Math.imul(4294967295,5)||(Math.imul=function(a,c){var d=a&65535,e=c&65535;return d*e+((a>>>16)*e+d*(c>>>16)<<16)|0});Math.Y=Math.imul;
-if(!Math.fround){var lb=new Float32Array(1);Math.fround=function(a){lb[0]=a;return lb[0]}}Math.T=Math.fround;Math.clz32||(Math.clz32=function(a){a=a>>>0;for(var c=0;32>c;c++)if(a&1<<31-c)return c;return 32});Math.R=Math.clz32;Math.trunc||(Math.trunc=function(a){return 0>a?Math.ceil(a):Math.floor(a)});Math.trunc=Math.trunc;var Ba=Math.abs,Ea=Math.ceil,Da=Math.floor,mb=Math.pow,Ca=Math.min,nb=0,ob=null,pb=null;function qb(){nb++;b.monitorRunDependencies&&b.monitorRunDependencies(nb)}
-function rb(){nb--;b.monitorRunDependencies&&b.monitorRunDependencies(nb);if(0==nb&&(null!==ob&&(clearInterval(ob),ob=null),pb)){var a=pb;pb=null;a()}}b.preloadedImages={};b.preloadedAudios={};var sb=null;
-(function(a){function c(a,c){var d=C;if(0>a.indexOf("."))d=(d||{})[a];else var e=a.split("."),d=(d||{})[e[0]],d=(d||{})[e[1]];c&&(d=(d||{})[c]);void 0===d&&ra("bad lookupImport to ("+a+")."+c);return d}function d(c){var d=a.buffer;c.byteLength<d.byteLength&&a.printErr("the new buffer in mergeMemory is smaller than the previous one. in native wasm, we should grow memory here");var d=new Int8Array(d),e=new Int8Array(c);sb||d.set(e.subarray(a.STATIC_BASE,a.STATIC_BASE+a.STATIC_BUMP),a.STATIC_BASE);e.set(d);
-b.buffer=buffer=c;Ta()}function e(){var c;if(a.wasmBinary)c=a.wasmBinary,c=new Uint8Array(c);else if(a.readBinary)c=a.readBinary(u);else throw"on the web, we need the wasm binary to be preloaded and set on Module['wasmBinary']. emcc.py will do that for you when generating HTML (but not JS)";return c}function f(){return a.wasmBinary||"function"!==typeof fetch?new Promise(function(a){a(e())}):fetch(u).then(function(a){if(!a.ok)throw"failed to load wasm binary file at '"+u+"'";return a.arrayBuffer()})}
-function g(c,d,e){if("function"!==typeof a.asm||a.asm===wb)a.asmPreload?a.asm=a.asmPreload:eval(a.read(A));return"function"!==typeof a.asm?(a.printErr("asm evalling did not set the module properly"),!1):a.asm(c,d,e)}function k(c,e){function g(c){Qa=c.exports;Qa.memory&&d(Qa.memory);a.asm=Qa;a.usingWasm=!0;rb()}if("object"!==typeof WebAssembly)return a.printErr("no native wasm support detected"),!1;if(!(a.wasmMemory instanceof WebAssembly.Memory))return a.printErr("no native wasm Memory in use"),!1;
-e.memory=a.wasmMemory;C.global={NaN:NaN,Infinity:Infinity};C["global.Math"]=c.Math;C.env=e;qb();if(a.instantiateWasm)try{return a.instantiateWasm(C,g)}catch(k){return a.printErr("Module.instantiateWasm callback failed with error: "+k),!1}f().then(function(a){return WebAssembly.instantiate(a,C)}).then(function(a){g(a.instance)}).catch(function(c){a.printErr("failed to asynchronously prepare wasm: "+c);a.quit(1,c)});return{}}var m=a.wasmJSMethod||"native-wasm";a.wasmJSMethod=m;var v=a.wasmTextFile||
-"laya.physics3D.wasm.wast",u=a.wasmBinaryFile||"laya.physics3D.wasm.wasm",A=a.asmjsCodeFile||"laya.physics3D.wasm.temp.asm.js";"function"===typeof a.locateFile&&(v=a.locateFile(v),u=a.locateFile(u),A=a.locateFile(A));var C={global:null,env:null,asm2wasm:{"f64-rem":function(a,c){return a%c},"f64-to-int":function(a){return a|0},"i32s-div":function(a,c){return(a|0)/(c|0)|0},"i32u-div":function(a,c){return(a>>>0)/(c>>>0)>>>0},"i32s-rem":function(a,c){return(a|0)%(c|0)|0},"i32u-rem":function(a,c){return(a>>>
-0)%(c>>>0)>>>0},"debugger":function(){debugger}},parent:a},Qa=null;a.asmPreload=a.asm;a.reallocBuffer=function(c){c=Pa(c,a.usingWasm?Ma:Na);var d=a.buffer,e=d.byteLength;if(a.usingWasm)try{return-1!==a.wasmMemory.grow((c-e)/65536)?a.buffer=a.wasmMemory.buffer:null}catch(f){return null}else return Qa.__growWasmMemory((c-e)/65536),a.buffer!==d?a.buffer:null};a.asm=function(f,u,wb){if(!u.table){var vb=a.wasmTableSize;void 0===vb&&(vb=1024);var Kb=a.wasmMaxTableSize;u.table="object"===typeof WebAssembly&&
-"function"===typeof WebAssembly.Table?void 0!==Kb?new WebAssembly.Table({initial:vb,maximum:Kb,element:"anyfunc"}):new WebAssembly.Table({initial:vb,element:"anyfunc"}):Array(vb);a.wasmTable=u.table}u.memoryBase||(u.memoryBase=a.STATIC_BASE);u.tableBase||(u.tableBase=0);for(var V,vb=m.split(","),Kb=0;Kb<vb.length;Kb++)if(V=vb[Kb],"native-wasm"===V){if(V=k(f,u))break}else if("asmjs"===V){if(V=g(f,u,wb))break}else if("interpret-asm2wasm"===V||"interpret-s-expr"===V||"interpret-binary"===V){var fb=f,
-sa=u,Lb=wb;if("function"!==typeof WasmJS)a.printErr("WasmJS not detected - polyfill not bundled?"),V=!1;else{var oa=WasmJS({});oa.outside=a;oa.info=C;oa.lookupImport=c;assert(Lb===a.buffer);C.global=fb;C.env=sa;assert(Lb===a.buffer);sa.memory=Lb;assert(sa.memory instanceof ArrayBuffer);oa.providedTotalMemory=a.buffer.byteLength;fb=void 0;fb="interpret-binary"===V?e():a.read("interpret-asm2wasm"==V?A:v);sa=void 0;if("interpret-asm2wasm"==V)sa=oa._malloc(fb.length+1),oa.writeAsciiToMemory(fb,sa),oa._load_asm2wasm(sa);
-else if("interpret-s-expr"===V)sa=oa._malloc(fb.length+1),oa.writeAsciiToMemory(fb,sa),oa._load_s_expr2wasm(sa);else if("interpret-binary"===V)sa=oa._malloc(fb.length),oa.HEAPU8.set(fb,sa),oa._load_binary2wasm(sa,fb.length);else throw"what? "+V;oa._free(sa);oa._instantiate(sa);a.newBuffer&&(d(a.newBuffer),a.newBuffer=null);V=Qa=oa.asmExports}if(V)break}else throw"bad method: "+V;if(!V)throw"no binaryen method succeeded. consider enabling more options, like interpreting, if you want that: https://github.com/kripken/emscripten/wiki/WebAssembly#binaryen-methods";
-return V};var wb=a.asm})(b);
-var tb=[function(a,c,d,e,f,g,k,m){a=b.getCache(b.ConcreteContactResultCallback)[a];if(!a.hasOwnProperty("addSingleResult"))throw"a JSImplementation must implement all functions, you forgot ConcreteContactResultCallback::addSingleResult.";return a.addSingleResult(c,d,e,f,g,k,m)},function(a,c){var d=b.getCache(b.LayaMotionState)[a];if(!d.hasOwnProperty("getWorldTransform"))throw"a JSImplementation must implement all functions, you forgot LayaMotionState::getWorldTransform.";d.getWorldTransform(c)},
-function(a,c){var d=b.getCache(b.LayaMotionState)[a];if(!d.hasOwnProperty("setWorldTransform"))throw"a JSImplementation must implement all functions, you forgot LayaMotionState::setWorldTransform.";d.setWorldTransform(c)}];Ua=h.i;la=Ua+29456;db.push({s:function(){ub()}},{s:function(){xb()}});sb=0<=b.wasmJSMethod.indexOf("asmjs")||0<=b.wasmJSMethod.indexOf("interpret-asm2wasm")?"laya.physics3D.wasm.js.mem":null;b.STATIC_BASE=Ua;b.STATIC_BUMP=29456;var yb=la;la+=16;b._memset=zb;
-function Ab(){return!!Ab.d}var Bb=0,Cb=[],Db={};function Eb(a,c){Eb.d||(Eb.d={});a in Eb.d||(b.dynCall_v(c),Eb.d[a]=1)}b._memcpy=Fb;var Gb=0;function Hb(){Gb+=4;return l[Gb-4>>2]}var Ib={},Jb={};b._sbrk=Mb;b._memmove=Nb;var Ob=1;
-function Pb(){var a=Bb;if(!a)return(h.e(0),0)|0;var c=Db[a],d=c.type;if(!d)return(h.e(0),a)|0;var e=Array.prototype.slice.call(arguments);b.___cxa_is_pointer_type(d);Pb.buffer||(Pb.buffer=za(4));l[Pb.buffer>>2]=a;for(var a=Pb.buffer,f=0;f<e.length;f++)if(e[f]&&b.___cxa_can_catch(e[f],d,a))return a=l[a>>2],c.B=a,(h.e(e[f]),a)|0;a=l[a>>2];return(h.e(d),a)|0}b._llvm_bswap_i16=Qb;b._llvm_bswap_i32=Rb;
-function Sb(a,c){Gb=c;try{var d=Hb(),e=Hb(),f=Hb(),g=0;Sb.buffer||(Sb.d=[null,[],[]],Sb.q=function(a,c){var d=Sb.d[a];assert(d);if(0===c||10===c){var e=1===a?b.print:b.printErr,f;a:{for(var g=f=0;d[g];)++g;if(16<g-f&&d.subarray&&Ga)f=Ga.decode(d.subarray(f,g));else for(var k,m,u,v,A,Lb,g="";;){k=d[f++];if(!k){f=g;break a}k&128?(m=d[f++]&63,192==(k&224)?g+=String.fromCharCode((k&31)<<6|m):(u=d[f++]&63,224==(k&240)?k=(k&15)<<12|m<<6|u:(v=d[f++]&63,240==(k&248)?k=(k&7)<<18|m<<12|u<<6|v:(A=d[f++]&63,
-248==(k&252)?k=(k&3)<<24|m<<18|u<<12|v<<6|A:(Lb=d[f++]&63,k=(k&1)<<30|m<<24|u<<18|v<<12|A<<6|Lb))),65536>k?g+=String.fromCharCode(k):(k-=65536,g+=String.fromCharCode(55296|k>>10,56320|k&1023)))):g+=String.fromCharCode(k)}}e(f);d.length=0}else d.push(c)});for(var k=0;k<f;k++){for(var m=l[e+8*k>>2],v=l[e+(8*k+4)>>2],u=0;u<v;u++)Sb.q(d,Aa[m+u]);g+=v}return g}catch(A){return"undefined"!==typeof FS&&A instanceof FS.o||ra(A),-A.r}}
-gb.push(function(){var a=b._fflush;a&&a(0);if(a=Sb.q){var c=Sb.d;c[1].length&&a(1,10);c[2].length&&a(2,10)}});ma=ya(1,"i32",2);Va=ka=h.p(la);Wa=Va+ab;Xa=h.p(Wa);l[ma>>2]=Xa;b.wasmTableSize=1404;b.wasmMaxTableSize=1404;b.C={Math:Math,Int8Array:Int8Array,Int16Array:Int16Array,Int32Array:Int32Array,Uint8Array:Uint8Array,Uint16Array:Uint16Array,Uint32Array:Uint32Array,Float32Array:Float32Array,Float64Array:Float64Array,NaN:NaN,Infinity:Infinity,byteLength:Za};
-b.D={abort:ra,assert:assert,enlargeMemory:pa,getTotalMemory:function(){return na},abortOnCannotGrowMemory:function(){ra("Cannot enlarge memory arrays. Either (1) compile with  -s TOTAL_MEMORY=X  with X higher than the current value "+na+", (2) compile with  -s ALLOW_MEMORY_GROWTH=1  which allows increasing the size at runtime, or (3) if you want malloc to return NULL (0) instead of this abort, compile with  -s ABORTING_MALLOC=0 ")},invoke_viiiii:function(a,c,d,e,f,g){try{b.dynCall_viiiii(a,c,d,e,
-f,g)}catch(k){if("number"!==typeof k&&"longjmp"!==k)throw k;b.setThrew(1,0)}},invoke_viiiifffffifi:function(a,c,d,e,f,g,k,m,v,u,A,C,Qa){try{b.dynCall_viiiifffffifi(a,c,d,e,f,g,k,m,v,u,A,C,Qa)}catch(wb){if("number"!==typeof wb&&"longjmp"!==wb)throw wb;b.setThrew(1,0)}},invoke_vif:function(a,c,d){try{b.dynCall_vif(a,c,d)}catch(e){if("number"!==typeof e&&"longjmp"!==e)throw e;b.setThrew(1,0)}},invoke_viifii:function(a,c,d,e,f,g){try{b.dynCall_viifii(a,c,d,e,f,g)}catch(k){if("number"!==typeof k&&"longjmp"!==
-k)throw k;b.setThrew(1,0)}},invoke_vi:function(a,c){try{b.dynCall_vi(a,c)}catch(d){if("number"!==typeof d&&"longjmp"!==d)throw d;b.setThrew(1,0)}},invoke_vii:function(a,c,d){try{b.dynCall_vii(a,c,d)}catch(e){if("number"!==typeof e&&"longjmp"!==e)throw e;b.setThrew(1,0)}},invoke_iiiiiiiiiii:function(a,c,d,e,f,g,k,m,v,u,A){try{return b.dynCall_iiiiiiiiiii(a,c,d,e,f,g,k,m,v,u,A)}catch(C){if("number"!==typeof C&&"longjmp"!==C)throw C;b.setThrew(1,0)}},invoke_viiiif:function(a,c,d,e,f,g){try{b.dynCall_viiiif(a,
-c,d,e,f,g)}catch(k){if("number"!==typeof k&&"longjmp"!==k)throw k;b.setThrew(1,0)}},invoke_ii:function(a,c){try{return b.dynCall_ii(a,c)}catch(d){if("number"!==typeof d&&"longjmp"!==d)throw d;b.setThrew(1,0)}},invoke_viifi:function(a,c,d,e,f){try{b.dynCall_viifi(a,c,d,e,f)}catch(g){if("number"!==typeof g&&"longjmp"!==g)throw g;b.setThrew(1,0)}},invoke_viiiiiiiii:function(a,c,d,e,f,g,k,m,v,u){try{b.dynCall_viiiiiiiii(a,c,d,e,f,g,k,m,v,u)}catch(A){if("number"!==typeof A&&"longjmp"!==A)throw A;b.setThrew(1,
-0)}},invoke_viiif:function(a,c,d,e,f){try{b.dynCall_viiif(a,c,d,e,f)}catch(g){if("number"!==typeof g&&"longjmp"!==g)throw g;b.setThrew(1,0)}},invoke_viffiii:function(a,c,d,e,f,g,k){try{b.dynCall_viffiii(a,c,d,e,f,g,k)}catch(m){if("number"!==typeof m&&"longjmp"!==m)throw m;b.setThrew(1,0)}},invoke_iiiiii:function(a,c,d,e,f,g){try{return b.dynCall_iiiiii(a,c,d,e,f,g)}catch(k){if("number"!==typeof k&&"longjmp"!==k)throw k;b.setThrew(1,0)}},invoke_viiifii:function(a,c,d,e,f,g,k){try{b.dynCall_viiifii(a,
-c,d,e,f,g,k)}catch(m){if("number"!==typeof m&&"longjmp"!==m)throw m;b.setThrew(1,0)}},invoke_fiifii:function(a,c,d,e,f,g){try{return b.dynCall_fiifii(a,c,d,e,f,g)}catch(k){if("number"!==typeof k&&"longjmp"!==k)throw k;b.setThrew(1,0)}},invoke_fiiiiiiiii:function(a,c,d,e,f,g,k,m,v,u){try{return b.dynCall_fiiiiiiiii(a,c,d,e,f,g,k,m,v,u)}catch(A){if("number"!==typeof A&&"longjmp"!==A)throw A;b.setThrew(1,0)}},invoke_iiii:function(a,c,d,e){try{return b.dynCall_iiii(a,c,d,e)}catch(f){if("number"!==typeof f&&
-"longjmp"!==f)throw f;b.setThrew(1,0)}},invoke_fif:function(a,c,d){try{return b.dynCall_fif(a,c,d)}catch(e){if("number"!==typeof e&&"longjmp"!==e)throw e;b.setThrew(1,0)}},invoke_vifi:function(a,c,d,e){try{b.dynCall_vifi(a,c,d,e)}catch(f){if("number"!==typeof f&&"longjmp"!==f)throw f;b.setThrew(1,0)}},invoke_viiiiii:function(a,c,d,e,f,g,k){try{b.dynCall_viiiiii(a,c,d,e,f,g,k)}catch(m){if("number"!==typeof m&&"longjmp"!==m)throw m;b.setThrew(1,0)}},invoke_iiif:function(a,c,d,e){try{return b.dynCall_iiif(a,
-c,d,e)}catch(f){if("number"!==typeof f&&"longjmp"!==f)throw f;b.setThrew(1,0)}},invoke_fiii:function(a,c,d,e){try{return b.dynCall_fiii(a,c,d,e)}catch(f){if("number"!==typeof f&&"longjmp"!==f)throw f;b.setThrew(1,0)}},invoke_iiiiiii:function(a,c,d,e,f,g,k){try{return b.dynCall_iiiiiii(a,c,d,e,f,g,k)}catch(m){if("number"!==typeof m&&"longjmp"!==m)throw m;b.setThrew(1,0)}},invoke_fiiiiiiiiii:function(a,c,d,e,f,g,k,m,v,u,A){try{return b.dynCall_fiiiiiiiiii(a,c,d,e,f,g,k,m,v,u,A)}catch(C){if("number"!==
-typeof C&&"longjmp"!==C)throw C;b.setThrew(1,0)}},invoke_fiiiii:function(a,c,d,e,f,g){try{return b.dynCall_fiiiii(a,c,d,e,f,g)}catch(k){if("number"!==typeof k&&"longjmp"!==k)throw k;b.setThrew(1,0)}},invoke_viiiiiii:function(a,c,d,e,f,g,k,m){try{b.dynCall_viiiiiii(a,c,d,e,f,g,k,m)}catch(v){if("number"!==typeof v&&"longjmp"!==v)throw v;b.setThrew(1,0)}},invoke_vifii:function(a,c,d,e,f){try{b.dynCall_vifii(a,c,d,e,f)}catch(g){if("number"!==typeof g&&"longjmp"!==g)throw g;b.setThrew(1,0)}},invoke_fi:function(a,
-c){try{return b.dynCall_fi(a,c)}catch(d){if("number"!==typeof d&&"longjmp"!==d)throw d;b.setThrew(1,0)}},invoke_viiiiiiiiii:function(a,c,d,e,f,g,k,m,v,u,A){try{b.dynCall_viiiiiiiiii(a,c,d,e,f,g,k,m,v,u,A)}catch(C){if("number"!==typeof C&&"longjmp"!==C)throw C;b.setThrew(1,0)}},invoke_iii:function(a,c,d){try{return b.dynCall_iii(a,c,d)}catch(e){if("number"!==typeof e&&"longjmp"!==e)throw e;b.setThrew(1,0)}},invoke_fiiiiiiii:function(a,c,d,e,f,g,k,m,v){try{return b.dynCall_fiiiiiiii(a,c,d,e,f,g,k,m,
-v)}catch(u){if("number"!==typeof u&&"longjmp"!==u)throw u;b.setThrew(1,0)}},invoke_iifif:function(a,c,d,e,f){try{return b.dynCall_iifif(a,c,d,e,f)}catch(g){if("number"!==typeof g&&"longjmp"!==g)throw g;b.setThrew(1,0)}},invoke_viiiiffffiif:function(a,c,d,e,f,g,k,m,v,u,A,C){try{b.dynCall_viiiiffffiif(a,c,d,e,f,g,k,m,v,u,A,C)}catch(Qa){if("number"!==typeof Qa&&"longjmp"!==Qa)throw Qa;b.setThrew(1,0)}},invoke_fiiii:function(a,c,d,e,f){try{return b.dynCall_fiiii(a,c,d,e,f)}catch(g){if("number"!==typeof g&&
-"longjmp"!==g)throw g;b.setThrew(1,0)}},invoke_iiiii:function(a,c,d,e,f){try{return b.dynCall_iiiii(a,c,d,e,f)}catch(g){if("number"!==typeof g&&"longjmp"!==g)throw g;b.setThrew(1,0)}},invoke_viii:function(a,c,d,e){try{b.dynCall_viii(a,c,d,e)}catch(f){if("number"!==typeof f&&"longjmp"!==f)throw f;b.setThrew(1,0)}},invoke_v:function(a){try{b.dynCall_v(a)}catch(c){if("number"!==typeof c&&"longjmp"!==c)throw c;b.setThrew(1,0)}},invoke_iiiiiiiii:function(a,c,d,e,f,g,k,m,v){try{return b.dynCall_iiiiiiiii(a,
-c,d,e,f,g,k,m,v)}catch(u){if("number"!==typeof u&&"longjmp"!==u)throw u;b.setThrew(1,0)}},invoke_viif:function(a,c,d,e){try{b.dynCall_viif(a,c,d,e)}catch(f){if("number"!==typeof f&&"longjmp"!==f)throw f;b.setThrew(1,0)}},invoke_fiiifii:function(a,c,d,e,f,g,k){try{return b.dynCall_fiiifii(a,c,d,e,f,g,k)}catch(m){if("number"!==typeof m&&"longjmp"!==m)throw m;b.setThrew(1,0)}},invoke_viiii:function(a,c,d,e,f){try{b.dynCall_viiii(a,c,d,e,f)}catch(g){if("number"!==typeof g&&"longjmp"!==g)throw g;b.setThrew(1,
-0)}},_pthread_getspecific:function(a){return Jb[a]||0},___cxa_begin_catch:function(a){var c=Db[a];c&&!c.F&&(c.F=!0,Ab.d--);c&&(c.da=!1);Cb.push(a);a:{if(a&&!Db[a])for(var d in Db)if(Db[d].B===a){c=d;break a}c=a}c&&Db[c].ba++;return a},_pthread_setspecific:function(a,c){if(!(a in Jb))return 22;Jb[a]=c;return 0},___syscall146:Sb,_pthread_key_create:function(a){if(0==a)return 22;l[a>>2]=Ob;Jb[Ob]=0;Ob++;return 0},_abort:function(){b.abort()},___setErrNo:function(a){b.___errno_location&&(l[b.___errno_location()>>
-2]=a);return a},___syscall6:function(a,c){Gb=c;try{var d=Ib.I();FS.close(d);return 0}catch(e){return"undefined"!==typeof FS&&e instanceof FS.o||ra(e),-e.r}},_llvm_trap:function(){ra("trap!")},_llvm_pow_f32:mb,_gettimeofday:function(a){var c=Date.now();l[a>>2]=c/1E3|0;l[a+4>>2]=c%1E3*1E3|0;return 0},_pthread_once:Eb,_emscripten_memcpy_big:function(a,c,d){Aa.set(Aa.subarray(c,c+d),a);return a},___gxx_personality_v0:function(){},___syscall140:function(a,c){Gb=c;try{var d=Ib.I(),e=Hb(),f=Hb(),g=Hb(),
-k=Hb();assert(0===e);FS.Z(d,f,k);l[g>>2]=d.position;d.K&&0===f&&0===k&&(d.K=null);return 0}catch(m){return"undefined"!==typeof FS&&m instanceof FS.o||ra(m),-m.r}},___resumeException:function(a){Bb||(Bb=a);throw a+" - Exception catching is disabled, this exception cannot be caught. Compile with -s DISABLE_EXCEPTION_CATCHING=0 or DISABLE_EXCEPTION_CATCHING=2 to catch.";},_emscripten_asm_const_diiiiiiii:function(a,c,d,e,f,g,k,m,v){return tb[a](c,d,e,f,g,k,m,v)},___cxa_find_matching_catch:Pb,___cxa_pure_virtual:function(){qa=
-!0;throw"Pure virtual function called!";},_emscripten_asm_const_iii:function(a,c,d){return tb[a](c,d)},__ZSt18uncaught_exceptionv:Ab,DYNAMICTOP_PTR:ma,tempDoublePtr:yb,ABORT:qa,STACKTOP:ka,STACK_MAX:Wa};var Tb=b.asm(b.C,b.D,buffer);b.asm=Tb;
-var Ub=b._emscripten_bind_btGhostObject_getFriction_0=function(){return b.asm._emscripten_bind_btGhostObject_getFriction_0.apply(null,arguments)},Vb=b._emscripten_bind_btCylinderShape___destroy___0=function(){return b.asm._emscripten_bind_btCylinderShape___destroy___0.apply(null,arguments)},Wb=b._emscripten_bind_btGeneric6DofConstraint_enableFeedback_1=function(){return b.asm._emscripten_bind_btGeneric6DofConstraint_enableFeedback_1.apply(null,arguments)},Xb=b._emscripten_bind_btTypedConstraint_getParam_2=
-function(){return b.asm._emscripten_bind_btTypedConstraint_getParam_2.apply(null,arguments)},Yb=b._emscripten_enum_btConstraintParams_BT_CONSTRAINT_CFM=function(){return b.asm._emscripten_enum_btConstraintParams_BT_CONSTRAINT_CFM.apply(null,arguments)},Zb=b._emscripten_bind_btQuaternion_dot_1=function(){return b.asm._emscripten_bind_btQuaternion_dot_1.apply(null,arguments)},$b=b._emscripten_bind_btDispatcherInfo_set_m_useContinuous_1=function(){return b.asm._emscripten_bind_btDispatcherInfo_set_m_useContinuous_1.apply(null,
-arguments)},ac=b._emscripten_bind_btCollisionObject_isActive_0=function(){return b.asm._emscripten_bind_btCollisionObject_isActive_0.apply(null,arguments)},bc=b._emscripten_bind_btGhostObject_isStaticOrKinematicObject_0=function(){return b.asm._emscripten_bind_btGhostObject_isStaticOrKinematicObject_0.apply(null,arguments)},cc=b._emscripten_bind_btCompoundShape_updateChildTransform_2=function(){return b.asm._emscripten_bind_btCompoundShape_updateChildTransform_2.apply(null,arguments)},dc=b._emscripten_bind_btWheelInfoConstructionInfo_set_m_wheelsDampingRelaxation_1=
-function(){return b.asm._emscripten_bind_btWheelInfoConstructionInfo_set_m_wheelsDampingRelaxation_1.apply(null,arguments)},ec=b._emscripten_bind_btVehicleTuning_set_m_frictionSlip_1=function(){return b.asm._emscripten_bind_btVehicleTuning_set_m_frictionSlip_1.apply(null,arguments)},fc=b._emscripten_bind_btDiscreteDynamicsWorld_btDiscreteDynamicsWorld_4=function(){return b.asm._emscripten_bind_btDiscreteDynamicsWorld_btDiscreteDynamicsWorld_4.apply(null,arguments)},gc=b._emscripten_bind_btCapsuleShapeX_getMargin_0=
-function(){return b.asm._emscripten_bind_btCapsuleShapeX_getMargin_0.apply(null,arguments)},hc=b._emscripten_bind_btCompoundShape_getMargin_0=function(){return b.asm._emscripten_bind_btCompoundShape_getMargin_0.apply(null,arguments)},ic=b._emscripten_bind_RaycastInfo_set_m_wheelDirectionWS_1=function(){return b.asm._emscripten_bind_RaycastInfo_set_m_wheelDirectionWS_1.apply(null,arguments)},jc=b._emscripten_bind_btVehicleRaycasterResult_get_m_hitNormalInWorld_0=function(){return b.asm._emscripten_bind_btVehicleRaycasterResult_get_m_hitNormalInWorld_0.apply(null,
-arguments)},kc=b._emscripten_bind_btRigidBody_setUserPointer_1=function(){return b.asm._emscripten_bind_btRigidBody_setUserPointer_1.apply(null,arguments)},lc=b._emscripten_bind_LocalShapeInfo_set_m_triangleIndex_1=function(){return b.asm._emscripten_bind_LocalShapeInfo_set_m_triangleIndex_1.apply(null,arguments)},mc=b._emscripten_bind_btGImpactMeshShape_btGImpactMeshShape_1=function(){return b.asm._emscripten_bind_btGImpactMeshShape_btGImpactMeshShape_1.apply(null,arguments)},nc=b._emscripten_bind_btRigidBody_getLinearVelocity_0=
-function(){return b.asm._emscripten_bind_btRigidBody_getLinearVelocity_0.apply(null,arguments)},oc=b._emscripten_bind_ClosestRayResultCallback_get_m_hitPointWorld_0=function(){return b.asm._emscripten_bind_ClosestRayResultCallback_get_m_hitPointWorld_0.apply(null,arguments)},pc=b._emscripten_bind_btCollisionObject_getActivationState_0=function(){return b.asm._emscripten_bind_btCollisionObject_getActivationState_0.apply(null,arguments)},qc=b._emscripten_bind_btQuaternion_setX_1=function(){return b.asm._emscripten_bind_btQuaternion_setX_1.apply(null,
-arguments)},rc=b._emscripten_bind_btCylinderShapeZ_getMargin_0=function(){return b.asm._emscripten_bind_btCylinderShapeZ_getMargin_0.apply(null,arguments)},sc=b._emscripten_bind_btDispatcherInfo_get_m_timeOfImpact_0=function(){return b.asm._emscripten_bind_btDispatcherInfo_get_m_timeOfImpact_0.apply(null,arguments)},tc=b._emscripten_bind_btQuaternion_setZ_1=function(){return b.asm._emscripten_bind_btQuaternion_setZ_1.apply(null,arguments)},uc=b._emscripten_bind_btCollisionObject_getUserIndex_0=function(){return b.asm._emscripten_bind_btCollisionObject_getUserIndex_0.apply(null,
-arguments)},vc=b._emscripten_bind_AllConvexResultCallback_get_m_convexToWorld_0=function(){return b.asm._emscripten_bind_AllConvexResultCallback_get_m_convexToWorld_0.apply(null,arguments)},wc=b._emscripten_bind_LocalConvexResult_get_m_hitNormalLocal_0=function(){return b.asm._emscripten_bind_LocalConvexResult_get_m_hitNormalLocal_0.apply(null,arguments)},xc=b._emscripten_bind_btRigidBodyConstructionInfo_get_m_restitution_0=function(){return b.asm._emscripten_bind_btRigidBodyConstructionInfo_get_m_restitution_0.apply(null,
-arguments)},yc=b._emscripten_bind_btKinematicCharacterController_setMaxSlope_1=function(){return b.asm._emscripten_bind_btKinematicCharacterController_setMaxSlope_1.apply(null,arguments)},zc=b._emscripten_bind_btQuadWord_z_0=function(){return b.asm._emscripten_bind_btQuadWord_z_0.apply(null,arguments)},Ac=b._emscripten_bind_btTransform_setIdentity_0=function(){return b.asm._emscripten_bind_btTransform_setIdentity_0.apply(null,arguments)},Bc=b._emscripten_bind_btHingeConstraint_btHingeConstraint_2=
-function(){return b.asm._emscripten_bind_btHingeConstraint_btHingeConstraint_2.apply(null,arguments)},Cc=b._emscripten_bind_btGhostObject_getInterpolationAngularVelocity_0=function(){return b.asm._emscripten_bind_btGhostObject_getInterpolationAngularVelocity_0.apply(null,arguments)},Dc=b._emscripten_bind_btWheelInfo_get_m_suspensionRestLength1_0=function(){return b.asm._emscripten_bind_btWheelInfo_get_m_suspensionRestLength1_0.apply(null,arguments)},Ec=b._emscripten_bind_btWheelInfo_get_m_suspensionStiffness_0=
-function(){return b.asm._emscripten_bind_btWheelInfo_get_m_suspensionStiffness_0.apply(null,arguments)},Fc=b._emscripten_bind_btCapsuleShapeZ_getUpAxis_0=function(){return b.asm._emscripten_bind_btCapsuleShapeZ_getUpAxis_0.apply(null,arguments)},Gc=b._emscripten_bind_tScalarArray_pop_back_0=function(){return b.asm._emscripten_bind_tScalarArray_pop_back_0.apply(null,arguments)},Hc=b._emscripten_bind_AllConvexResultCallback_get_m_hitPointWorld_0=function(){return b.asm._emscripten_bind_AllConvexResultCallback_get_m_hitPointWorld_0.apply(null,
-arguments)},Ic=b._emscripten_bind_btCapsuleShape_getRadius_0=function(){return b.asm._emscripten_bind_btCapsuleShape_getRadius_0.apply(null,arguments)},Jc=b._emscripten_enum_PHY_ScalarType_PHY_UCHAR=function(){return b.asm._emscripten_enum_PHY_ScalarType_PHY_UCHAR.apply(null,arguments)},Kc=b._emscripten_bind_btQuaternion_setW_1=function(){return b.asm._emscripten_bind_btQuaternion_setW_1.apply(null,arguments)};b.stackSave=function(){return b.asm.stackSave.apply(null,arguments)};
-var Lc=b._emscripten_bind_RaycastInfo_get_m_wheelAxleWS_0=function(){return b.asm._emscripten_bind_RaycastInfo_get_m_wheelAxleWS_0.apply(null,arguments)},Mc=b._emscripten_bind_btRigidBodyConstructionInfo_get_m_angularDamping_0=function(){return b.asm._emscripten_bind_btRigidBodyConstructionInfo_get_m_angularDamping_0.apply(null,arguments)},Nc=b._emscripten_bind_btCollisionDispatcher___destroy___0=function(){return b.asm._emscripten_bind_btCollisionDispatcher___destroy___0.apply(null,arguments)},Oc=
-b._emscripten_bind_btRigidBody_applyCentralImpulse_1=function(){return b.asm._emscripten_bind_btRigidBody_applyCentralImpulse_1.apply(null,arguments)},Pc=b._emscripten_bind_btConvexHullShape_getMargin_0=function(){return b.asm._emscripten_bind_btConvexHullShape_getMargin_0.apply(null,arguments)},Qc=b._emscripten_bind_btDefaultMotionState_getWorldTransform_1=function(){return b.asm._emscripten_bind_btDefaultMotionState_getWorldTransform_1.apply(null,arguments)},Rc=b._emscripten_bind_btPairCachingGhostObject_getInterpolationLinearVelocity_0=
-function(){return b.asm._emscripten_bind_btPairCachingGhostObject_getInterpolationLinearVelocity_0.apply(null,arguments)},Sc=b._emscripten_bind_btDiscreteDynamicsWorld_stepSimulation_1=function(){return b.asm._emscripten_bind_btDiscreteDynamicsWorld_stepSimulation_1.apply(null,arguments)},Tc=b._emscripten_bind_btDefaultMotionState_btDefaultMotionState_2=function(){return b.asm._emscripten_bind_btDefaultMotionState_btDefaultMotionState_2.apply(null,arguments)},Uc=b._emscripten_bind_btDiscreteDynamicsWorld_stepSimulation_3=
-function(){return b.asm._emscripten_bind_btDiscreteDynamicsWorld_stepSimulation_3.apply(null,arguments)},Vc=b._emscripten_bind_btDiscreteDynamicsWorld_stepSimulation_2=function(){return b.asm._emscripten_bind_btDiscreteDynamicsWorld_stepSimulation_2.apply(null,arguments)},Wc=b._emscripten_bind_btVector3_op_mul_1=function(){return b.asm._emscripten_bind_btVector3_op_mul_1.apply(null,arguments)},Xc=b._emscripten_bind_btDynamicsWorld_rayTest_3=function(){return b.asm._emscripten_bind_btDynamicsWorld_rayTest_3.apply(null,
-arguments)};b._btGImpactCollisionAlgorithm_RegisterAlgorithm=function(){return b.asm._btGImpactCollisionAlgorithm_RegisterAlgorithm.apply(null,arguments)};
-var Yc=b._emscripten_bind_btCollisionObject_btCollisionObject_0=function(){return b.asm._emscripten_bind_btCollisionObject_btCollisionObject_0.apply(null,arguments)},Zc=b._emscripten_bind_btRaycastVehicle_updateWheelTransform_2=function(){return b.asm._emscripten_bind_btRaycastVehicle_updateWheelTransform_2.apply(null,arguments)},$c=b._emscripten_bind_btQuadWord_x_0=function(){return b.asm._emscripten_bind_btQuadWord_x_0.apply(null,arguments)},ad=b._emscripten_bind_btGeneric6DofConstraint_setParam_3=
-function(){return b.asm._emscripten_bind_btGeneric6DofConstraint_setParam_3.apply(null,arguments)},bd=b._emscripten_bind_btCollisionObject_isKinematicObject_0=function(){return b.asm._emscripten_bind_btCollisionObject_isKinematicObject_0.apply(null,arguments)},cd=b._emscripten_bind_btWheelInfo_set_m_chassisConnectionPointCS_1=function(){return b.asm._emscripten_bind_btWheelInfo_set_m_chassisConnectionPointCS_1.apply(null,arguments)},dd=b._emscripten_bind_btCollisionObject_getRollingFriction_0=function(){return b.asm._emscripten_bind_btCollisionObject_getRollingFriction_0.apply(null,
-arguments)},ed=b._emscripten_bind_ConvexResultCallback___destroy___0=function(){return b.asm._emscripten_bind_ConvexResultCallback___destroy___0.apply(null,arguments)},fd=b._emscripten_bind_btCompoundShape_updateChildTransform_3=function(){return b.asm._emscripten_bind_btCompoundShape_updateChildTransform_3.apply(null,arguments)},gd=b._emscripten_bind_btGeneric6DofSpringConstraint_setLinearUpperLimit_1=function(){return b.asm._emscripten_bind_btGeneric6DofSpringConstraint_setLinearUpperLimit_1.apply(null,
-arguments)},hd=b._emscripten_bind_btQuaternion_getAngleShortestPath_0=function(){return b.asm._emscripten_bind_btQuaternion_getAngleShortestPath_0.apply(null,arguments)},id=b._emscripten_bind_ClosestConvexResultCallback_set_m_hitNormalWorld_1=function(){return b.asm._emscripten_bind_ClosestConvexResultCallback_set_m_hitNormalWorld_1.apply(null,arguments)},jd=b._emscripten_bind_AllHitsRayResultCallback_get_m_collisionObject_0=function(){return b.asm._emscripten_bind_AllHitsRayResultCallback_get_m_collisionObject_0.apply(null,
-arguments)},kd=b._emscripten_bind_btRigidBody_getFriction_0=function(){return b.asm._emscripten_bind_btRigidBody_getFriction_0.apply(null,arguments)},ld=b._emscripten_bind_btCollisionWorld_updateSingleAabb_1=function(){return b.asm._emscripten_bind_btCollisionWorld_updateSingleAabb_1.apply(null,arguments)},md=b._emscripten_bind_AllConvexResultCallback_get_m_collisionObjects_0=function(){return b.asm._emscripten_bind_AllConvexResultCallback_get_m_collisionObjects_0.apply(null,arguments)},nd=b._emscripten_bind_btGeneric6DofSpringConstraint_btGeneric6DofSpringConstraint_5=
-function(){return b.asm._emscripten_bind_btGeneric6DofSpringConstraint_btGeneric6DofSpringConstraint_5.apply(null,arguments)},od=b._emscripten_bind_btWheelInfoConstructionInfo___destroy___0=function(){return b.asm._emscripten_bind_btWheelInfoConstructionInfo___destroy___0.apply(null,arguments)},pd=b._emscripten_bind_btGeneric6DofSpringConstraint_btGeneric6DofSpringConstraint_3=function(){return b.asm._emscripten_bind_btGeneric6DofSpringConstraint_btGeneric6DofSpringConstraint_3.apply(null,arguments)},
-qd=b._emscripten_bind_tScalarArray___destroy___0=function(){return b.asm._emscripten_bind_tScalarArray___destroy___0.apply(null,arguments)},rd=b._emscripten_bind_btCollisionObject_activate_1=function(){return b.asm._emscripten_bind_btCollisionObject_activate_1.apply(null,arguments)},sd=b._emscripten_bind_btCollisionObject_activate_0=function(){return b.asm._emscripten_bind_btCollisionObject_activate_0.apply(null,arguments)},td=b._emscripten_bind_btCollisionWorld_removeCollisionObject_1=function(){return b.asm._emscripten_bind_btCollisionWorld_removeCollisionObject_1.apply(null,
-arguments)},ud=b._emscripten_bind_LayaMotionState_setWorldTransform_1=function(){return b.asm._emscripten_bind_LayaMotionState_setWorldTransform_1.apply(null,arguments)},vd=b._emscripten_bind_AllConvexResultCallback_AllConvexResultCallback_2=function(){return b.asm._emscripten_bind_AllConvexResultCallback_AllConvexResultCallback_2.apply(null,arguments)},wd=b._emscripten_bind_btDispatcherInfo_set_m_timeOfImpact_1=function(){return b.asm._emscripten_bind_btDispatcherInfo_set_m_timeOfImpact_1.apply(null,
-arguments)},xd=b._emscripten_bind_btCollisionDispatcher_btCollisionDispatcher_1=function(){return b.asm._emscripten_bind_btCollisionDispatcher_btCollisionDispatcher_1.apply(null,arguments)},yd=b._emscripten_bind_btVector3_setX_1=function(){return b.asm._emscripten_bind_btVector3_setX_1.apply(null,arguments)},zd=b._emscripten_bind_btCollisionConfiguration___destroy___0=function(){return b.asm._emscripten_bind_btCollisionConfiguration___destroy___0.apply(null,arguments)},Ad=b._emscripten_bind_LayaMotionState_LayaMotionState_0=
-function(){return b.asm._emscripten_bind_LayaMotionState_LayaMotionState_0.apply(null,arguments)},Bd=b._emscripten_bind_btCapsuleShapeZ_setMargin_1=function(){return b.asm._emscripten_bind_btCapsuleShapeZ_setMargin_1.apply(null,arguments)},Cd=b._emscripten_bind_AllHitsRayResultCallback_hasHit_0=function(){return b.asm._emscripten_bind_AllHitsRayResultCallback_hasHit_0.apply(null,arguments)},Dd=b._emscripten_bind_btActionInterface_updateAction_2=function(){return b.asm._emscripten_bind_btActionInterface_updateAction_2.apply(null,
-arguments)};b.stackAlloc=function(){return b.asm.stackAlloc.apply(null,arguments)};
-var Ed=b._emscripten_bind_btHeightfieldTerrainShape_setLocalScaling_1=function(){return b.asm._emscripten_bind_btHeightfieldTerrainShape_setLocalScaling_1.apply(null,arguments)},Fd=b._emscripten_bind_btFixedConstraint___destroy___0=function(){return b.asm._emscripten_bind_btFixedConstraint___destroy___0.apply(null,arguments)},Gd=b._emscripten_bind_btRaycastVehicle_updateSuspension_1=function(){return b.asm._emscripten_bind_btRaycastVehicle_updateSuspension_1.apply(null,arguments)},Hd=b._emscripten_bind_btManifoldPoint_set_m_localPointB_1=
-function(){return b.asm._emscripten_bind_btManifoldPoint_set_m_localPointB_1.apply(null,arguments)},Id=b._emscripten_bind_btVector3_setZ_1=function(){return b.asm._emscripten_bind_btVector3_setZ_1.apply(null,arguments)},Jd=b._emscripten_bind_btCapsuleShapeX_getHalfHeight_0=function(){return b.asm._emscripten_bind_btCapsuleShapeX_getHalfHeight_0.apply(null,arguments)},Kd=b._emscripten_bind_btKinematicCharacterController_setUseGhostSweepTest_1=function(){return b.asm._emscripten_bind_btKinematicCharacterController_setUseGhostSweepTest_1.apply(null,
-arguments)},Ld=b._emscripten_bind_btGeneric6DofConstraint_getFrameOffsetA_0=function(){return b.asm._emscripten_bind_btGeneric6DofConstraint_getFrameOffsetA_0.apply(null,arguments)},Md=b._emscripten_bind_btCollisionObject_getRestitution_0=function(){return b.asm._emscripten_bind_btCollisionObject_getRestitution_0.apply(null,arguments)},Nd=b._emscripten_bind_btQuaternion_setValue_4=function(){return b.asm._emscripten_bind_btQuaternion_setValue_4.apply(null,arguments)},Od=b._emscripten_bind_btDispatcherInfo_set_m_dispatchFunc_1=
-function(){return b.asm._emscripten_bind_btDispatcherInfo_set_m_dispatchFunc_1.apply(null,arguments)},Pd=b._emscripten_bind_btMotionState_setWorldTransform_1=function(){return b.asm._emscripten_bind_btMotionState_setWorldTransform_1.apply(null,arguments)},Qd=b._emscripten_bind_LocalShapeInfo___destroy___0=function(){return b.asm._emscripten_bind_LocalShapeInfo___destroy___0.apply(null,arguments)},Rd=b._emscripten_bind_btCylinderShapeX_calculateLocalInertia_2=function(){return b.asm._emscripten_bind_btCylinderShapeX_calculateLocalInertia_2.apply(null,
-arguments)},Sd=b._emscripten_bind_btWheelInfoConstructionInfo_set_m_wheelsDampingCompression_1=function(){return b.asm._emscripten_bind_btWheelInfoConstructionInfo_set_m_wheelsDampingCompression_1.apply(null,arguments)},Td=b._emscripten_bind_btVehicleTuning_get_m_suspensionStiffness_0=function(){return b.asm._emscripten_bind_btVehicleTuning_get_m_suspensionStiffness_0.apply(null,arguments)},Ud=b._emscripten_bind_btDynamicsWorld_removeCollisionObject_1=function(){return b.asm._emscripten_bind_btDynamicsWorld_removeCollisionObject_1.apply(null,
-arguments)},Vd=b._emscripten_bind_btQuadWord_setY_1=function(){return b.asm._emscripten_bind_btQuadWord_setY_1.apply(null,arguments)},Wd=b._emscripten_bind_btRigidBody_isKinematicObject_0=function(){return b.asm._emscripten_bind_btRigidBody_isKinematicObject_0.apply(null,arguments)},Xd=b._emscripten_bind_btRigidBody_getInterpolationAngularVelocity_0=function(){return b.asm._emscripten_bind_btRigidBody_getInterpolationAngularVelocity_0.apply(null,arguments)},Yd=b._emscripten_bind_btConvexTriangleMeshShape_getMargin_0=
-function(){return b.asm._emscripten_bind_btConvexTriangleMeshShape_getMargin_0.apply(null,arguments)},Zd=b._emscripten_bind_btRigidBodyConstructionInfo_set_m_restitution_1=function(){return b.asm._emscripten_bind_btRigidBodyConstructionInfo_set_m_restitution_1.apply(null,arguments)},$d=b._emscripten_bind_btVector4_rotate_2=function(){return b.asm._emscripten_bind_btVector4_rotate_2.apply(null,arguments)},ae=b._emscripten_bind_btDefaultMotionState_get_m_graphicsWorldTrans_0=function(){return b.asm._emscripten_bind_btDefaultMotionState_get_m_graphicsWorldTrans_0.apply(null,
-arguments)},be=b._emscripten_bind_btConeTwistConstraint_setDamping_1=function(){return b.asm._emscripten_bind_btConeTwistConstraint_setDamping_1.apply(null,arguments)},ce=b._emscripten_bind_btPairCachingGhostObject_btPairCachingGhostObject_0=function(){return b.asm._emscripten_bind_btPairCachingGhostObject_btPairCachingGhostObject_0.apply(null,arguments)},de=b._emscripten_bind_btWheelInfoConstructionInfo_get_m_suspensionRestLength_0=function(){return b.asm._emscripten_bind_btWheelInfoConstructionInfo_get_m_suspensionRestLength_0.apply(null,
-arguments)},ee=b._emscripten_bind_btDiscreteDynamicsWorld_getSolverInfo_0=function(){return b.asm._emscripten_bind_btDiscreteDynamicsWorld_getSolverInfo_0.apply(null,arguments)},fe=b._emscripten_bind_btCylinderShape_setMargin_1=function(){return b.asm._emscripten_bind_btCylinderShape_setMargin_1.apply(null,arguments)},ge=b._emscripten_bind_btRaycastVehicle_rayCast_1=function(){return b.asm._emscripten_bind_btRaycastVehicle_rayCast_1.apply(null,arguments)},he=b._emscripten_bind_btCollisionWorld___destroy___0=
-function(){return b.asm._emscripten_bind_btCollisionWorld___destroy___0.apply(null,arguments)},ie=b._emscripten_bind_LocalConvexResult_get_m_hitPointLocal_0=function(){return b.asm._emscripten_bind_LocalConvexResult_get_m_hitPointLocal_0.apply(null,arguments)},je=b._emscripten_bind_btBoxShape_btBoxShape_1=function(){return b.asm._emscripten_bind_btBoxShape_btBoxShape_1.apply(null,arguments)},ke=b._emscripten_bind_btFixedConstraint_getBreakingImpulseThreshold_0=function(){return b.asm._emscripten_bind_btFixedConstraint_getBreakingImpulseThreshold_0.apply(null,
-arguments)},le=b._emscripten_bind_ClosestRayResultCallback_set_m_collisionObject_1=function(){return b.asm._emscripten_bind_ClosestRayResultCallback_set_m_collisionObject_1.apply(null,arguments)},me=b._emscripten_bind_RaycastInfo_set_m_isInContact_1=function(){return b.asm._emscripten_bind_RaycastInfo_set_m_isInContact_1.apply(null,arguments)},ne=b._emscripten_bind_btKinematicCharacterController_setGravity_1=function(){return b.asm._emscripten_bind_btKinematicCharacterController_setGravity_1.apply(null,
-arguments)},oe=b._emscripten_bind_AllConvexResultCallback_set_m_collisionFilterMask_1=function(){return b.asm._emscripten_bind_AllConvexResultCallback_set_m_collisionFilterMask_1.apply(null,arguments)},pe=b._emscripten_bind_btDefaultVehicleRaycaster_btDefaultVehicleRaycaster_1=function(){return b.asm._emscripten_bind_btDefaultVehicleRaycaster_btDefaultVehicleRaycaster_1.apply(null,arguments)},qe=b._emscripten_bind_btGeneric6DofConstraint_btGeneric6DofConstraint_5=function(){return b.asm._emscripten_bind_btGeneric6DofConstraint_btGeneric6DofConstraint_5.apply(null,
-arguments)},re=b._emscripten_bind_btCapsuleShapeZ_getHalfHeight_0=function(){return b.asm._emscripten_bind_btCapsuleShapeZ_getHalfHeight_0.apply(null,arguments)},se=b._emscripten_bind_LocalShapeInfo_get_m_shapePart_0=function(){return b.asm._emscripten_bind_LocalShapeInfo_get_m_shapePart_0.apply(null,arguments)},te=b._emscripten_bind_btRigidBody_getInterpolationLinearVelocity_0=function(){return b.asm._emscripten_bind_btRigidBody_getInterpolationLinearVelocity_0.apply(null,arguments)},ue=b._emscripten_bind_AllConvexResultCallback_get_m_convexFromWorld_0=
-function(){return b.asm._emscripten_bind_AllConvexResultCallback_get_m_convexFromWorld_0.apply(null,arguments)},ve=b._emscripten_bind_btWheelInfo_get_m_rollInfluence_0=function(){return b.asm._emscripten_bind_btWheelInfo_get_m_rollInfluence_0.apply(null,arguments)},we=b._emscripten_bind_ClosestRayResultCallback_set_m_closestHitFraction_1=function(){return b.asm._emscripten_bind_ClosestRayResultCallback_set_m_closestHitFraction_1.apply(null,arguments)},xe=b._emscripten_bind_btTypedConstraint_setBreakingImpulseThreshold_1=
-function(){return b.asm._emscripten_bind_btTypedConstraint_setBreakingImpulseThreshold_1.apply(null,arguments)},ye=b._emscripten_bind_btBvhTriangleMeshShape_setLocalScaling_1=function(){return b.asm._emscripten_bind_btBvhTriangleMeshShape_setLocalScaling_1.apply(null,arguments)},ze=b._emscripten_enum_btConstraintParams_BT_CONSTRAINT_STOP_CFM=function(){return b.asm._emscripten_enum_btConstraintParams_BT_CONSTRAINT_STOP_CFM.apply(null,arguments)},Ae=b._emscripten_bind_btPoint2PointConstraint_setBreakingImpulseThreshold_1=
-function(){return b.asm._emscripten_bind_btPoint2PointConstraint_setBreakingImpulseThreshold_1.apply(null,arguments)},Be=b._emscripten_bind_AllHitsRayResultCallback_set_m_rayFromWorld_1=function(){return b.asm._emscripten_bind_AllHitsRayResultCallback_set_m_rayFromWorld_1.apply(null,arguments)},Ce=b._emscripten_bind_btDynamicsWorld_getDispatchInfo_0=function(){return b.asm._emscripten_bind_btDynamicsWorld_getDispatchInfo_0.apply(null,arguments)},De=b._emscripten_bind_btCompoundShape_removeChildShapeByIndex_1=
-function(){return b.asm._emscripten_bind_btCompoundShape_removeChildShapeByIndex_1.apply(null,arguments)},Ee=b._emscripten_bind_btVector3_length_0=function(){return b.asm._emscripten_bind_btVector3_length_0.apply(null,arguments)},Fe=b._emscripten_bind_btConvexTriangleMeshShape_btConvexTriangleMeshShape_2=function(){return b.asm._emscripten_bind_btConvexTriangleMeshShape_btConvexTriangleMeshShape_2.apply(null,arguments)},Ge=b._emscripten_bind_btConvexTriangleMeshShape_btConvexTriangleMeshShape_1=function(){return b.asm._emscripten_bind_btConvexTriangleMeshShape_btConvexTriangleMeshShape_1.apply(null,
-arguments)},He=b._emscripten_bind_ClosestConvexResultCallback_set_m_hitPointWorld_1=function(){return b.asm._emscripten_bind_ClosestConvexResultCallback_set_m_hitPointWorld_1.apply(null,arguments)},Ie=b._emscripten_bind_RayResultCallback_set_m_collisionFilterMask_1=function(){return b.asm._emscripten_bind_RayResultCallback_set_m_collisionFilterMask_1.apply(null,arguments)},Je=b._emscripten_bind_btPairCachingGhostObject_setInterpolationAngularVelocity_1=function(){return b.asm._emscripten_bind_btPairCachingGhostObject_setInterpolationAngularVelocity_1.apply(null,
-arguments)},Ke=b._emscripten_bind_btBoxShape_getMargin_0=function(){return b.asm._emscripten_bind_btBoxShape_getMargin_0.apply(null,arguments)},Le=b._emscripten_bind_btPairCachingGhostObject___destroy___0=function(){return b.asm._emscripten_bind_btPairCachingGhostObject___destroy___0.apply(null,arguments)},Me=b._emscripten_bind_btCollisionObject_setInterpolationLinearVelocity_1=function(){return b.asm._emscripten_bind_btCollisionObject_setInterpolationLinearVelocity_1.apply(null,arguments)},Ne=b._emscripten_bind_btDynamicsWorld_addCollisionObject_3=
-function(){return b.asm._emscripten_bind_btDynamicsWorld_addCollisionObject_3.apply(null,arguments)},Oe=b._emscripten_bind_btPairCachingGhostObject_activate_0=function(){return b.asm._emscripten_bind_btPairCachingGhostObject_activate_0.apply(null,arguments)},Pe=b._emscripten_bind_btPairCachingGhostObject_activate_1=function(){return b.asm._emscripten_bind_btPairCachingGhostObject_activate_1.apply(null,arguments)},Qe=b._emscripten_bind_btWheelInfoConstructionInfo_set_m_suspensionStiffness_1=function(){return b.asm._emscripten_bind_btWheelInfoConstructionInfo_set_m_suspensionStiffness_1.apply(null,
-arguments)},Re=b._emscripten_bind_btContactSolverInfo_get_m_splitImpulsePenetrationThreshold_0=function(){return b.asm._emscripten_bind_btContactSolverInfo_get_m_splitImpulsePenetrationThreshold_0.apply(null,arguments)},Se=b._emscripten_bind_ConvexResultCallback_set_m_collisionFilterMask_1=function(){return b.asm._emscripten_bind_ConvexResultCallback_set_m_collisionFilterMask_1.apply(null,arguments)},Te=b._emscripten_bind_btSliderConstraint_setParam_3=function(){return b.asm._emscripten_bind_btSliderConstraint_setParam_3.apply(null,
-arguments)},Ue=b._emscripten_bind_btPersistentManifold_getContactPoint_1=function(){return b.asm._emscripten_bind_btPersistentManifold_getContactPoint_1.apply(null,arguments)},Ve=b._emscripten_bind_btPairCachingGhostObject_forceActivationState_1=function(){return b.asm._emscripten_bind_btPairCachingGhostObject_forceActivationState_1.apply(null,arguments)},We=b._emscripten_bind_btDefaultMotionState___destroy___0=function(){return b.asm._emscripten_bind_btDefaultMotionState___destroy___0.apply(null,
-arguments)},Xe=b._emscripten_bind_btDispatcherInfo_get_m_stepCount_0=function(){return b.asm._emscripten_bind_btDispatcherInfo_get_m_stepCount_0.apply(null,arguments)},Ye=b._emscripten_bind_btRigidBody_applyGravity_0=function(){return b.asm._emscripten_bind_btRigidBody_applyGravity_0.apply(null,arguments)},Ze=b._emscripten_bind_btBroadphaseProxy_set_m_collisionFilterGroup_1=function(){return b.asm._emscripten_bind_btBroadphaseProxy_set_m_collisionFilterGroup_1.apply(null,arguments)},$e=b._emscripten_bind_btRigidBodyConstructionInfo_set_m_friction_1=
-function(){return b.asm._emscripten_bind_btRigidBodyConstructionInfo_set_m_friction_1.apply(null,arguments)},af=b._emscripten_bind_AllHitsRayResultCallback_set_m_collisionFilterMask_1=function(){return b.asm._emscripten_bind_AllHitsRayResultCallback_set_m_collisionFilterMask_1.apply(null,arguments)},bf=b._emscripten_bind_btRigidBody_clearForces_0=function(){return b.asm._emscripten_bind_btRigidBody_clearForces_0.apply(null,arguments)},cf=b._emscripten_bind_btQuadWord_setW_1=function(){return b.asm._emscripten_bind_btQuadWord_setW_1.apply(null,
-arguments)},df=b._emscripten_bind_btFixedConstraint_getParam_2=function(){return b.asm._emscripten_bind_btFixedConstraint_getParam_2.apply(null,arguments)},ef=b._emscripten_bind_btRigidBodyConstructionInfo_get_m_friction_0=function(){return b.asm._emscripten_bind_btRigidBodyConstructionInfo_get_m_friction_0.apply(null,arguments)},ff=b._emscripten_bind_btCapsuleShapeX_btCapsuleShapeX_2=function(){return b.asm._emscripten_bind_btCapsuleShapeX_btCapsuleShapeX_2.apply(null,arguments)},gf=b._emscripten_bind_LocalShapeInfo_set_m_shapePart_1=
-function(){return b.asm._emscripten_bind_LocalShapeInfo_set_m_shapePart_1.apply(null,arguments)},hf=b._emscripten_bind_btPairCachingGhostObject_isStaticOrKinematicObject_0=function(){return b.asm._emscripten_bind_btPairCachingGhostObject_isStaticOrKinematicObject_0.apply(null,arguments)},jf=b._emscripten_bind_btHingeConstraint_getParam_2=function(){return b.asm._emscripten_bind_btHingeConstraint_getParam_2.apply(null,arguments)},kf=b._emscripten_bind_btRigidBody_setLinearFactor_1=function(){return b.asm._emscripten_bind_btRigidBody_setLinearFactor_1.apply(null,
-arguments)},lf=b._emscripten_bind_btRigidBody_setCollisionShape_1=function(){return b.asm._emscripten_bind_btRigidBody_setCollisionShape_1.apply(null,arguments)},mf=b._emscripten_bind_btDispatcherInfo_set_m_useConvexConservativeDistanceUtil_1=function(){return b.asm._emscripten_bind_btDispatcherInfo_set_m_useConvexConservativeDistanceUtil_1.apply(null,arguments)},nf=b._emscripten_bind_btRaycastVehicle_getUpAxis_0=function(){return b.asm._emscripten_bind_btRaycastVehicle_getUpAxis_0.apply(null,arguments)},
-of=b._emscripten_bind_btRaycastVehicle_getCurrentSpeedKmHour_0=function(){return b.asm._emscripten_bind_btRaycastVehicle_getCurrentSpeedKmHour_0.apply(null,arguments)},pf=b._emscripten_bind_btWheelInfo_get_m_engineForce_0=function(){return b.asm._emscripten_bind_btWheelInfo_get_m_engineForce_0.apply(null,arguments)},qf=b._emscripten_bind_btDiscreteDynamicsWorld_getApplySpeculativeContactRestitution_0=function(){return b.asm._emscripten_bind_btDiscreteDynamicsWorld_getApplySpeculativeContactRestitution_0.apply(null,
-arguments)},rf=b._emscripten_bind_btRaycastVehicle_setSteeringValue_2=function(){return b.asm._emscripten_bind_btRaycastVehicle_setSteeringValue_2.apply(null,arguments)},sf=b._emscripten_bind_btPoint2PointConstraint___destroy___0=function(){return b.asm._emscripten_bind_btPoint2PointConstraint___destroy___0.apply(null,arguments)},tf=b._emscripten_bind_btCollisionShape_setMargin_1=function(){return b.asm._emscripten_bind_btCollisionShape_setMargin_1.apply(null,arguments)},uf=b._emscripten_bind_btGeneric6DofConstraint_setAngularUpperLimit_1=
-function(){return b.asm._emscripten_bind_btGeneric6DofConstraint_setAngularUpperLimit_1.apply(null,arguments)},vf=b._emscripten_bind_btDiscreteDynamicsWorld_addConstraint_2=function(){return b.asm._emscripten_bind_btDiscreteDynamicsWorld_addConstraint_2.apply(null,arguments)},wf=b._emscripten_bind_btDiscreteDynamicsWorld_addConstraint_1=function(){return b.asm._emscripten_bind_btDiscreteDynamicsWorld_addConstraint_1.apply(null,arguments)},xf=b._emscripten_bind_btRigidBodyConstructionInfo_set_m_angularSleepingThreshold_1=
-function(){return b.asm._emscripten_bind_btRigidBodyConstructionInfo_set_m_angularSleepingThreshold_1.apply(null,arguments)},yf=b._emscripten_bind_btPairCachingGhostObject_setUserPointer_1=function(){return b.asm._emscripten_bind_btPairCachingGhostObject_setUserPointer_1.apply(null,arguments)},zf=b._emscripten_bind_btGeneric6DofSpringConstraint_getParam_2=function(){return b.asm._emscripten_bind_btGeneric6DofSpringConstraint_getParam_2.apply(null,arguments)},Af=b._emscripten_bind_btWheelInfoConstructionInfo_get_m_suspensionStiffness_0=
-function(){return b.asm._emscripten_bind_btWheelInfoConstructionInfo_get_m_suspensionStiffness_0.apply(null,arguments)},Bf=b._emscripten_bind_btRaycastVehicle_getRightAxis_0=function(){return b.asm._emscripten_bind_btRaycastVehicle_getRightAxis_0.apply(null,arguments)},Cf=b._emscripten_bind_btContactSolverInfo_set_m_numIterations_1=function(){return b.asm._emscripten_bind_btContactSolverInfo_set_m_numIterations_1.apply(null,arguments)},za=b._malloc=function(){return b.asm._malloc.apply(null,arguments)},
-Df=b._emscripten_bind_btDispatcherInfo_get_m_useEpa_0=function(){return b.asm._emscripten_bind_btDispatcherInfo_get_m_useEpa_0.apply(null,arguments)},Ef=b._emscripten_bind_btDiscreteDynamicsWorld_updateSingleAabb_1=function(){return b.asm._emscripten_bind_btDiscreteDynamicsWorld_updateSingleAabb_1.apply(null,arguments)},Ff=b._emscripten_bind_btTransform_btTransform_2=function(){return b.asm._emscripten_bind_btTransform_btTransform_2.apply(null,arguments)},Gf=b._emscripten_bind_btTransform_btTransform_0=
-function(){return b.asm._emscripten_bind_btTransform_btTransform_0.apply(null,arguments)},Hf=b._emscripten_bind_btPairCachingGhostObject_getUserIndex_0=function(){return b.asm._emscripten_bind_btPairCachingGhostObject_getUserIndex_0.apply(null,arguments)},If=b._emscripten_bind_btVector3_op_sub_1=function(){return b.asm._emscripten_bind_btVector3_op_sub_1.apply(null,arguments)},Jf=b._emscripten_bind_btWheelInfo_set_m_wheelsRadius_1=function(){return b.asm._emscripten_bind_btWheelInfo_set_m_wheelsRadius_1.apply(null,
-arguments)},Kf=b._emscripten_bind_btHeightfieldTerrainShape_getLocalScaling_0=function(){return b.asm._emscripten_bind_btHeightfieldTerrainShape_getLocalScaling_0.apply(null,arguments)},Lf=b._emscripten_bind_btQuaternion_length_0=function(){return b.asm._emscripten_bind_btQuaternion_length_0.apply(null,arguments)},Mf=b._emscripten_bind_btDispatcherInfo_set_m_enableSPU_1=function(){return b.asm._emscripten_bind_btDispatcherInfo_set_m_enableSPU_1.apply(null,arguments)},Nf=b._emscripten_bind_btWheelInfoConstructionInfo_get_m_wheelsDampingCompression_0=
-function(){return b.asm._emscripten_bind_btWheelInfoConstructionInfo_get_m_wheelsDampingCompression_0.apply(null,arguments)},Of=b._emscripten_bind_btWheelInfo_set_m_wheelsDampingCompression_1=function(){return b.asm._emscripten_bind_btWheelInfo_set_m_wheelsDampingCompression_1.apply(null,arguments)},Pf=b._emscripten_bind_btCollisionObject_setActivationState_1=function(){return b.asm._emscripten_bind_btCollisionObject_setActivationState_1.apply(null,arguments)},Qf=b._emscripten_bind_btQuaternion_angle_1=
-function(){return b.asm._emscripten_bind_btQuaternion_angle_1.apply(null,arguments)},Rf=b._emscripten_bind_btPersistentManifold___destroy___0=function(){return b.asm._emscripten_bind_btPersistentManifold___destroy___0.apply(null,arguments)},Sf=b._emscripten_bind_btConstraintSetting_get_m_impulseClamp_0=function(){return b.asm._emscripten_bind_btConstraintSetting_get_m_impulseClamp_0.apply(null,arguments)},Tf=b._emscripten_bind_btCylinderShapeZ___destroy___0=function(){return b.asm._emscripten_bind_btCylinderShapeZ___destroy___0.apply(null,
-arguments)},Uf=b._emscripten_bind_btMatrix3x3___destroy___0=function(){return b.asm._emscripten_bind_btMatrix3x3___destroy___0.apply(null,arguments)};b.setTempRet0=function(){return b.asm.setTempRet0.apply(null,arguments)};
-var Vf=b._emscripten_bind_btQuaternion_angleShortestPath_1=function(){return b.asm._emscripten_bind_btQuaternion_angleShortestPath_1.apply(null,arguments)},Wf=b._emscripten_bind_ConvexResultCallback_hasHit_0=function(){return b.asm._emscripten_bind_ConvexResultCallback_hasHit_0.apply(null,arguments)},Xf=b._emscripten_bind_btCollisionShape_calculateLocalInertia_2=function(){return b.asm._emscripten_bind_btCollisionShape_calculateLocalInertia_2.apply(null,arguments)},Yf=b._emscripten_bind_btGeneric6DofSpringConstraint_setBreakingImpulseThreshold_1=
-function(){return b.asm._emscripten_bind_btGeneric6DofSpringConstraint_setBreakingImpulseThreshold_1.apply(null,arguments)},Zf=b._emscripten_bind_btCollisionWorld_convexSweepTest_5=function(){return b.asm._emscripten_bind_btCollisionWorld_convexSweepTest_5.apply(null,arguments)},$f=b._emscripten_bind_ClosestRayResultCallback_get_m_closestHitFraction_0=function(){return b.asm._emscripten_bind_ClosestRayResultCallback_get_m_closestHitFraction_0.apply(null,arguments)},ag=b._emscripten_bind_btRaycastVehicle_getWheelInfo_1=
-function(){return b.asm._emscripten_bind_btRaycastVehicle_getWheelInfo_1.apply(null,arguments)},bg=b._emscripten_bind_ClosestRayResultCallback_set_m_hitPointWorld_1=function(){return b.asm._emscripten_bind_ClosestRayResultCallback_set_m_hitPointWorld_1.apply(null,arguments)},cg=b._emscripten_bind_btVehicleRaycasterResult___destroy___0=function(){return b.asm._emscripten_bind_btVehicleRaycasterResult___destroy___0.apply(null,arguments)},dg=b._emscripten_bind_btCapsuleShapeX_calculateLocalInertia_2=
-function(){return b.asm._emscripten_bind_btCapsuleShapeX_calculateLocalInertia_2.apply(null,arguments)},eg=b._emscripten_bind_btConstraintSetting_set_m_damping_1=function(){return b.asm._emscripten_bind_btConstraintSetting_set_m_damping_1.apply(null,arguments)},fg=b._emscripten_bind_btWheelInfo_set_m_bIsFrontWheel_1=function(){return b.asm._emscripten_bind_btWheelInfo_set_m_bIsFrontWheel_1.apply(null,arguments)},gg=b._emscripten_bind_btRigidBody_setCcdMotionThreshold_1=function(){return b.asm._emscripten_bind_btRigidBody_setCcdMotionThreshold_1.apply(null,
-arguments)},hg=b._emscripten_bind_btConvexHullShape_setMargin_1=function(){return b.asm._emscripten_bind_btConvexHullShape_setMargin_1.apply(null,arguments)},ig=b._emscripten_bind_btRigidBody_applyForce_2=function(){return b.asm._emscripten_bind_btRigidBody_applyForce_2.apply(null,arguments)},jg=b._emscripten_bind_btConeShapeZ_calculateLocalInertia_2=function(){return b.asm._emscripten_bind_btConeShapeZ_calculateLocalInertia_2.apply(null,arguments)},kg=b._emscripten_bind_btConstraintSetting_set_m_tau_1=
-function(){return b.asm._emscripten_bind_btConstraintSetting_set_m_tau_1.apply(null,arguments)},lg=b._emscripten_bind_btConvexHullShape_calculateLocalInertia_2=function(){return b.asm._emscripten_bind_btConvexHullShape_calculateLocalInertia_2.apply(null,arguments)},mg=b._emscripten_bind_btGeneric6DofConstraint_getParam_2=function(){return b.asm._emscripten_bind_btGeneric6DofConstraint_getParam_2.apply(null,arguments)},ng=b._emscripten_bind_ClosestConvexResultCallback_get_m_convexFromWorld_0=function(){return b.asm._emscripten_bind_ClosestConvexResultCallback_get_m_convexFromWorld_0.apply(null,
-arguments)},og=b._emscripten_bind_btQuaternion_op_div_1=function(){return b.asm._emscripten_bind_btQuaternion_op_div_1.apply(null,arguments)},pg=b._emscripten_bind_RaycastInfo_get_m_contactPointWS_0=function(){return b.asm._emscripten_bind_RaycastInfo_get_m_contactPointWS_0.apply(null,arguments)},qg=b._emscripten_bind_btRigidBody_getTotalTorque_0=function(){return b.asm._emscripten_bind_btRigidBody_getTotalTorque_0.apply(null,arguments)},rg=b._emscripten_bind_btCapsuleShape_getHalfHeight_0=function(){return b.asm._emscripten_bind_btCapsuleShape_getHalfHeight_0.apply(null,
-arguments)},sg=b._emscripten_bind_btSphereShape_calculateLocalInertia_2=function(){return b.asm._emscripten_bind_btSphereShape_calculateLocalInertia_2.apply(null,arguments)},tg=b._emscripten_bind_btCollisionObject_setInterpolationAngularVelocity_1=function(){return b.asm._emscripten_bind_btCollisionObject_setInterpolationAngularVelocity_1.apply(null,arguments)},ug=b._emscripten_bind_btSliderConstraint_setBreakingImpulseThreshold_1=function(){return b.asm._emscripten_bind_btSliderConstraint_setBreakingImpulseThreshold_1.apply(null,
-arguments)},vg=b._emscripten_bind_btCollisionDispatcher_getManifoldByIndexInternal_1=function(){return b.asm._emscripten_bind_btCollisionDispatcher_getManifoldByIndexInternal_1.apply(null,arguments)},wg=b._emscripten_bind_ClosestRayResultCallback_get_m_rayToWorld_0=function(){return b.asm._emscripten_bind_ClosestRayResultCallback_get_m_rayToWorld_0.apply(null,arguments)},xg=b._emscripten_bind_btGhostObject_setFriction_1=function(){return b.asm._emscripten_bind_btGhostObject_setFriction_1.apply(null,
-arguments)},yg=b._emscripten_bind_btCollisionWorld_rayTest_3=function(){return b.asm._emscripten_bind_btCollisionWorld_rayTest_3.apply(null,arguments)},zg=b._emscripten_bind_btCollisionObject_setUserPointer_1=function(){return b.asm._emscripten_bind_btCollisionObject_setUserPointer_1.apply(null,arguments)};b.stackRestore=function(){return b.asm.stackRestore.apply(null,arguments)};
-var Ag=b._emscripten_bind_btRigidBody_setCcdSweptSphereRadius_1=function(){return b.asm._emscripten_bind_btRigidBody_setCcdSweptSphereRadius_1.apply(null,arguments)},Bg=b._emscripten_bind_btCylinderShapeZ_setMargin_1=function(){return b.asm._emscripten_bind_btCylinderShapeZ_setMargin_1.apply(null,arguments)},Cg=b._emscripten_bind_btRigidBody_setFriction_1=function(){return b.asm._emscripten_bind_btRigidBody_setFriction_1.apply(null,arguments)},Dg=b._emscripten_bind_LocalConvexResult_set_m_hitPointLocal_1=
-function(){return b.asm._emscripten_bind_LocalConvexResult_set_m_hitPointLocal_1.apply(null,arguments)},Eg=b._emscripten_bind_btGhostObject_setWorldTransform_1=function(){return b.asm._emscripten_bind_btGhostObject_setWorldTransform_1.apply(null,arguments)},Fg=b._emscripten_bind_LayaMotionState_getWorldTransform_1=function(){return b.asm._emscripten_bind_LayaMotionState_getWorldTransform_1.apply(null,arguments)},Gg=b._emscripten_bind_btManifoldPoint_getAppliedImpulse_0=function(){return b.asm._emscripten_bind_btManifoldPoint_getAppliedImpulse_0.apply(null,
-arguments)},Hg=b._emscripten_bind_btDiscreteDynamicsWorld_removeRigidBody_1=function(){return b.asm._emscripten_bind_btDiscreteDynamicsWorld_removeRigidBody_1.apply(null,arguments)},Ig=b._emscripten_bind_btConvexHullShape___destroy___0=function(){return b.asm._emscripten_bind_btConvexHullShape___destroy___0.apply(null,arguments)},Jg=b._emscripten_bind_btCapsuleShape_getUpAxis_0=function(){return b.asm._emscripten_bind_btCapsuleShape_getUpAxis_0.apply(null,arguments)},Kg=b._emscripten_bind_btDiscreteDynamicsWorld_getBroadphase_0=
-function(){return b.asm._emscripten_bind_btDiscreteDynamicsWorld_getBroadphase_0.apply(null,arguments)},Lg=b._emscripten_bind_btDiscreteDynamicsWorld_addAction_1=function(){return b.asm._emscripten_bind_btDiscreteDynamicsWorld_addAction_1.apply(null,arguments)},Mg=b._emscripten_bind_btVector4_setX_1=function(){return b.asm._emscripten_bind_btVector4_setX_1.apply(null,arguments)},Ng=b._emscripten_bind_btRaycastVehicle_setPitchControl_1=function(){return b.asm._emscripten_bind_btRaycastVehicle_setPitchControl_1.apply(null,
-arguments)},Og=b._emscripten_bind_btKinematicCharacterController_jump_1=function(){return b.asm._emscripten_bind_btKinematicCharacterController_jump_1.apply(null,arguments)},Pg=b._emscripten_bind_btCollisionObject_getUserPointer_0=function(){return b.asm._emscripten_bind_btCollisionObject_getUserPointer_0.apply(null,arguments)},Qg=b._emscripten_bind_btWheelInfo_set_m_raycastInfo_1=function(){return b.asm._emscripten_bind_btWheelInfo_set_m_raycastInfo_1.apply(null,arguments)},Rg=b._emscripten_bind_btCollisionWorld_contactTest_2=
-function(){return b.asm._emscripten_bind_btCollisionWorld_contactTest_2.apply(null,arguments)},Sg=b._emscripten_bind_btConeTwistConstraint_setMaxMotorImpulseNormalized_1=function(){return b.asm._emscripten_bind_btConeTwistConstraint_setMaxMotorImpulseNormalized_1.apply(null,arguments)},Tg=b._emscripten_bind_AllHitsRayResultCallback_get_m_hitNormalWorld_0=function(){return b.asm._emscripten_bind_AllHitsRayResultCallback_get_m_hitNormalWorld_0.apply(null,arguments)},Ug=b._emscripten_bind_btRigidBody_upcast_1=
-function(){return b.asm._emscripten_bind_btRigidBody_upcast_1.apply(null,arguments)},Vg=b._emscripten_bind_btCollisionObject_getWorldTransform_0=function(){return b.asm._emscripten_bind_btCollisionObject_getWorldTransform_0.apply(null,arguments)},Wg=b._emscripten_bind_btVector4_setZ_1=function(){return b.asm._emscripten_bind_btVector4_setZ_1.apply(null,arguments)},Xg=b._emscripten_bind_btQuadWord_y_0=function(){return b.asm._emscripten_bind_btQuadWord_y_0.apply(null,arguments)},Yg=b._emscripten_bind_AllConvexResultCallback_hasHit_0=
-function(){return b.asm._emscripten_bind_AllConvexResultCallback_hasHit_0.apply(null,arguments)},Zg=b._emscripten_bind_btContactSolverInfo_set_m_solverMode_1=function(){return b.asm._emscripten_bind_btContactSolverInfo_set_m_solverMode_1.apply(null,arguments)},$g=b._emscripten_bind_btTransform_setFromOpenGLMatrix_1=function(){return b.asm._emscripten_bind_btTransform_setFromOpenGLMatrix_1.apply(null,arguments)},ah=b._emscripten_bind_btTransform_getBasis_0=function(){return b.asm._emscripten_bind_btTransform_getBasis_0.apply(null,
-arguments)},bh=b._emscripten_bind_btPairCachingGhostObject_setFriction_1=function(){return b.asm._emscripten_bind_btPairCachingGhostObject_setFriction_1.apply(null,arguments)},ch=b._emscripten_bind_AllConvexResultCallback_set_m_hitFractions_1=function(){return b.asm._emscripten_bind_AllConvexResultCallback_set_m_hitFractions_1.apply(null,arguments)},dh=b._emscripten_bind_btDispatcherInfo_set_m_useEpa_1=function(){return b.asm._emscripten_bind_btDispatcherInfo_set_m_useEpa_1.apply(null,arguments)},
-eh=b._emscripten_bind_btCollisionDispatcher_getNumManifolds_0=function(){return b.asm._emscripten_bind_btCollisionDispatcher_getNumManifolds_0.apply(null,arguments)},fh=b._emscripten_bind_btVehicleRaycaster___destroy___0=function(){return b.asm._emscripten_bind_btVehicleRaycaster___destroy___0.apply(null,arguments)},gh=b._emscripten_bind_ClosestRayResultCallback___destroy___0=function(){return b.asm._emscripten_bind_ClosestRayResultCallback___destroy___0.apply(null,arguments)},hh=b._emscripten_bind_btConeShapeX_getLocalScaling_0=
-function(){return b.asm._emscripten_bind_btConeShapeX_getLocalScaling_0.apply(null,arguments)},ih=b._emscripten_bind_btCylinderShapeX_setMargin_1=function(){return b.asm._emscripten_bind_btCylinderShapeX_setMargin_1.apply(null,arguments)},jh=b._emscripten_bind_AllConvexResultCallback_set_m_convexToWorld_1=function(){return b.asm._emscripten_bind_AllConvexResultCallback_set_m_convexToWorld_1.apply(null,arguments)},kh=b._emscripten_bind_AllConvexResultCallback___destroy___0=function(){return b.asm._emscripten_bind_AllConvexResultCallback___destroy___0.apply(null,
-arguments)},lh=b._emscripten_bind_btQuadWord_w_0=function(){return b.asm._emscripten_bind_btQuadWord_w_0.apply(null,arguments)},mh=b._emscripten_bind_btCompoundShape___destroy___0=function(){return b.asm._emscripten_bind_btCompoundShape___destroy___0.apply(null,arguments)},nh=b._emscripten_bind_btAxisSweep3___destroy___0=function(){return b.asm._emscripten_bind_btAxisSweep3___destroy___0.apply(null,arguments)},oh=b._emscripten_bind_btDiscreteDynamicsWorld_contactTest_2=function(){return b.asm._emscripten_bind_btDiscreteDynamicsWorld_contactTest_2.apply(null,
-arguments)},ph=b._emscripten_bind_btKinematicCharacterController_setUp_1=function(){return b.asm._emscripten_bind_btKinematicCharacterController_setUp_1.apply(null,arguments)},qh=b._emscripten_bind_btBvhTriangleMeshShape_calculateLocalInertia_2=function(){return b.asm._emscripten_bind_btBvhTriangleMeshShape_calculateLocalInertia_2.apply(null,arguments)},rh=b._emscripten_bind_AllHitsRayResultCallback_set_m_collisionObjects_1=function(){return b.asm._emscripten_bind_AllHitsRayResultCallback_set_m_collisionObjects_1.apply(null,
-arguments)},sh=b._emscripten_bind_btCompoundShape_getNumChildShapes_0=function(){return b.asm._emscripten_bind_btCompoundShape_getNumChildShapes_0.apply(null,arguments)},th=b._emscripten_bind_AllHitsRayResultCallback_get_m_collisionFilterGroup_0=function(){return b.asm._emscripten_bind_AllHitsRayResultCallback_get_m_collisionFilterGroup_0.apply(null,arguments)},uh=b._emscripten_bind_btCapsuleShape_setLocalScaling_1=function(){return b.asm._emscripten_bind_btCapsuleShape_setLocalScaling_1.apply(null,
-arguments)},vh=b._emscripten_bind_btGhostObject_btGhostObject_0=function(){return b.asm._emscripten_bind_btGhostObject_btGhostObject_0.apply(null,arguments)},wh=b._emscripten_bind_btConeShape_btConeShape_2=function(){return b.asm._emscripten_bind_btConeShape_btConeShape_2.apply(null,arguments)},xh=b._emscripten_bind_btRigidBodyConstructionInfo_set_m_additionalAngularDampingFactor_1=function(){return b.asm._emscripten_bind_btRigidBodyConstructionInfo_set_m_additionalAngularDampingFactor_1.apply(null,
-arguments)},yh=b._emscripten_bind_btManifoldPoint_set_m_localPointA_1=function(){return b.asm._emscripten_bind_btManifoldPoint_set_m_localPointA_1.apply(null,arguments)},zh=b._emscripten_bind_btCapsuleShapeX_setMargin_1=function(){return b.asm._emscripten_bind_btCapsuleShapeX_setMargin_1.apply(null,arguments)},Ah=b._emscripten_bind_btRigidBody_getCcdMotionThreshold_0=function(){return b.asm._emscripten_bind_btRigidBody_getCcdMotionThreshold_0.apply(null,arguments)},Bh=b._emscripten_bind_AllConvexResultCallback_set_m_collisionObjects_1=
-function(){return b.asm._emscripten_bind_AllConvexResultCallback_set_m_collisionObjects_1.apply(null,arguments)},Ch=b._emscripten_bind_btVector3_dot_1=function(){return b.asm._emscripten_bind_btVector3_dot_1.apply(null,arguments)},Dh=b._emscripten_bind_btGhostObject_getUserPointer_0=function(){return b.asm._emscripten_bind_btGhostObject_getUserPointer_0.apply(null,arguments)},Eh=b._emscripten_bind_btVector4_op_add_1=function(){return b.asm._emscripten_bind_btVector4_op_add_1.apply(null,arguments)},
-Fh=b._emscripten_bind_btWheelInfo___destroy___0=function(){return b.asm._emscripten_bind_btWheelInfo___destroy___0.apply(null,arguments)},Gh=b._emscripten_bind_btHingeConstraint_btHingeConstraint_4=function(){return b.asm._emscripten_bind_btHingeConstraint_btHingeConstraint_4.apply(null,arguments)},Hh=b._emscripten_bind_btTransform_setRotation_1=function(){return b.asm._emscripten_bind_btTransform_setRotation_1.apply(null,arguments)},Ih=b._emscripten_bind_btPairCachingGhostObject_getNumOverlappingObjects_0=
-function(){return b.asm._emscripten_bind_btPairCachingGhostObject_getNumOverlappingObjects_0.apply(null,arguments)},Jh=b._emscripten_bind_btPoint2PointConstraint_enableFeedback_1=function(){return b.asm._emscripten_bind_btPoint2PointConstraint_enableFeedback_1.apply(null,arguments)},Kh=b._emscripten_bind_ClosestRayResultCallback_set_m_collisionFilterGroup_1=function(){return b.asm._emscripten_bind_ClosestRayResultCallback_set_m_collisionFilterGroup_1.apply(null,arguments)},Lh=b._emscripten_bind_btAxisSweep3_btAxisSweep3_2=
-function(){return b.asm._emscripten_bind_btAxisSweep3_btAxisSweep3_2.apply(null,arguments)},Mh=b._emscripten_bind_btAxisSweep3_btAxisSweep3_3=function(){return b.asm._emscripten_bind_btAxisSweep3_btAxisSweep3_3.apply(null,arguments)},Nh=b._emscripten_bind_btConstraintSetting_set_m_impulseClamp_1=function(){return b.asm._emscripten_bind_btConstraintSetting_set_m_impulseClamp_1.apply(null,arguments)},Oh=b._emscripten_bind_btVector3_setY_1=function(){return b.asm._emscripten_bind_btVector3_setY_1.apply(null,
-arguments)},Ph=b._emscripten_bind_btAxisSweep3_btAxisSweep3_4=function(){return b.asm._emscripten_bind_btAxisSweep3_btAxisSweep3_4.apply(null,arguments)},Qh=b._emscripten_bind_btAxisSweep3_btAxisSweep3_5=function(){return b.asm._emscripten_bind_btAxisSweep3_btAxisSweep3_5.apply(null,arguments)},Rh=b._emscripten_bind_btQuadWord_setX_1=function(){return b.asm._emscripten_bind_btQuadWord_setX_1.apply(null,arguments)},Sh=b._emscripten_bind_btCollisionObject_getFriction_0=function(){return b.asm._emscripten_bind_btCollisionObject_getFriction_0.apply(null,
-arguments)},Th=b._emscripten_bind_ClosestRayResultCallback_get_m_collisionFilterGroup_0=function(){return b.asm._emscripten_bind_ClosestRayResultCallback_get_m_collisionFilterGroup_0.apply(null,arguments)},Uh=b._emscripten_bind_btConvexHullShape_addPoint_2=function(){return b.asm._emscripten_bind_btConvexHullShape_addPoint_2.apply(null,arguments)},Vh=b._emscripten_bind_btGhostPairCallback___destroy___0=function(){return b.asm._emscripten_bind_btGhostPairCallback___destroy___0.apply(null,arguments)},
-Wh=b._emscripten_bind_AllHitsRayResultCallback_get_m_hitFractions_0=function(){return b.asm._emscripten_bind_AllHitsRayResultCallback_get_m_hitFractions_0.apply(null,arguments)},Xh=b._emscripten_bind_btRigidBodyConstructionInfo_get_m_additionalLinearDampingThresholdSqr_0=function(){return b.asm._emscripten_bind_btRigidBodyConstructionInfo_get_m_additionalLinearDampingThresholdSqr_0.apply(null,arguments)},Yh=b._emscripten_bind_btGhostObject_isActive_0=function(){return b.asm._emscripten_bind_btGhostObject_isActive_0.apply(null,
-arguments)},Zh=b._emscripten_bind_btOverlappingPairCache___destroy___0=function(){return b.asm._emscripten_bind_btOverlappingPairCache___destroy___0.apply(null,arguments)},$h=b._emscripten_bind_btRigidBody_setUserIndex_1=function(){return b.asm._emscripten_bind_btRigidBody_setUserIndex_1.apply(null,arguments)},ai=b._emscripten_bind_btContactSolverInfo_get_m_solverMode_0=function(){return b.asm._emscripten_bind_btContactSolverInfo_get_m_solverMode_0.apply(null,arguments)},bi=b._emscripten_bind_btConstraintSetting___destroy___0=
-function(){return b.asm._emscripten_bind_btConstraintSetting___destroy___0.apply(null,arguments)},ci=b._emscripten_bind_btWheelInfo_btWheelInfo_1=function(){return b.asm._emscripten_bind_btWheelInfo_btWheelInfo_1.apply(null,arguments)},di=b._emscripten_bind_RayResultCallback___destroy___0=function(){return b.asm._emscripten_bind_RayResultCallback___destroy___0.apply(null,arguments)},ei=b._emscripten_bind_RayResultCallback_set_m_closestHitFraction_1=function(){return b.asm._emscripten_bind_RayResultCallback_set_m_closestHitFraction_1.apply(null,
-arguments)},fi=b._emscripten_bind_RaycastInfo_get_m_contactNormalWS_0=function(){return b.asm._emscripten_bind_RaycastInfo_get_m_contactNormalWS_0.apply(null,arguments)},gi=b._emscripten_bind_btPersistentManifold_getBody0_0=function(){return b.asm._emscripten_bind_btPersistentManifold_getBody0_0.apply(null,arguments)},hi=b._emscripten_bind_btConeShapeX_btConeShapeX_2=function(){return b.asm._emscripten_bind_btConeShapeX_btConeShapeX_2.apply(null,arguments)},ii=b._emscripten_bind_btConeTwistConstraint_enableFeedback_1=
-function(){return b.asm._emscripten_bind_btConeTwistConstraint_enableFeedback_1.apply(null,arguments)},ji=b._emscripten_bind_RaycastInfo_get_m_hardPointWS_0=function(){return b.asm._emscripten_bind_RaycastInfo_get_m_hardPointWS_0.apply(null,arguments)},ki=b._emscripten_bind_btCapsuleShapeZ_setLocalScaling_1=function(){return b.asm._emscripten_bind_btCapsuleShapeZ_setLocalScaling_1.apply(null,arguments)},li=b._emscripten_bind_ClosestConvexResultCallback_get_m_closestHitFraction_0=function(){return b.asm._emscripten_bind_ClosestConvexResultCallback_get_m_closestHitFraction_0.apply(null,
-arguments)},mi=b._emscripten_bind_AllConvexResultCallback_set_m_hitPointWorld_1=function(){return b.asm._emscripten_bind_AllConvexResultCallback_set_m_hitPointWorld_1.apply(null,arguments)},ni=b._emscripten_bind_btSliderConstraint_setUpperLinLimit_1=function(){return b.asm._emscripten_bind_btSliderConstraint_setUpperLinLimit_1.apply(null,arguments)},oi=b._emscripten_bind_btConeTwistConstraint_btConeTwistConstraint_2=function(){return b.asm._emscripten_bind_btConeTwistConstraint_btConeTwistConstraint_2.apply(null,
-arguments)},pi=b._emscripten_bind_btRigidBody_isStaticOrKinematicObject_0=function(){return b.asm._emscripten_bind_btRigidBody_isStaticOrKinematicObject_0.apply(null,arguments)},qi=b._emscripten_bind_btConcaveShape___destroy___0=function(){return b.asm._emscripten_bind_btConcaveShape___destroy___0.apply(null,arguments)},ri=b._emscripten_bind_btConeTwistConstraint_btConeTwistConstraint_4=function(){return b.asm._emscripten_bind_btConeTwistConstraint_btConeTwistConstraint_4.apply(null,arguments)},si=
-b._emscripten_bind_btQuaternion_x_0=function(){return b.asm._emscripten_bind_btQuaternion_x_0.apply(null,arguments)},ti=b._emscripten_bind_btCompoundShape_setMargin_1=function(){return b.asm._emscripten_bind_btCompoundShape_setMargin_1.apply(null,arguments)},ui=b._emscripten_bind_btVehicleRaycasterResult_set_m_distFraction_1=function(){return b.asm._emscripten_bind_btVehicleRaycasterResult_set_m_distFraction_1.apply(null,arguments)},vi=b._emscripten_bind_LocalConvexResult_set_m_hitNormalLocal_1=function(){return b.asm._emscripten_bind_LocalConvexResult_set_m_hitNormalLocal_1.apply(null,
-arguments)},wi=b._emscripten_bind_btConcaveShape_setLocalScaling_1=function(){return b.asm._emscripten_bind_btConcaveShape_setLocalScaling_1.apply(null,arguments)},xi=b._emscripten_bind_btHingeConstraint_setParam_3=function(){return b.asm._emscripten_bind_btHingeConstraint_setParam_3.apply(null,arguments)},yi=b._emscripten_bind_btDiscreteDynamicsWorld_getDispatchInfo_0=function(){return b.asm._emscripten_bind_btDiscreteDynamicsWorld_getDispatchInfo_0.apply(null,arguments)},zi=b._emscripten_bind_btConeShapeX_setLocalScaling_1=
-function(){return b.asm._emscripten_bind_btConeShapeX_setLocalScaling_1.apply(null,arguments)},Ai=b._emscripten_bind_btQuaternion_z_0=function(){return b.asm._emscripten_bind_btQuaternion_z_0.apply(null,arguments)},Bi=b._emscripten_bind_btConvexHullShape_btConvexHullShape_0=function(){return b.asm._emscripten_bind_btConvexHullShape_btConvexHullShape_0.apply(null,arguments)},Ci=b._emscripten_bind_btWheelInfo_set_m_maxSuspensionForce_1=function(){return b.asm._emscripten_bind_btWheelInfo_set_m_maxSuspensionForce_1.apply(null,
-arguments)},Di=b._emscripten_bind_btConstraintSetting_get_m_damping_0=function(){return b.asm._emscripten_bind_btConstraintSetting_get_m_damping_0.apply(null,arguments)},Ei=b._emscripten_bind_btGhostObject___destroy___0=function(){return b.asm._emscripten_bind_btGhostObject___destroy___0.apply(null,arguments)},Fi=b._emscripten_bind_btWheelInfo_get_m_maxSuspensionForce_0=function(){return b.asm._emscripten_bind_btWheelInfo_get_m_maxSuspensionForce_0.apply(null,arguments)},Gi=b._emscripten_bind_btGhostObject_setContactProcessingThreshold_1=
-function(){return b.asm._emscripten_bind_btGhostObject_setContactProcessingThreshold_1.apply(null,arguments)},Hi=b._emscripten_bind_btCollisionWorld_getBroadphase_0=function(){return b.asm._emscripten_bind_btCollisionWorld_getBroadphase_0.apply(null,arguments)},Ii=b._emscripten_bind_btCylinderShape_btCylinderShape_1=function(){return b.asm._emscripten_bind_btCylinderShape_btCylinderShape_1.apply(null,arguments)},Ji=b._emscripten_bind_btDispatcherInfo_set_m_stepCount_1=function(){return b.asm._emscripten_bind_btDispatcherInfo_set_m_stepCount_1.apply(null,
-arguments)},Ki=b._emscripten_bind_btContactSolverInfo_set_m_splitImpulse_1=function(){return b.asm._emscripten_bind_btContactSolverInfo_set_m_splitImpulse_1.apply(null,arguments)},Li=b._emscripten_bind_btRigidBody_getGravity_0=function(){return b.asm._emscripten_bind_btRigidBody_getGravity_0.apply(null,arguments)},Mi=b._emscripten_bind_btKinematicCharacterController_updateAction_2=function(){return b.asm._emscripten_bind_btKinematicCharacterController_updateAction_2.apply(null,arguments)},Ni=b._emscripten_bind_btGImpactMeshShape___destroy___0=
-function(){return b.asm._emscripten_bind_btGImpactMeshShape___destroy___0.apply(null,arguments)},Oi=b._emscripten_bind_btBroadphaseProxy_set_m_collisionFilterMask_1=function(){return b.asm._emscripten_bind_btBroadphaseProxy_set_m_collisionFilterMask_1.apply(null,arguments)},Pi=b._emscripten_bind_btDefaultMotionState_btDefaultMotionState_0=function(){return b.asm._emscripten_bind_btDefaultMotionState_btDefaultMotionState_0.apply(null,arguments)},Qi=b._emscripten_bind_btDefaultMotionState_btDefaultMotionState_1=
-function(){return b.asm._emscripten_bind_btDefaultMotionState_btDefaultMotionState_1.apply(null,arguments)},Ri=b._emscripten_bind_btCompoundShape_getChildShape_1=function(){return b.asm._emscripten_bind_btCompoundShape_getChildShape_1.apply(null,arguments)},Si=b._emscripten_bind_btKinematicCharacterController_canJump_0=function(){return b.asm._emscripten_bind_btKinematicCharacterController_canJump_0.apply(null,arguments)},Ti=b._emscripten_bind_btPairCachingGhostObject_setUserIndex_1=function(){return b.asm._emscripten_bind_btPairCachingGhostObject_setUserIndex_1.apply(null,
-arguments)},Ui=b._emscripten_bind_btRigidBody_isActive_0=function(){return b.asm._emscripten_bind_btRigidBody_isActive_0.apply(null,arguments)},Vi=b._emscripten_bind_btRaycastVehicle_btRaycastVehicle_3=function(){return b.asm._emscripten_bind_btRaycastVehicle_btRaycastVehicle_3.apply(null,arguments)},Wi=b._emscripten_enum_PHY_ScalarType_PHY_DOUBLE=function(){return b.asm._emscripten_enum_PHY_ScalarType_PHY_DOUBLE.apply(null,arguments)},Xi=b._emscripten_bind_btCylinderShape_setLocalScaling_1=function(){return b.asm._emscripten_bind_btCylinderShape_setLocalScaling_1.apply(null,
-arguments)},Yi=b._emscripten_bind_btPairCachingGhostObject_getInterpolationAngularVelocity_0=function(){return b.asm._emscripten_bind_btPairCachingGhostObject_getInterpolationAngularVelocity_0.apply(null,arguments)},Zi=b._emscripten_bind_btCompoundShape_calculateLocalInertia_2=function(){return b.asm._emscripten_bind_btCompoundShape_calculateLocalInertia_2.apply(null,arguments)},$i=b._emscripten_bind_btGhostObject_getBroadphaseHandle_0=function(){return b.asm._emscripten_bind_btGhostObject_getBroadphaseHandle_0.apply(null,
-arguments)},aj=b._emscripten_bind_btCollisionWorld_getDispatchInfo_0=function(){return b.asm._emscripten_bind_btCollisionWorld_getDispatchInfo_0.apply(null,arguments)},bj=b._emscripten_bind_btSliderConstraint_getParam_2=function(){return b.asm._emscripten_bind_btSliderConstraint_getParam_2.apply(null,arguments)},cj=b._emscripten_bind_btConeShapeX___destroy___0=function(){return b.asm._emscripten_bind_btConeShapeX___destroy___0.apply(null,arguments)},dj=b._emscripten_bind_btCollisionObject_getCollisionFlags_0=
-function(){return b.asm._emscripten_bind_btCollisionObject_getCollisionFlags_0.apply(null,arguments)},ej=b._emscripten_bind_btDispatcherInfo_set_m_enableSatConvex_1=function(){return b.asm._emscripten_bind_btDispatcherInfo_set_m_enableSatConvex_1.apply(null,arguments)},fj=b._emscripten_bind_btConeTwistConstraint_enableMotor_1=function(){return b.asm._emscripten_bind_btConeTwistConstraint_enableMotor_1.apply(null,arguments)},Ya=b._emscripten_replace_memory=function(){return b.asm._emscripten_replace_memory.apply(null,
-arguments)},gj=b._emscripten_bind_btVehicleRaycasterResult_get_m_hitPointInWorld_0=function(){return b.asm._emscripten_bind_btVehicleRaycasterResult_get_m_hitPointInWorld_0.apply(null,arguments)},hj=b._emscripten_bind_btRaycastVehicle_setCoordinateSystem_3=function(){return b.asm._emscripten_bind_btRaycastVehicle_setCoordinateSystem_3.apply(null,arguments)},ij=b._emscripten_bind_btDefaultCollisionConfiguration_btDefaultCollisionConfiguration_0=function(){return b.asm._emscripten_bind_btDefaultCollisionConfiguration_btDefaultCollisionConfiguration_0.apply(null,
-arguments)},jj=b._emscripten_bind_btPairCachingGhostObject_setRestitution_1=function(){return b.asm._emscripten_bind_btPairCachingGhostObject_setRestitution_1.apply(null,arguments)},kj=b._emscripten_bind_btDefaultCollisionConfiguration_btDefaultCollisionConfiguration_1=function(){return b.asm._emscripten_bind_btDefaultCollisionConfiguration_btDefaultCollisionConfiguration_1.apply(null,arguments)},lj=b._emscripten_bind_btSphereShape___destroy___0=function(){return b.asm._emscripten_bind_btSphereShape___destroy___0.apply(null,
-arguments)},mj=b._emscripten_bind_btQuaternion_getAngle_0=function(){return b.asm._emscripten_bind_btQuaternion_getAngle_0.apply(null,arguments)},nj=b._emscripten_bind_btSliderConstraint_getBreakingImpulseThreshold_0=function(){return b.asm._emscripten_bind_btSliderConstraint_getBreakingImpulseThreshold_0.apply(null,arguments)},oj=b._emscripten_bind_btRigidBody_getActivationState_0=function(){return b.asm._emscripten_bind_btRigidBody_getActivationState_0.apply(null,arguments)},pj=b._emscripten_bind_btRigidBodyConstructionInfo_set_m_additionalDampingFactor_1=
-function(){return b.asm._emscripten_bind_btRigidBodyConstructionInfo_set_m_additionalDampingFactor_1.apply(null,arguments)},qj=b._emscripten_bind_btCollisionObject_setContactProcessingThreshold_1=function(){return b.asm._emscripten_bind_btCollisionObject_setContactProcessingThreshold_1.apply(null,arguments)},rj=b._emscripten_bind_btGhostObject_setCcdMotionThreshold_1=function(){return b.asm._emscripten_bind_btGhostObject_setCcdMotionThreshold_1.apply(null,arguments)},sj=b._emscripten_bind_btHingeConstraint_setMotorTarget_2=
-function(){return b.asm._emscripten_bind_btHingeConstraint_setMotorTarget_2.apply(null,arguments)},tj=b._emscripten_bind_btDiscreteDynamicsWorld_clearForces_0=function(){return b.asm._emscripten_bind_btDiscreteDynamicsWorld_clearForces_0.apply(null,arguments)},uj=b._emscripten_bind_btRigidBodyConstructionInfo_get_m_additionalAngularDampingFactor_0=function(){return b.asm._emscripten_bind_btRigidBodyConstructionInfo_get_m_additionalAngularDampingFactor_0.apply(null,arguments)},vj=b._emscripten_bind_LocalConvexResult___destroy___0=
-function(){return b.asm._emscripten_bind_LocalConvexResult___destroy___0.apply(null,arguments)},wj=b._emscripten_bind_btSequentialImpulseConstraintSolver___destroy___0=function(){return b.asm._emscripten_bind_btSequentialImpulseConstraintSolver___destroy___0.apply(null,arguments)};b.setThrew=function(){return b.asm.setThrew.apply(null,arguments)};
-var xj=b._emscripten_bind_btConvexShape_getLocalScaling_0=function(){return b.asm._emscripten_bind_btConvexShape_getLocalScaling_0.apply(null,arguments)},yj=b._emscripten_bind_btRigidBodyConstructionInfo_set_m_additionalLinearDampingThresholdSqr_1=function(){return b.asm._emscripten_bind_btRigidBodyConstructionInfo_set_m_additionalLinearDampingThresholdSqr_1.apply(null,arguments)},zj=b._emscripten_bind_AllHitsRayResultCallback_set_m_collisionFilterGroup_1=function(){return b.asm._emscripten_bind_AllHitsRayResultCallback_set_m_collisionFilterGroup_1.apply(null,
-arguments)},Aj=b._emscripten_bind_btCollisionWorld_addCollisionObject_3=function(){return b.asm._emscripten_bind_btCollisionWorld_addCollisionObject_3.apply(null,arguments)},Bj=b._emscripten_bind_btRigidBody_getCollisionFlags_0=function(){return b.asm._emscripten_bind_btRigidBody_getCollisionFlags_0.apply(null,arguments)},Cj=b._emscripten_bind_btCollisionShape_setLocalScaling_1=function(){return b.asm._emscripten_bind_btCollisionShape_setLocalScaling_1.apply(null,arguments)},Dj=b._emscripten_bind_btRigidBody_applyTorque_1=
-function(){return b.asm._emscripten_bind_btRigidBody_applyTorque_1.apply(null,arguments)},Ej=b._emscripten_bind_tVector3Array_size_0=function(){return b.asm._emscripten_bind_tVector3Array_size_0.apply(null,arguments)},Fj=b._emscripten_bind_btMatrix3x3_setEulerZYX_3=function(){return b.asm._emscripten_bind_btMatrix3x3_setEulerZYX_3.apply(null,arguments)},Gj=b._emscripten_bind_btDispatcherInfo_get_m_convexConservativeDistanceThreshold_0=function(){return b.asm._emscripten_bind_btDispatcherInfo_get_m_convexConservativeDistanceThreshold_0.apply(null,
-arguments)},Hj=b._emscripten_bind_btRigidBody_getUserPointer_0=function(){return b.asm._emscripten_bind_btRigidBody_getUserPointer_0.apply(null,arguments)},Ij=b._emscripten_bind_btKinematicCharacterController_setUpInterpolate_1=function(){return b.asm._emscripten_bind_btKinematicCharacterController_setUpInterpolate_1.apply(null,arguments)},Jj=b._emscripten_bind_btConvexHullShape_setLocalScaling_1=function(){return b.asm._emscripten_bind_btConvexHullShape_setLocalScaling_1.apply(null,arguments)},Kj=
-b._emscripten_bind_AllHitsRayResultCallback_get_m_collisionObjects_0=function(){return b.asm._emscripten_bind_AllHitsRayResultCallback_get_m_collisionObjects_0.apply(null,arguments)},Lj=b._emscripten_bind_btHeightfieldTerrainShape_calculateLocalInertia_2=function(){return b.asm._emscripten_bind_btHeightfieldTerrainShape_calculateLocalInertia_2.apply(null,arguments)},Mj=b._emscripten_bind_AllConvexResultCallback_set_m_convexFromWorld_1=function(){return b.asm._emscripten_bind_AllConvexResultCallback_set_m_convexFromWorld_1.apply(null,
-arguments)},Nj=b._emscripten_bind_btRigidBody_setMotionState_1=function(){return b.asm._emscripten_bind_btRigidBody_setMotionState_1.apply(null,arguments)},Oj=b._emscripten_bind_RayResultCallback_get_m_collisionFilterMask_0=function(){return b.asm._emscripten_bind_RayResultCallback_get_m_collisionFilterMask_0.apply(null,arguments)},Pj=b._emscripten_bind_btCollisionWorld_getDispatcher_0=function(){return b.asm._emscripten_bind_btCollisionWorld_getDispatcher_0.apply(null,arguments)},Qj=b._emscripten_bind_btVector4_dot_1=
-function(){return b.asm._emscripten_bind_btVector4_dot_1.apply(null,arguments)},Rj=b._emscripten_bind_btPoint2PointConstraint_get_m_setting_0=function(){return b.asm._emscripten_bind_btPoint2PointConstraint_get_m_setting_0.apply(null,arguments)},Sj=b._emscripten_bind_btCollisionObject_setRollingFriction_1=function(){return b.asm._emscripten_bind_btCollisionObject_setRollingFriction_1.apply(null,arguments)},Tj=b._emscripten_bind_btCapsuleShape_getMargin_0=function(){return b.asm._emscripten_bind_btCapsuleShape_getMargin_0.apply(null,
-arguments)},Uj=b._emscripten_bind_RayResultCallback_set_m_collisionFilterGroup_1=function(){return b.asm._emscripten_bind_RayResultCallback_set_m_collisionFilterGroup_1.apply(null,arguments)},Vj=b._emscripten_bind_btVehicleRaycaster_castRay_3=function(){return b.asm._emscripten_bind_btVehicleRaycaster_castRay_3.apply(null,arguments)},Wj=b._emscripten_bind_btRaycastVehicle_getWheelTransformWS_1=function(){return b.asm._emscripten_bind_btRaycastVehicle_getWheelTransformWS_1.apply(null,arguments)},Xj=
-b._emscripten_bind_btRigidBody_getCenterOfMassTransform_0=function(){return b.asm._emscripten_bind_btRigidBody_getCenterOfMassTransform_0.apply(null,arguments)},Yj=b._emscripten_bind_btRigidBody_setDamping_2=function(){return b.asm._emscripten_bind_btRigidBody_setDamping_2.apply(null,arguments)},Zj=b._emscripten_bind_btDynamicsWorld_getDispatcher_0=function(){return b.asm._emscripten_bind_btDynamicsWorld_getDispatcher_0.apply(null,arguments)},ak=b._emscripten_bind_btGhostObject_setCollisionFlags_1=
-function(){return b.asm._emscripten_bind_btGhostObject_setCollisionFlags_1.apply(null,arguments)},bk=b._emscripten_bind_btMatrix3x3_getRotation_1=function(){return b.asm._emscripten_bind_btMatrix3x3_getRotation_1.apply(null,arguments)},ck=b._emscripten_bind_btPairCachingGhostObject_setCollisionFlags_1=function(){return b.asm._emscripten_bind_btPairCachingGhostObject_setCollisionFlags_1.apply(null,arguments)},dk=b._emscripten_bind_btWheelInfo_set_m_engineForce_1=function(){return b.asm._emscripten_bind_btWheelInfo_set_m_engineForce_1.apply(null,
-arguments)},ek=b._emscripten_bind_btConeTwistConstraint_setMaxMotorImpulse_1=function(){return b.asm._emscripten_bind_btConeTwistConstraint_setMaxMotorImpulse_1.apply(null,arguments)},fk=b._emscripten_bind_btPersistentManifold_getNumContacts_0=function(){return b.asm._emscripten_bind_btPersistentManifold_getNumContacts_0.apply(null,arguments)},gk=b._emscripten_bind_btCylinderShapeX_setLocalScaling_1=function(){return b.asm._emscripten_bind_btCylinderShapeX_setLocalScaling_1.apply(null,arguments)},
-hk=b._emscripten_bind_btBoxShape_setMargin_1=function(){return b.asm._emscripten_bind_btBoxShape_setMargin_1.apply(null,arguments)},ik=b._emscripten_bind_btCylinderShapeZ_btCylinderShapeZ_1=function(){return b.asm._emscripten_bind_btCylinderShapeZ_btCylinderShapeZ_1.apply(null,arguments)},jk=b._emscripten_bind_tVector3Array_at_1=function(){return b.asm._emscripten_bind_tVector3Array_at_1.apply(null,arguments)},kk=b._emscripten_bind_tVector3Array_pop_back_0=function(){return b.asm._emscripten_bind_tVector3Array_pop_back_0.apply(null,
-arguments)},lk=b._emscripten_bind_btRigidBodyConstructionInfo_get_m_additionalDamping_0=function(){return b.asm._emscripten_bind_btRigidBodyConstructionInfo_get_m_additionalDamping_0.apply(null,arguments)},mk=b._emscripten_bind_btWheelInfoConstructionInfo_get_m_bIsFrontWheel_0=function(){return b.asm._emscripten_bind_btWheelInfoConstructionInfo_get_m_bIsFrontWheel_0.apply(null,arguments)},nk=b._emscripten_bind_btPairCachingGhostObject_getBroadphaseHandle_0=function(){return b.asm._emscripten_bind_btPairCachingGhostObject_getBroadphaseHandle_0.apply(null,
-arguments)},ok=b._emscripten_bind_btWheelInfo_get_m_suspensionRelativeVelocity_0=function(){return b.asm._emscripten_bind_btWheelInfo_get_m_suspensionRelativeVelocity_0.apply(null,arguments)},pk=b._emscripten_bind_btPairCachingGhostObject_isStaticObject_0=function(){return b.asm._emscripten_bind_btPairCachingGhostObject_isStaticObject_0.apply(null,arguments)},qk=b._emscripten_bind_btCylinderShape_calculateLocalInertia_2=function(){return b.asm._emscripten_bind_btCylinderShape_calculateLocalInertia_2.apply(null,
-arguments)},rk=b._emscripten_bind_btPairCachingGhostObject_setCcdSweptSphereRadius_1=function(){return b.asm._emscripten_bind_btPairCachingGhostObject_setCcdSweptSphereRadius_1.apply(null,arguments)},sk=b._emscripten_bind_btHingeConstraint_enableAngularMotor_3=function(){return b.asm._emscripten_bind_btHingeConstraint_enableAngularMotor_3.apply(null,arguments)},tk=b._emscripten_bind_btRigidBody_setContactProcessingThreshold_1=function(){return b.asm._emscripten_bind_btRigidBody_setContactProcessingThreshold_1.apply(null,
-arguments)},uk=b._emscripten_bind_btGhostObject_isKinematicObject_0=function(){return b.asm._emscripten_bind_btGhostObject_isKinematicObject_0.apply(null,arguments)},vk=b._emscripten_bind_btCapsuleShapeZ_getLocalScaling_0=function(){return b.asm._emscripten_bind_btCapsuleShapeZ_getLocalScaling_0.apply(null,arguments)},wk=b._emscripten_bind_btRigidBody_applyImpulse_2=function(){return b.asm._emscripten_bind_btRigidBody_applyImpulse_2.apply(null,arguments)},xk=b._emscripten_bind_btFixedConstraint_setParam_3=
-function(){return b.asm._emscripten_bind_btFixedConstraint_setParam_3.apply(null,arguments)},yk=b._emscripten_bind_btConcaveShape_calculateLocalInertia_2=function(){return b.asm._emscripten_bind_btConcaveShape_calculateLocalInertia_2.apply(null,arguments)},zk=b._emscripten_bind_RaycastInfo_get_m_groundObject_0=function(){return b.asm._emscripten_bind_RaycastInfo_get_m_groundObject_0.apply(null,arguments)},Ak=b._emscripten_bind_btGImpactMeshShape_getLocalScaling_0=function(){return b.asm._emscripten_bind_btGImpactMeshShape_getLocalScaling_0.apply(null,
-arguments)},Bk=b._emscripten_bind_LocalConvexResult_set_m_localShapeInfo_1=function(){return b.asm._emscripten_bind_LocalConvexResult_set_m_localShapeInfo_1.apply(null,arguments)},Ck=b._emscripten_bind_btRigidBody_setAngularVelocity_1=function(){return b.asm._emscripten_bind_btRigidBody_setAngularVelocity_1.apply(null,arguments)},Dk=b._emscripten_bind_btWheelInfoConstructionInfo_set_m_bIsFrontWheel_1=function(){return b.asm._emscripten_bind_btWheelInfoConstructionInfo_set_m_bIsFrontWheel_1.apply(null,
-arguments)},Ek=b._emscripten_bind_btCapsuleShape___destroy___0=function(){return b.asm._emscripten_bind_btCapsuleShape___destroy___0.apply(null,arguments)},Fk=b._emscripten_bind_btConvexShape_setLocalScaling_1=function(){return b.asm._emscripten_bind_btConvexShape_setLocalScaling_1.apply(null,arguments)},Gk=b._emscripten_bind_btWheelInfo_get_m_wheelsDampingRelaxation_0=function(){return b.asm._emscripten_bind_btWheelInfo_get_m_wheelsDampingRelaxation_0.apply(null,arguments)},Hk=b._emscripten_bind_AllConvexResultCallback_get_m_collisionFilterMask_0=
-function(){return b.asm._emscripten_bind_AllConvexResultCallback_get_m_collisionFilterMask_0.apply(null,arguments)},Ik=b._emscripten_bind_btRaycastVehicle_setUserConstraintId_1=function(){return b.asm._emscripten_bind_btRaycastVehicle_setUserConstraintId_1.apply(null,arguments)},Jk=b._emscripten_bind_btPairCachingGhostObject_setContactProcessingThreshold_1=function(){return b.asm._emscripten_bind_btPairCachingGhostObject_setContactProcessingThreshold_1.apply(null,arguments)},Kk=b._emscripten_bind_btGeneric6DofConstraint_setLinearUpperLimit_1=
-function(){return b.asm._emscripten_bind_btGeneric6DofConstraint_setLinearUpperLimit_1.apply(null,arguments)},Lk=b._emscripten_bind_btCylinderShapeX_getLocalScaling_0=function(){return b.asm._emscripten_bind_btCylinderShapeX_getLocalScaling_0.apply(null,arguments)},Mk=b._emscripten_bind_ClosestRayResultCallback_get_m_collisionFilterMask_0=function(){return b.asm._emscripten_bind_ClosestRayResultCallback_get_m_collisionFilterMask_0.apply(null,arguments)},Nk=b._emscripten_bind_RayResultCallback_hasHit_0=
-function(){return b.asm._emscripten_bind_RayResultCallback_hasHit_0.apply(null,arguments)},Ok=b._emscripten_bind_btRigidBodyConstructionInfo_get_m_additionalAngularDampingThresholdSqr_0=function(){return b.asm._emscripten_bind_btRigidBodyConstructionInfo_get_m_additionalAngularDampingThresholdSqr_0.apply(null,arguments)},Pk=b._emscripten_bind_btCylinderShapeX_getMargin_0=function(){return b.asm._emscripten_bind_btCylinderShapeX_getMargin_0.apply(null,arguments)},Qk=b._emscripten_bind_btQuaternion_normalize_0=
-function(){return b.asm._emscripten_bind_btQuaternion_normalize_0.apply(null,arguments)},Rk=b._emscripten_bind_btQuaternion___destroy___0=function(){return b.asm._emscripten_bind_btQuaternion___destroy___0.apply(null,arguments)},Sk=b._emscripten_bind_ClosestConvexResultCallback_get_m_hitCollisionObject_0=function(){return b.asm._emscripten_bind_ClosestConvexResultCallback_get_m_hitCollisionObject_0.apply(null,arguments)},Tk=b._emscripten_bind_btWheelInfo_get_m_frictionSlip_0=function(){return b.asm._emscripten_bind_btWheelInfo_get_m_frictionSlip_0.apply(null,
-arguments)},Uk=b._emscripten_bind_btConeShapeZ_setLocalScaling_1=function(){return b.asm._emscripten_bind_btConeShapeZ_setLocalScaling_1.apply(null,arguments)},Vk=b._emscripten_bind_btPairCachingGhostObject_setActivationState_1=function(){return b.asm._emscripten_bind_btPairCachingGhostObject_setActivationState_1.apply(null,arguments)},Wk=b._emscripten_bind_btGeneric6DofSpringConstraint___destroy___0=function(){return b.asm._emscripten_bind_btGeneric6DofSpringConstraint___destroy___0.apply(null,arguments)},
-Xk=b._emscripten_bind_btRaycastVehicle_getNumWheels_0=function(){return b.asm._emscripten_bind_btRaycastVehicle_getNumWheels_0.apply(null,arguments)},Yk=b._emscripten_bind_btVehicleTuning_set_m_maxSuspensionTravelCm_1=function(){return b.asm._emscripten_bind_btVehicleTuning_set_m_maxSuspensionTravelCm_1.apply(null,arguments)},Zk=b._emscripten_bind_tBtCollisionObjectArray_clear_0=function(){return b.asm._emscripten_bind_tBtCollisionObjectArray_clear_0.apply(null,arguments)},$k=b._emscripten_bind_btGhostObject_setRollingFriction_1=
-function(){return b.asm._emscripten_bind_btGhostObject_setRollingFriction_1.apply(null,arguments)},al=b._emscripten_bind_btBoxShape_getLocalScaling_0=function(){return b.asm._emscripten_bind_btBoxShape_getLocalScaling_0.apply(null,arguments)},bl=b._emscripten_bind_btPoint2PointConstraint_set_m_setting_1=function(){return b.asm._emscripten_bind_btPoint2PointConstraint_set_m_setting_1.apply(null,arguments)},cl=b._emscripten_bind_btPairCachingGhostObject_getWorldTransform_0=function(){return b.asm._emscripten_bind_btPairCachingGhostObject_getWorldTransform_0.apply(null,
-arguments)},dl=b._emscripten_bind_btCompoundShape_btCompoundShape_0=function(){return b.asm._emscripten_bind_btCompoundShape_btCompoundShape_0.apply(null,arguments)},el=b._emscripten_bind_btCompoundShape_btCompoundShape_1=function(){return b.asm._emscripten_bind_btCompoundShape_btCompoundShape_1.apply(null,arguments)},fl=b._emscripten_bind_btOverlappingPairCache_setInternalGhostPairCallback_1=function(){return b.asm._emscripten_bind_btOverlappingPairCache_setInternalGhostPairCallback_1.apply(null,
-arguments)},gl=b._emscripten_bind_btStaticPlaneShape_btStaticPlaneShape_2=function(){return b.asm._emscripten_bind_btStaticPlaneShape_btStaticPlaneShape_2.apply(null,arguments)},xb=b.__GLOBAL__sub_I_btQuickprof_cpp=function(){return b.asm.__GLOBAL__sub_I_btQuickprof_cpp.apply(null,arguments)},hl=b._emscripten_bind_btConcaveShape_getLocalScaling_0=function(){return b.asm._emscripten_bind_btConcaveShape_getLocalScaling_0.apply(null,arguments)},il=b._emscripten_bind_btDispatcherInfo_set_m_convexConservativeDistanceThreshold_1=
-function(){return b.asm._emscripten_bind_btDispatcherInfo_set_m_convexConservativeDistanceThreshold_1.apply(null,arguments)},jl=b._emscripten_bind_RayResultCallback_get_m_collisionFilterGroup_0=function(){return b.asm._emscripten_bind_RayResultCallback_get_m_collisionFilterGroup_0.apply(null,arguments)},kl=b._emscripten_bind_btPairCachingGhostObject_setInterpolationLinearVelocity_1=function(){return b.asm._emscripten_bind_btPairCachingGhostObject_setInterpolationLinearVelocity_1.apply(null,arguments)},
-ll=b._emscripten_bind_btRigidBody_updateInertiaTensor_0=function(){return b.asm._emscripten_bind_btRigidBody_updateInertiaTensor_0.apply(null,arguments)},ml=b._emscripten_bind_tVector3Array_push_back_1=function(){return b.asm._emscripten_bind_tVector3Array_push_back_1.apply(null,arguments)},nl=b._emscripten_bind_AllHitsRayResultCallback_set_m_collisionObject_1=function(){return b.asm._emscripten_bind_AllHitsRayResultCallback_set_m_collisionObject_1.apply(null,arguments)},ol=b._emscripten_bind_btPairCachingGhostObject_setAnisotropicFriction_2=
-function(){return b.asm._emscripten_bind_btPairCachingGhostObject_setAnisotropicFriction_2.apply(null,arguments)},pl=b._emscripten_bind_tScalarArray_at_1=function(){return b.asm._emscripten_bind_tScalarArray_at_1.apply(null,arguments)},ql=b._emscripten_bind_btCollisionObject_getInterpolationLinearVelocity_0=function(){return b.asm._emscripten_bind_btCollisionObject_getInterpolationLinearVelocity_0.apply(null,arguments)},rl=b._emscripten_bind_AllHitsRayResultCallback_AllHitsRayResultCallback_2=function(){return b.asm._emscripten_bind_AllHitsRayResultCallback_AllHitsRayResultCallback_2.apply(null,
-arguments)},sl=b._emscripten_bind_btTransform_setOrigin_1=function(){return b.asm._emscripten_bind_btTransform_setOrigin_1.apply(null,arguments)},tl=b._emscripten_bind_ClosestRayResultCallback_hasHit_0=function(){return b.asm._emscripten_bind_ClosestRayResultCallback_hasHit_0.apply(null,arguments)},ul=b._emscripten_bind_btWheelInfoConstructionInfo_get_m_maxSuspensionForce_0=function(){return b.asm._emscripten_bind_btWheelInfoConstructionInfo_get_m_maxSuspensionForce_0.apply(null,arguments)},vl=b._emscripten_bind_btCompoundShape_addChildShape_2=
-function(){return b.asm._emscripten_bind_btCompoundShape_addChildShape_2.apply(null,arguments)},wl=b._emscripten_bind_btDispatcher___destroy___0=function(){return b.asm._emscripten_bind_btDispatcher___destroy___0.apply(null,arguments)},xl=b._emscripten_bind_btVehicleTuning_get_m_suspensionCompression_0=function(){return b.asm._emscripten_bind_btVehicleTuning_get_m_suspensionCompression_0.apply(null,arguments)},Qb=b._llvm_bswap_i16=function(){return b.asm._llvm_bswap_i16.apply(null,arguments)},yl=
-b._emscripten_bind_btDiscreteDynamicsWorld___destroy___0=function(){return b.asm._emscripten_bind_btDiscreteDynamicsWorld___destroy___0.apply(null,arguments)},zl=b._emscripten_bind_btConvexShape___destroy___0=function(){return b.asm._emscripten_bind_btConvexShape___destroy___0.apply(null,arguments)},Al=b._emscripten_bind_btRaycastVehicle_updateWheelTransformsWS_1=function(){return b.asm._emscripten_bind_btRaycastVehicle_updateWheelTransformsWS_1.apply(null,arguments)},Bl=b._emscripten_bind_btWheelInfo_set_m_brake_1=
-function(){return b.asm._emscripten_bind_btWheelInfo_set_m_brake_1.apply(null,arguments)},Nb=b._memmove=function(){return b.asm._memmove.apply(null,arguments)},Cl=b._emscripten_bind_btWheelInfo_set_m_worldTransform_1=function(){return b.asm._emscripten_bind_btWheelInfo_set_m_worldTransform_1.apply(null,arguments)},Dl=b._emscripten_bind_btDiscreteDynamicsWorld_setApplySpeculativeContactRestitution_1=function(){return b.asm._emscripten_bind_btDiscreteDynamicsWorld_setApplySpeculativeContactRestitution_1.apply(null,
-arguments)},El=b._emscripten_bind_btConeTwistConstraint_setParam_3=function(){return b.asm._emscripten_bind_btConeTwistConstraint_setParam_3.apply(null,arguments)},Fl=b._emscripten_bind_btCapsuleShapeX_setLocalScaling_1=function(){return b.asm._emscripten_bind_btCapsuleShapeX_setLocalScaling_1.apply(null,arguments)},Gl=b._emscripten_bind_btConeTwistConstraint_setMotorTarget_1=function(){return b.asm._emscripten_bind_btConeTwistConstraint_setMotorTarget_1.apply(null,arguments)},Hl=b._emscripten_bind_btPairCachingGhostObject_getCollisionShape_0=
-function(){return b.asm._emscripten_bind_btPairCachingGhostObject_getCollisionShape_0.apply(null,arguments)},Il=b._emscripten_bind_btRaycastVehicle_getChassisWorldTransform_0=function(){return b.asm._emscripten_bind_btRaycastVehicle_getChassisWorldTransform_0.apply(null,arguments)},Jl=b._emscripten_enum_btConstraintParams_BT_CONSTRAINT_ERP=function(){return b.asm._emscripten_enum_btConstraintParams_BT_CONSTRAINT_ERP.apply(null,arguments)},Kl=b._emscripten_bind_btCollisionObject_setRestitution_1=function(){return b.asm._emscripten_bind_btCollisionObject_setRestitution_1.apply(null,
-arguments)},Ll=b._emscripten_bind_btRigidBody_applyCentralForce_1=function(){return b.asm._emscripten_bind_btRigidBody_applyCentralForce_1.apply(null,arguments)},Ml=b._emscripten_bind_LocalConvexResult_get_m_hitFraction_0=function(){return b.asm._emscripten_bind_LocalConvexResult_get_m_hitFraction_0.apply(null,arguments)},Nl=b._emscripten_enum_btConstraintParams_BT_CONSTRAINT_STOP_ERP=function(){return b.asm._emscripten_enum_btConstraintParams_BT_CONSTRAINT_STOP_ERP.apply(null,arguments)},Ol=b._emscripten_bind_btHingeConstraint_setBreakingImpulseThreshold_1=
-function(){return b.asm._emscripten_bind_btHingeConstraint_setBreakingImpulseThreshold_1.apply(null,arguments)},Pl=b._emscripten_bind_btQuaternion_w_0=function(){return b.asm._emscripten_bind_btQuaternion_w_0.apply(null,arguments)},Ql=b._emscripten_bind_ConvexResultCallback_get_m_collisionFilterGroup_0=function(){return b.asm._emscripten_bind_ConvexResultCallback_get_m_collisionFilterGroup_0.apply(null,arguments)},Rl=b._emscripten_bind_btTransform_getRotation_0=function(){return b.asm._emscripten_bind_btTransform_getRotation_0.apply(null,
-arguments)},Sl=b._emscripten_bind_btHingeConstraint_btHingeConstraint_6=function(){return b.asm._emscripten_bind_btHingeConstraint_btHingeConstraint_6.apply(null,arguments)},Tl=b._emscripten_bind_btHingeConstraint_btHingeConstraint_7=function(){return b.asm._emscripten_bind_btHingeConstraint_btHingeConstraint_7.apply(null,arguments)},Ul=b._emscripten_bind_btCapsuleShapeZ_getMargin_0=function(){return b.asm._emscripten_bind_btCapsuleShapeZ_getMargin_0.apply(null,arguments)},Vl=b._emscripten_bind_btHingeConstraint_btHingeConstraint_5=
-function(){return b.asm._emscripten_bind_btHingeConstraint_btHingeConstraint_5.apply(null,arguments)},Wl=b._emscripten_bind_LocalConvexResult_get_m_hitCollisionObject_0=function(){return b.asm._emscripten_bind_LocalConvexResult_get_m_hitCollisionObject_0.apply(null,arguments)},Xl=b._emscripten_bind_btHingeConstraint_btHingeConstraint_3=function(){return b.asm._emscripten_bind_btHingeConstraint_btHingeConstraint_3.apply(null,arguments)},Yl=b._emscripten_bind_btRigidBodyConstructionInfo_set_m_additionalAngularDampingThresholdSqr_1=
-function(){return b.asm._emscripten_bind_btRigidBodyConstructionInfo_set_m_additionalAngularDampingThresholdSqr_1.apply(null,arguments)},Zl=b._emscripten_bind_btGeneric6DofSpringConstraint_setParam_3=function(){return b.asm._emscripten_bind_btGeneric6DofSpringConstraint_setParam_3.apply(null,arguments)},$l=b._emscripten_bind_btRigidBodyConstructionInfo_btRigidBodyConstructionInfo_4=function(){return b.asm._emscripten_bind_btRigidBodyConstructionInfo_btRigidBodyConstructionInfo_4.apply(null,arguments)},
-am=b._emscripten_bind_ClosestConvexResultCallback_get_m_hitNormalWorld_0=function(){return b.asm._emscripten_bind_ClosestConvexResultCallback_get_m_hitNormalWorld_0.apply(null,arguments)},bm=b._emscripten_bind_btPairCachingGhostObject_getCollisionFlags_0=function(){return b.asm._emscripten_bind_btPairCachingGhostObject_getCollisionFlags_0.apply(null,arguments)},cm=b._emscripten_bind_btWheelInfoConstructionInfo_get_m_chassisConnectionCS_0=function(){return b.asm._emscripten_bind_btWheelInfoConstructionInfo_get_m_chassisConnectionCS_0.apply(null,
-arguments)},dm=b._emscripten_bind_btTypedConstraint___destroy___0=function(){return b.asm._emscripten_bind_btTypedConstraint___destroy___0.apply(null,arguments)},em=b._emscripten_bind_btCylinderShapeX_btCylinderShapeX_1=function(){return b.asm._emscripten_bind_btCylinderShapeX_btCylinderShapeX_1.apply(null,arguments)},fm=b._emscripten_bind_btGeneric6DofSpringConstraint_setAngularUpperLimit_1=function(){return b.asm._emscripten_bind_btGeneric6DofSpringConstraint_setAngularUpperLimit_1.apply(null,arguments)},
-gm=b._emscripten_bind_btDiscreteDynamicsWorld_addRigidBody_3=function(){return b.asm._emscripten_bind_btDiscreteDynamicsWorld_addRigidBody_3.apply(null,arguments)},hm=b._emscripten_bind_btDiscreteDynamicsWorld_addRigidBody_1=function(){return b.asm._emscripten_bind_btDiscreteDynamicsWorld_addRigidBody_1.apply(null,arguments)},im=b._emscripten_bind_btQuaternion_btQuaternion_4=function(){return b.asm._emscripten_bind_btQuaternion_btQuaternion_4.apply(null,arguments)},jm=b._emscripten_bind_AllHitsRayResultCallback___destroy___0=
-function(){return b.asm._emscripten_bind_AllHitsRayResultCallback___destroy___0.apply(null,arguments)},km=b._emscripten_bind_btWheelInfo_set_m_rotation_1=function(){return b.asm._emscripten_bind_btWheelInfo_set_m_rotation_1.apply(null,arguments)},lm=b._emscripten_bind_btSphereShape_btSphereShape_1=function(){return b.asm._emscripten_bind_btSphereShape_btSphereShape_1.apply(null,arguments)},mm=b._emscripten_bind_btWheelInfo_get_m_wheelsSuspensionForce_0=function(){return b.asm._emscripten_bind_btWheelInfo_get_m_wheelsSuspensionForce_0.apply(null,
-arguments)},nm=b._emscripten_bind_btCapsuleShapeZ_getRadius_0=function(){return b.asm._emscripten_bind_btCapsuleShapeZ_getRadius_0.apply(null,arguments)},om=b._emscripten_bind_btQuaternion_y_0=function(){return b.asm._emscripten_bind_btQuaternion_y_0.apply(null,arguments)},pm=b._emscripten_bind_btQuadWord_setZ_1=function(){return b.asm._emscripten_bind_btQuadWord_setZ_1.apply(null,arguments)},qm=b._emscripten_bind_btPairCachingGhostObject_getCcdSweptSphereRadius_0=function(){return b.asm._emscripten_bind_btPairCachingGhostObject_getCcdSweptSphereRadius_0.apply(null,
-arguments)},rm=b._emscripten_bind_btCollisionWorld_addCollisionObject_1=function(){return b.asm._emscripten_bind_btCollisionWorld_addCollisionObject_1.apply(null,arguments)},sm=b._emscripten_bind_btCollisionWorld_addCollisionObject_2=function(){return b.asm._emscripten_bind_btCollisionWorld_addCollisionObject_2.apply(null,arguments)},tm=b._emscripten_bind_btCompoundShape_setLocalScaling_1=function(){return b.asm._emscripten_bind_btCompoundShape_setLocalScaling_1.apply(null,arguments)},um=b._emscripten_bind_ClosestConvexResultCallback_set_m_collisionFilterGroup_1=
-function(){return b.asm._emscripten_bind_ClosestConvexResultCallback_set_m_collisionFilterGroup_1.apply(null,arguments)},wm=b._emscripten_bind_btConeTwistConstraint_setBreakingImpulseThreshold_1=function(){return b.asm._emscripten_bind_btConeTwistConstraint_setBreakingImpulseThreshold_1.apply(null,arguments)},xm=b._emscripten_bind_btWheelInfoConstructionInfo_set_m_chassisConnectionCS_1=function(){return b.asm._emscripten_bind_btWheelInfoConstructionInfo_set_m_chassisConnectionCS_1.apply(null,arguments)},
-ym=b._emscripten_bind_btOverlappingPairCallback___destroy___0=function(){return b.asm._emscripten_bind_btOverlappingPairCallback___destroy___0.apply(null,arguments)},zm=b._emscripten_bind_btPairCachingGhostObject_getCcdMotionThreshold_0=function(){return b.asm._emscripten_bind_btPairCachingGhostObject_getCcdMotionThreshold_0.apply(null,arguments)},Am=b._emscripten_bind_btWheelInfo_get_m_skidInfo_0=function(){return b.asm._emscripten_bind_btWheelInfo_get_m_skidInfo_0.apply(null,arguments)},Bm=b._emscripten_bind_btHeightfieldTerrainShape_setMargin_1=
-function(){return b.asm._emscripten_bind_btHeightfieldTerrainShape_setMargin_1.apply(null,arguments)},Cm=b._emscripten_bind_ClosestConvexResultCallback_get_m_collisionFilterGroup_0=function(){return b.asm._emscripten_bind_ClosestConvexResultCallback_get_m_collisionFilterGroup_0.apply(null,arguments)},Dm=b._emscripten_bind_btCapsuleShape_setMargin_1=function(){return b.asm._emscripten_bind_btCapsuleShape_setMargin_1.apply(null,arguments)},Em=b._emscripten_bind_btManifoldPoint_set_m_positionWorldOnB_1=
-function(){return b.asm._emscripten_bind_btManifoldPoint_set_m_positionWorldOnB_1.apply(null,arguments)},Fm=b._emscripten_bind_btDynamicsWorld_contactTest_2=function(){return b.asm._emscripten_bind_btDynamicsWorld_contactTest_2.apply(null,arguments)},Gm=b._emscripten_bind_btCapsuleShapeX_getUpAxis_0=function(){return b.asm._emscripten_bind_btCapsuleShapeX_getUpAxis_0.apply(null,arguments)},Hm=b._emscripten_bind_btSequentialImpulseConstraintSolver_btSequentialImpulseConstraintSolver_0=function(){return b.asm._emscripten_bind_btSequentialImpulseConstraintSolver_btSequentialImpulseConstraintSolver_0.apply(null,
-arguments)},Im=b._emscripten_bind_btActionInterface___destroy___0=function(){return b.asm._emscripten_bind_btActionInterface___destroy___0.apply(null,arguments)},Jm=b._emscripten_bind_AllConvexResultCallback_set_m_collisionFilterGroup_1=function(){return b.asm._emscripten_bind_AllConvexResultCallback_set_m_collisionFilterGroup_1.apply(null,arguments)},Km=b._emscripten_bind_btDefaultMotionState_setWorldTransform_1=function(){return b.asm._emscripten_bind_btDefaultMotionState_setWorldTransform_1.apply(null,
-arguments)},Lm=b._emscripten_bind_btVehicleTuning_get_m_suspensionDamping_0=function(){return b.asm._emscripten_bind_btVehicleTuning_get_m_suspensionDamping_0.apply(null,arguments)},Mm=b._emscripten_bind_RayResultCallback_get_m_collisionObject_0=function(){return b.asm._emscripten_bind_RayResultCallback_get_m_collisionObject_0.apply(null,arguments)},Nm=b._emscripten_bind_btPoint2PointConstraint_getPivotInA_0=function(){return b.asm._emscripten_bind_btPoint2PointConstraint_getPivotInA_0.apply(null,
-arguments)},Om=b._emscripten_bind_btGhostObject_getCcdSweptSphereRadius_0=function(){return b.asm._emscripten_bind_btGhostObject_getCcdSweptSphereRadius_0.apply(null,arguments)},Pm=b._emscripten_bind_btGeneric6DofSpringConstraint_setStiffness_2=function(){return b.asm._emscripten_bind_btGeneric6DofSpringConstraint_setStiffness_2.apply(null,arguments)},Qm=b._emscripten_bind_btVector4_setY_1=function(){return b.asm._emscripten_bind_btVector4_setY_1.apply(null,arguments)},Rm=b._emscripten_bind_btWheelInfoConstructionInfo_set_m_wheelRadius_1=
-function(){return b.asm._emscripten_bind_btWheelInfoConstructionInfo_set_m_wheelRadius_1.apply(null,arguments)},Sm=b._emscripten_bind_ClosestConvexResultCallback___destroy___0=function(){return b.asm._emscripten_bind_ClosestConvexResultCallback___destroy___0.apply(null,arguments)},Tm=b._emscripten_bind_btQuaternion_normalized_0=function(){return b.asm._emscripten_bind_btQuaternion_normalized_0.apply(null,arguments)},Um=b._emscripten_bind_btDynamicsWorld_addCollisionObject_1=function(){return b.asm._emscripten_bind_btDynamicsWorld_addCollisionObject_1.apply(null,
-arguments)},Vm=b._emscripten_bind_btGhostObject_isStaticObject_0=function(){return b.asm._emscripten_bind_btGhostObject_isStaticObject_0.apply(null,arguments)};b.___cxa_can_catch=function(){return b.asm.___cxa_can_catch.apply(null,arguments)};
-var Wm=b._emscripten_bind_btDynamicsWorld_addCollisionObject_2=function(){return b.asm._emscripten_bind_btDynamicsWorld_addCollisionObject_2.apply(null,arguments)},Xm=b._emscripten_bind_btDiscreteDynamicsWorld_getDispatcher_0=function(){return b.asm._emscripten_bind_btDiscreteDynamicsWorld_getDispatcher_0.apply(null,arguments)},Ym=b._emscripten_bind_LayaMotionState___destroy___0=function(){return b.asm._emscripten_bind_LayaMotionState___destroy___0.apply(null,arguments)},Zm=b._emscripten_bind_btVector3_rotate_2=
-function(){return b.asm._emscripten_bind_btVector3_rotate_2.apply(null,arguments)},$m=b._emscripten_bind_btHeightfieldTerrainShape___destroy___0=function(){return b.asm._emscripten_bind_btHeightfieldTerrainShape___destroy___0.apply(null,arguments)},an=b._emscripten_bind_btManifoldPoint_get_m_positionWorldOnB_0=function(){return b.asm._emscripten_bind_btManifoldPoint_get_m_positionWorldOnB_0.apply(null,arguments)},bn=b._emscripten_bind_btWheelInfo_get_m_maxSuspensionTravelCm_0=function(){return b.asm._emscripten_bind_btWheelInfo_get_m_maxSuspensionTravelCm_0.apply(null,
-arguments)},cn=b._emscripten_bind_btVector4_op_mul_1=function(){return b.asm._emscripten_bind_btVector4_op_mul_1.apply(null,arguments)},dn=b._emscripten_bind_btQuaternion_op_mulq_1=function(){return b.asm._emscripten_bind_btQuaternion_op_mulq_1.apply(null,arguments)},en=b._emscripten_bind_btWheelInfoConstructionInfo_set_m_wheelDirectionCS_1=function(){return b.asm._emscripten_bind_btWheelInfoConstructionInfo_set_m_wheelDirectionCS_1.apply(null,arguments)},fn=b._emscripten_bind_btWheelInfoConstructionInfo_set_m_wheelAxleCS_1=
-function(){return b.asm._emscripten_bind_btWheelInfoConstructionInfo_set_m_wheelAxleCS_1.apply(null,arguments)},gn=b._emscripten_bind_tBtCollisionObjectArray_size_0=function(){return b.asm._emscripten_bind_tBtCollisionObjectArray_size_0.apply(null,arguments)},hn=b._emscripten_bind_btGhostObject_getUserIndex_0=function(){return b.asm._emscripten_bind_btGhostObject_getUserIndex_0.apply(null,arguments)},jn=b._emscripten_bind_btGImpactShapeInterface_getLocalScaling_0=function(){return b.asm._emscripten_bind_btGImpactShapeInterface_getLocalScaling_0.apply(null,
-arguments)},kn=b._emscripten_bind_btWheelInfo_set_m_deltaRotation_1=function(){return b.asm._emscripten_bind_btWheelInfo_set_m_deltaRotation_1.apply(null,arguments)},ln=b._emscripten_bind_btVector3___destroy___0=function(){return b.asm._emscripten_bind_btVector3___destroy___0.apply(null,arguments)},mn=b._emscripten_bind_RaycastInfo___destroy___0=function(){return b.asm._emscripten_bind_RaycastInfo___destroy___0.apply(null,arguments)},nn=b._emscripten_bind_btRigidBody_setAngularFactor_1=function(){return b.asm._emscripten_bind_btRigidBody_setAngularFactor_1.apply(null,
-arguments)},on=b._emscripten_bind_btCylinderShapeZ_calculateLocalInertia_2=function(){return b.asm._emscripten_bind_btCylinderShapeZ_calculateLocalInertia_2.apply(null,arguments)},pn=b._emscripten_bind_btGhostObject_setInterpolationLinearVelocity_1=function(){return b.asm._emscripten_bind_btGhostObject_setInterpolationLinearVelocity_1.apply(null,arguments)},qn=b._emscripten_bind_btConeShapeZ_getLocalScaling_0=function(){return b.asm._emscripten_bind_btConeShapeZ_getLocalScaling_0.apply(null,arguments)},
-rn=b._emscripten_bind_btMotionState_getWorldTransform_1=function(){return b.asm._emscripten_bind_btMotionState_getWorldTransform_1.apply(null,arguments)},sn=b._emscripten_bind_btDynamicsWorld_getSolverInfo_0=function(){return b.asm._emscripten_bind_btDynamicsWorld_getSolverInfo_0.apply(null,arguments)},tn=b._emscripten_bind_btVehicleRaycasterResult_set_m_hitNormalInWorld_1=function(){return b.asm._emscripten_bind_btVehicleRaycasterResult_set_m_hitNormalInWorld_1.apply(null,arguments)},un=b._emscripten_bind_btDynamicsWorld_getBroadphase_0=
-function(){return b.asm._emscripten_bind_btDynamicsWorld_getBroadphase_0.apply(null,arguments)},vn=b._emscripten_bind_btSphereShape_getMargin_0=function(){return b.asm._emscripten_bind_btSphereShape_getMargin_0.apply(null,arguments)},wn=b._emscripten_bind_btVector3_x_0=function(){return b.asm._emscripten_bind_btVector3_x_0.apply(null,arguments)};b.___cxa_is_pointer_type=function(){return b.asm.___cxa_is_pointer_type.apply(null,arguments)};
-var xn=b._emscripten_bind_btRigidBodyConstructionInfo_btRigidBodyConstructionInfo_3=function(){return b.asm._emscripten_bind_btRigidBodyConstructionInfo_btRigidBodyConstructionInfo_3.apply(null,arguments)},yn=b._emscripten_bind_btCollisionObject_getCollisionShape_0=function(){return b.asm._emscripten_bind_btCollisionObject_getCollisionShape_0.apply(null,arguments)},zn=b._emscripten_bind_btDispatcherInfo_get_m_allowedCcdPenetration_0=function(){return b.asm._emscripten_bind_btDispatcherInfo_get_m_allowedCcdPenetration_0.apply(null,
-arguments)},An=b._emscripten_bind_btRigidBody_getRestitution_0=function(){return b.asm._emscripten_bind_btRigidBody_getRestitution_0.apply(null,arguments)},Bn=b._emscripten_bind_btManifoldPoint___destroy___0=function(){return b.asm._emscripten_bind_btManifoldPoint___destroy___0.apply(null,arguments)},Cn=b._emscripten_bind_btRigidBodyConstructionInfo_set_m_rollingFriction_1=function(){return b.asm._emscripten_bind_btRigidBodyConstructionInfo_set_m_rollingFriction_1.apply(null,arguments)},Dn=b._emscripten_bind_btVector4_length_0=
-function(){return b.asm._emscripten_bind_btVector4_length_0.apply(null,arguments)},En=b._emscripten_bind_btGhostObject_setUserIndex_1=function(){return b.asm._emscripten_bind_btGhostObject_setUserIndex_1.apply(null,arguments)},Fn=b._emscripten_bind_btWheelInfo_getSuspensionRestLength_0=function(){return b.asm._emscripten_bind_btWheelInfo_getSuspensionRestLength_0.apply(null,arguments)},Gn=b._emscripten_bind_btDefaultMotionState_set_m_graphicsWorldTrans_1=function(){return b.asm._emscripten_bind_btDefaultMotionState_set_m_graphicsWorldTrans_1.apply(null,
-arguments)},Hn=b._emscripten_bind_btGhostObject_setRestitution_1=function(){return b.asm._emscripten_bind_btGhostObject_setRestitution_1.apply(null,arguments)},In=b._emscripten_bind_btConeTwistConstraint_setAngularOnly_1=function(){return b.asm._emscripten_bind_btConeTwistConstraint_setAngularOnly_1.apply(null,arguments)},Jn=b._emscripten_bind_btCollisionObject_setFriction_1=function(){return b.asm._emscripten_bind_btCollisionObject_setFriction_1.apply(null,arguments)},Kn=b._emscripten_bind_btDefaultCollisionConfiguration___destroy___0=
-function(){return b.asm._emscripten_bind_btDefaultCollisionConfiguration___destroy___0.apply(null,arguments)},Ln=b._emscripten_bind_btRigidBody_setMassProps_2=function(){return b.asm._emscripten_bind_btRigidBody_setMassProps_2.apply(null,arguments)};b.getTempRet0=function(){return b.asm.getTempRet0.apply(null,arguments)};
-var Mn=b._emscripten_bind_btVector3_setValue_3=function(){return b.asm._emscripten_bind_btVector3_setValue_3.apply(null,arguments)},Nn=b._emscripten_bind_btPairCachingGhostObject_setCcdMotionThreshold_1=function(){return b.asm._emscripten_bind_btPairCachingGhostObject_setCcdMotionThreshold_1.apply(null,arguments)},On=b._emscripten_bind_RaycastInfo_get_m_suspensionLength_0=function(){return b.asm._emscripten_bind_RaycastInfo_get_m_suspensionLength_0.apply(null,arguments)},Pn=b._emscripten_bind_btGhostObject_getCollisionFlags_0=
-function(){return b.asm._emscripten_bind_btGhostObject_getCollisionFlags_0.apply(null,arguments)},Qn=b._emscripten_bind_btCapsuleShapeX___destroy___0=function(){return b.asm._emscripten_bind_btCapsuleShapeX___destroy___0.apply(null,arguments)},Rn=b._emscripten_bind_btWheelInfo_get_m_wheelDirectionCS_0=function(){return b.asm._emscripten_bind_btWheelInfo_get_m_wheelDirectionCS_0.apply(null,arguments)},Sn=b._emscripten_bind_tScalarArray_push_back_1=function(){return b.asm._emscripten_bind_tScalarArray_push_back_1.apply(null,
-arguments)},Tn=b._emscripten_bind_btGImpactShapeInterface_updateBound_0=function(){return b.asm._emscripten_bind_btGImpactShapeInterface_updateBound_0.apply(null,arguments)},Un=b._emscripten_bind_btQuaternion_getAxis_0=function(){return b.asm._emscripten_bind_btQuaternion_getAxis_0.apply(null,arguments)},Vn=b._emscripten_bind_btRaycastVehicle_getUserConstraintId_0=function(){return b.asm._emscripten_bind_btRaycastVehicle_getUserConstraintId_0.apply(null,arguments)},Wn=b._emscripten_bind_btRaycastVehicle_updateAction_2=
-function(){return b.asm._emscripten_bind_btRaycastVehicle_updateAction_2.apply(null,arguments)},Xn=b._emscripten_bind_btHingeConstraint_setLimit_4=function(){return b.asm._emscripten_bind_btHingeConstraint_setLimit_4.apply(null,arguments)},Yn=b._emscripten_bind_btHingeConstraint_setLimit_5=function(){return b.asm._emscripten_bind_btHingeConstraint_setLimit_5.apply(null,arguments)},Zn=b._emscripten_bind_btDefaultVehicleRaycaster___destroy___0=function(){return b.asm._emscripten_bind_btDefaultVehicleRaycaster___destroy___0.apply(null,
-arguments)},$n=b._emscripten_bind_btRigidBody_setWorldTransform_1=function(){return b.asm._emscripten_bind_btRigidBody_setWorldTransform_1.apply(null,arguments)},ao=b._emscripten_bind_btWheelInfo_set_m_maxSuspensionTravelCm_1=function(){return b.asm._emscripten_bind_btWheelInfo_set_m_maxSuspensionTravelCm_1.apply(null,arguments)},bo=b._emscripten_bind_btWheelInfo_set_m_wheelsSuspensionForce_1=function(){return b.asm._emscripten_bind_btWheelInfo_set_m_wheelsSuspensionForce_1.apply(null,arguments)},
-co=b._emscripten_bind_AllConvexResultCallback_get_m_hitFractions_0=function(){return b.asm._emscripten_bind_AllConvexResultCallback_get_m_hitFractions_0.apply(null,arguments)},eo=b._emscripten_bind_btGhostObject_getNumOverlappingObjects_0=function(){return b.asm._emscripten_bind_btGhostObject_getNumOverlappingObjects_0.apply(null,arguments)},fo=b._emscripten_bind_btTypedConstraint_getBreakingImpulseThreshold_0=function(){return b.asm._emscripten_bind_btTypedConstraint_getBreakingImpulseThreshold_0.apply(null,
-arguments)},go=b._emscripten_bind_btGhostObject_getCollisionShape_0=function(){return b.asm._emscripten_bind_btGhostObject_getCollisionShape_0.apply(null,arguments)},ho=b._emscripten_bind_btRigidBody_getTotalForce_0=function(){return b.asm._emscripten_bind_btRigidBody_getTotalForce_0.apply(null,arguments)},io=b._emscripten_bind_btRigidBody_setInterpolationAngularVelocity_1=function(){return b.asm._emscripten_bind_btRigidBody_setInterpolationAngularVelocity_1.apply(null,arguments)},jo=b._emscripten_bind_btCollisionObject_setAnisotropicFriction_2=
-function(){return b.asm._emscripten_bind_btCollisionObject_setAnisotropicFriction_2.apply(null,arguments)},ko=b._emscripten_bind_btBoxShape___destroy___0=function(){return b.asm._emscripten_bind_btBoxShape___destroy___0.apply(null,arguments)},lo=b._emscripten_bind_btWheelInfo_get_m_bIsFrontWheel_0=function(){return b.asm._emscripten_bind_btWheelInfo_get_m_bIsFrontWheel_0.apply(null,arguments)},mo=b._emscripten_bind_btGeneric6DofSpringConstraint_getFrameOffsetA_0=function(){return b.asm._emscripten_bind_btGeneric6DofSpringConstraint_getFrameOffsetA_0.apply(null,
-arguments)},no=b._emscripten_bind_btGeneric6DofSpringConstraint_getBreakingImpulseThreshold_0=function(){return b.asm._emscripten_bind_btGeneric6DofSpringConstraint_getBreakingImpulseThreshold_0.apply(null,arguments)},oo=b._emscripten_bind_ConvexResultCallback_set_m_collisionFilterGroup_1=function(){return b.asm._emscripten_bind_ConvexResultCallback_set_m_collisionFilterGroup_1.apply(null,arguments)},po=b._emscripten_bind_RaycastInfo_set_m_groundObject_1=function(){return b.asm._emscripten_bind_RaycastInfo_set_m_groundObject_1.apply(null,
-arguments)},qo=b._emscripten_bind_btGhostObject_activate_1=function(){return b.asm._emscripten_bind_btGhostObject_activate_1.apply(null,arguments)},ro=b._emscripten_bind_btRaycastVehicle_getForwardAxis_0=function(){return b.asm._emscripten_bind_btRaycastVehicle_getForwardAxis_0.apply(null,arguments)},so=b._emscripten_bind_btBvhTriangleMeshShape_getLocalScaling_0=function(){return b.asm._emscripten_bind_btBvhTriangleMeshShape_getLocalScaling_0.apply(null,arguments)},to=b._emscripten_bind_btManifoldPoint_getPositionWorldOnB_0=
-function(){return b.asm._emscripten_bind_btManifoldPoint_getPositionWorldOnB_0.apply(null,arguments)},uo=b._emscripten_bind_btManifoldPoint_get_m_positionWorldOnA_0=function(){return b.asm._emscripten_bind_btManifoldPoint_get_m_positionWorldOnA_0.apply(null,arguments)},vo=b._emscripten_bind_btRigidBodyConstructionInfo_set_m_additionalDamping_1=function(){return b.asm._emscripten_bind_btRigidBodyConstructionInfo_set_m_additionalDamping_1.apply(null,arguments)},wo=b._emscripten_bind_btCapsuleShapeZ___destroy___0=
-function(){return b.asm._emscripten_bind_btCapsuleShapeZ___destroy___0.apply(null,arguments)},xo=b._emscripten_bind_btGeneric6DofSpringConstraint_enableFeedback_1=function(){return b.asm._emscripten_bind_btGeneric6DofSpringConstraint_enableFeedback_1.apply(null,arguments)},yo=b._emscripten_bind_btGeneric6DofConstraint_btGeneric6DofConstraint_3=function(){return b.asm._emscripten_bind_btGeneric6DofConstraint_btGeneric6DofConstraint_3.apply(null,arguments)},zo=b._emscripten_bind_btSphereShape_setMargin_1=
-function(){return b.asm._emscripten_bind_btSphereShape_setMargin_1.apply(null,arguments)},Ao=b._emscripten_bind_btWheelInfoConstructionInfo_set_m_frictionSlip_1=function(){return b.asm._emscripten_bind_btWheelInfoConstructionInfo_set_m_frictionSlip_1.apply(null,arguments)},Bo=b._emscripten_bind_btConeShapeZ_btConeShapeZ_2=function(){return b.asm._emscripten_bind_btConeShapeZ_btConeShapeZ_2.apply(null,arguments)},Co=b._emscripten_bind_btContactSolverInfo_set_m_splitImpulsePenetrationThreshold_1=function(){return b.asm._emscripten_bind_btContactSolverInfo_set_m_splitImpulsePenetrationThreshold_1.apply(null,
-arguments)},Do=b._emscripten_bind_btRigidBody_setInterpolationLinearVelocity_1=function(){return b.asm._emscripten_bind_btRigidBody_setInterpolationLinearVelocity_1.apply(null,arguments)},Eo=b._emscripten_bind_btSliderConstraint_setUpperAngLimit_1=function(){return b.asm._emscripten_bind_btSliderConstraint_setUpperAngLimit_1.apply(null,arguments)},Fo=b._emscripten_bind_btDynamicsWorld_contactPairTest_3=function(){return b.asm._emscripten_bind_btDynamicsWorld_contactPairTest_3.apply(null,arguments)},
-Go=b._emscripten_bind_btCollisionWorld_getPairCache_0=function(){return b.asm._emscripten_bind_btCollisionWorld_getPairCache_0.apply(null,arguments)},Ho=b._emscripten_bind_btRigidBody_getAngularSleepingThreshold_0=function(){return b.asm._emscripten_bind_btRigidBody_getAngularSleepingThreshold_0.apply(null,arguments)},Io=b._emscripten_bind_ClosestConvexResultCallback_set_m_convexFromWorld_1=function(){return b.asm._emscripten_bind_ClosestConvexResultCallback_set_m_convexFromWorld_1.apply(null,arguments)},
-Jo=b._emscripten_bind_btWheelInfo_set_m_rollInfluence_1=function(){return b.asm._emscripten_bind_btWheelInfo_set_m_rollInfluence_1.apply(null,arguments)},Ko=b._emscripten_bind_btGeneric6DofConstraint_setBreakingImpulseThreshold_1=function(){return b.asm._emscripten_bind_btGeneric6DofConstraint_setBreakingImpulseThreshold_1.apply(null,arguments)},Lo=b._emscripten_enum_PHY_ScalarType_PHY_INTEGER=function(){return b.asm._emscripten_enum_PHY_ScalarType_PHY_INTEGER.apply(null,arguments)},Mo=b._emscripten_bind_tBtCollisionObjectArray_at_1=
-function(){return b.asm._emscripten_bind_tBtCollisionObjectArray_at_1.apply(null,arguments)},No=b._emscripten_bind_btGhostObject_forceActivationState_1=function(){return b.asm._emscripten_bind_btGhostObject_forceActivationState_1.apply(null,arguments)},Oo=b._emscripten_bind_btGhostPairCallback_btGhostPairCallback_0=function(){return b.asm._emscripten_bind_btGhostPairCallback_btGhostPairCallback_0.apply(null,arguments)},Po=b._emscripten_bind_btGImpactMeshShape_updateBound_0=function(){return b.asm._emscripten_bind_btGImpactMeshShape_updateBound_0.apply(null,
-arguments)},Qo=b._emscripten_bind_ConcreteContactResultCallback_ConcreteContactResultCallback_0=function(){return b.asm._emscripten_bind_ConcreteContactResultCallback_ConcreteContactResultCallback_0.apply(null,arguments)},Ro=b._emscripten_bind_btTriangleMeshShape_calculateLocalInertia_2=function(){return b.asm._emscripten_bind_btTriangleMeshShape_calculateLocalInertia_2.apply(null,arguments)},So=b._emscripten_bind_btGhostObject_getActivationState_0=function(){return b.asm._emscripten_bind_btGhostObject_getActivationState_0.apply(null,
-arguments)};b.establishStackSpace=function(){return b.asm.establishStackSpace.apply(null,arguments)};
-var To=b._emscripten_bind_RaycastInfo_set_m_contactNormalWS_1=function(){return b.asm._emscripten_bind_RaycastInfo_set_m_contactNormalWS_1.apply(null,arguments)},Uo=b._emscripten_bind_btCylinderShape_getLocalScaling_0=function(){return b.asm._emscripten_bind_btCylinderShape_getLocalScaling_0.apply(null,arguments)},Vo=b._emscripten_bind_btDbvtBroadphase_btDbvtBroadphase_0=function(){return b.asm._emscripten_bind_btDbvtBroadphase_btDbvtBroadphase_0.apply(null,arguments)},Wo=b._emscripten_bind_btGImpactShapeInterface___destroy___0=
-function(){return b.asm._emscripten_bind_btGImpactShapeInterface___destroy___0.apply(null,arguments)},Xo=b._emscripten_bind_RaycastInfo_set_m_contactPointWS_1=function(){return b.asm._emscripten_bind_RaycastInfo_set_m_contactPointWS_1.apply(null,arguments)},Yo=b._emscripten_bind_ClosestConvexResultCallback_ClosestConvexResultCallback_2=function(){return b.asm._emscripten_bind_ClosestConvexResultCallback_ClosestConvexResultCallback_2.apply(null,arguments)},Zo=b._emscripten_bind_ClosestRayResultCallback_get_m_rayFromWorld_0=
-function(){return b.asm._emscripten_bind_ClosestRayResultCallback_get_m_rayFromWorld_0.apply(null,arguments)},$o=b._emscripten_bind_btRaycastVehicle___destroy___0=function(){return b.asm._emscripten_bind_btRaycastVehicle___destroy___0.apply(null,arguments)},ap=b._emscripten_bind_btRaycastVehicle_getRigidBody_0=function(){return b.asm._emscripten_bind_btRaycastVehicle_getRigidBody_0.apply(null,arguments)},bp=b._emscripten_bind_btBroadphaseProxy_get_m_collisionFilterMask_0=function(){return b.asm._emscripten_bind_btBroadphaseProxy_get_m_collisionFilterMask_0.apply(null,
-arguments)},cp=b._emscripten_bind_btSliderConstraint_enableFeedback_1=function(){return b.asm._emscripten_bind_btSliderConstraint_enableFeedback_1.apply(null,arguments)},dp=b._emscripten_bind_btWheelInfo_get_m_steering_0=function(){return b.asm._emscripten_bind_btWheelInfo_get_m_steering_0.apply(null,arguments)},ep=b._emscripten_bind_btConstraintSetting_get_m_tau_0=function(){return b.asm._emscripten_bind_btConstraintSetting_get_m_tau_0.apply(null,arguments)},fp=b._emscripten_bind_btConeShape_setLocalScaling_1=
-function(){return b.asm._emscripten_bind_btConeShape_setLocalScaling_1.apply(null,arguments)},gp=b._emscripten_bind_btCylinderShapeZ_getLocalScaling_0=function(){return b.asm._emscripten_bind_btCylinderShapeZ_getLocalScaling_0.apply(null,arguments)},hp=b._emscripten_bind_btCollisionObject_setCollisionShape_1=function(){return b.asm._emscripten_bind_btCollisionObject_setCollisionShape_1.apply(null,arguments)},ip=b._emscripten_bind_btCollisionShape___destroy___0=function(){return b.asm._emscripten_bind_btCollisionShape___destroy___0.apply(null,
-arguments)},jp=b._emscripten_bind_btMatrix3x3_getRow_1=function(){return b.asm._emscripten_bind_btMatrix3x3_getRow_1.apply(null,arguments)},kp=b._emscripten_bind_ConvexResultCallback_get_m_closestHitFraction_0=function(){return b.asm._emscripten_bind_ConvexResultCallback_get_m_closestHitFraction_0.apply(null,arguments)},lp=b._emscripten_bind_btDispatcherInfo_get_m_dispatchFunc_0=function(){return b.asm._emscripten_bind_btDispatcherInfo_get_m_dispatchFunc_0.apply(null,arguments)},mp=b._emscripten_bind_btRigidBodyConstructionInfo_get_m_rollingFriction_0=
-function(){return b.asm._emscripten_bind_btRigidBodyConstructionInfo_get_m_rollingFriction_0.apply(null,arguments)},np=b._emscripten_bind_btConeShape_getLocalScaling_0=function(){return b.asm._emscripten_bind_btConeShape_getLocalScaling_0.apply(null,arguments)},op=b._emscripten_bind_btPairCachingGhostObject_setCollisionShape_1=function(){return b.asm._emscripten_bind_btPairCachingGhostObject_setCollisionShape_1.apply(null,arguments)},pp=b._emscripten_bind_btKinematicCharacterController_warp_1=function(){return b.asm._emscripten_bind_btKinematicCharacterController_warp_1.apply(null,
-arguments)},qp=b._emscripten_bind_tVector3Array_clear_0=function(){return b.asm._emscripten_bind_tVector3Array_clear_0.apply(null,arguments)},rp=b._emscripten_bind_btContactSolverInfo___destroy___0=function(){return b.asm._emscripten_bind_btContactSolverInfo___destroy___0.apply(null,arguments)},sp=b._emscripten_bind_btCapsuleShapeX_getRadius_0=function(){return b.asm._emscripten_bind_btCapsuleShapeX_getRadius_0.apply(null,arguments)},tp=b._emscripten_bind_btPoint2PointConstraint_getParam_2=function(){return b.asm._emscripten_bind_btPoint2PointConstraint_getParam_2.apply(null,
-arguments)},up=b._emscripten_bind_btTriangleMesh___destroy___0=function(){return b.asm._emscripten_bind_btTriangleMesh___destroy___0.apply(null,arguments)},vp=b._emscripten_bind_btKinematicCharacterController_preStep_1=function(){return b.asm._emscripten_bind_btKinematicCharacterController_preStep_1.apply(null,arguments)},wp=b._emscripten_bind_AllConvexResultCallback_get_m_collisionFilterGroup_0=function(){return b.asm._emscripten_bind_AllConvexResultCallback_get_m_collisionFilterGroup_0.apply(null,
-arguments)},xp=b._emscripten_bind_btRaycastVehicle_applyEngineForce_2=function(){return b.asm._emscripten_bind_btRaycastVehicle_applyEngineForce_2.apply(null,arguments)},yp=b._emscripten_bind_btBoxShape_calculateLocalInertia_2=function(){return b.asm._emscripten_bind_btBoxShape_calculateLocalInertia_2.apply(null,arguments)},zp=b._emscripten_bind_btRaycastVehicle_setBrake_2=function(){return b.asm._emscripten_bind_btRaycastVehicle_setBrake_2.apply(null,arguments)},Ap=b._emscripten_bind_ConcreteContactResultCallback___destroy___0=
-function(){return b.asm._emscripten_bind_ConcreteContactResultCallback___destroy___0.apply(null,arguments)},Bp=b._emscripten_bind_RaycastInfo_set_m_wheelAxleWS_1=function(){return b.asm._emscripten_bind_RaycastInfo_set_m_wheelAxleWS_1.apply(null,arguments)},Cp=b._emscripten_bind_btRigidBody_btRigidBody_1=function(){return b.asm._emscripten_bind_btRigidBody_btRigidBody_1.apply(null,arguments)},Dp=b._emscripten_bind_btRaycastVehicle_updateVehicle_1=function(){return b.asm._emscripten_bind_btRaycastVehicle_updateVehicle_1.apply(null,
-arguments)},Ep=b._emscripten_bind_btCollisionObject___destroy___0=function(){return b.asm._emscripten_bind_btCollisionObject___destroy___0.apply(null,arguments)},Fp=b._emscripten_bind_btVehicleTuning_set_m_suspensionDamping_1=function(){return b.asm._emscripten_bind_btVehicleTuning_set_m_suspensionDamping_1.apply(null,arguments)},Gp=b._emscripten_bind_btConvexTriangleMeshShape_setMargin_1=function(){return b.asm._emscripten_bind_btConvexTriangleMeshShape_setMargin_1.apply(null,arguments)},Hp=b._emscripten_bind_btDiscreteDynamicsWorld_removeCollisionObject_1=
-function(){return b.asm._emscripten_bind_btDiscreteDynamicsWorld_removeCollisionObject_1.apply(null,arguments)},Ip=b._emscripten_bind_ClosestConvexResultCallback_set_m_hitCollisionObject_1=function(){return b.asm._emscripten_bind_ClosestConvexResultCallback_set_m_hitCollisionObject_1.apply(null,arguments)},Jp=b._emscripten_bind_btConeTwistConstraint_setMotorTargetInConstraintSpace_1=function(){return b.asm._emscripten_bind_btConeTwistConstraint_setMotorTargetInConstraintSpace_1.apply(null,arguments)},
-Kp=b._emscripten_bind_btQuaternion_op_mul_1=function(){return b.asm._emscripten_bind_btQuaternion_op_mul_1.apply(null,arguments)},Lp=b._emscripten_bind_btDispatcherInfo_set_m_timeStep_1=function(){return b.asm._emscripten_bind_btDispatcherInfo_set_m_timeStep_1.apply(null,arguments)},Mp=b._emscripten_bind_btVector3_btVector3_3=function(){return b.asm._emscripten_bind_btVector3_btVector3_3.apply(null,arguments)},Np=b._emscripten_bind_btVector3_btVector3_0=function(){return b.asm._emscripten_bind_btVector3_btVector3_0.apply(null,
-arguments)},Op=b._emscripten_bind_btCollisionObject_getCcdSweptSphereRadius_0=function(){return b.asm._emscripten_bind_btCollisionObject_getCcdSweptSphereRadius_0.apply(null,arguments)},Pp=b._emscripten_bind_btDiscreteDynamicsWorld_getGravity_0=function(){return b.asm._emscripten_bind_btDiscreteDynamicsWorld_getGravity_0.apply(null,arguments)},Qp=b._emscripten_bind_tBtCollisionObjectArray___destroy___0=function(){return b.asm._emscripten_bind_tBtCollisionObjectArray___destroy___0.apply(null,arguments)},
-Rp=b._emscripten_bind_btVector3_z_0=function(){return b.asm._emscripten_bind_btVector3_z_0.apply(null,arguments)},Sp=b._emscripten_bind_ClosestConvexResultCallback_get_m_hitPointWorld_0=function(){return b.asm._emscripten_bind_ClosestConvexResultCallback_get_m_hitPointWorld_0.apply(null,arguments)},Tp=b._emscripten_bind_btPersistentManifold_getBody1_0=function(){return b.asm._emscripten_bind_btPersistentManifold_getBody1_0.apply(null,arguments)},Up=b._emscripten_bind_btCollisionShape_getMargin_0=
-function(){return b.asm._emscripten_bind_btCollisionShape_getMargin_0.apply(null,arguments)},Vp=b._emscripten_bind_btBroadphaseInterface___destroy___0=function(){return b.asm._emscripten_bind_btBroadphaseInterface___destroy___0.apply(null,arguments)},Wp=b._emscripten_bind_btWheelInfo_updateWheel_2=function(){return b.asm._emscripten_bind_btWheelInfo_updateWheel_2.apply(null,arguments)},Xp=b._emscripten_bind_ConcreteContactResultCallback_addSingleResult_7=function(){return b.asm._emscripten_bind_ConcreteContactResultCallback_addSingleResult_7.apply(null,
-arguments)},Yp=b._emscripten_bind_btSphereShape_getLocalScaling_0=function(){return b.asm._emscripten_bind_btSphereShape_getLocalScaling_0.apply(null,arguments)},Zp=b._emscripten_bind_btConeTwistConstraint___destroy___0=function(){return b.asm._emscripten_bind_btConeTwistConstraint___destroy___0.apply(null,arguments)},$p=b._emscripten_bind_btQuadWord___destroy___0=function(){return b.asm._emscripten_bind_btQuadWord___destroy___0.apply(null,arguments)},aq=b._emscripten_bind_btQuaternion_setEulerZYX_3=
-function(){return b.asm._emscripten_bind_btQuaternion_setEulerZYX_3.apply(null,arguments)},bq=b._emscripten_bind_ClosestRayResultCallback_set_m_rayFromWorld_1=function(){return b.asm._emscripten_bind_ClosestRayResultCallback_set_m_rayFromWorld_1.apply(null,arguments)},cq=b._emscripten_bind_RaycastInfo_get_m_wheelDirectionWS_0=function(){return b.asm._emscripten_bind_RaycastInfo_get_m_wheelDirectionWS_0.apply(null,arguments)},dq=b._emscripten_bind_btWheelInfo_get_m_chassisConnectionPointCS_0=function(){return b.asm._emscripten_bind_btWheelInfo_get_m_chassisConnectionPointCS_0.apply(null,
-arguments)},eq=b._emscripten_bind_btRigidBody_getLinearSleepingThreshold_0=function(){return b.asm._emscripten_bind_btRigidBody_getLinearSleepingThreshold_0.apply(null,arguments)},fq=b._emscripten_bind_btGhostObject_setAnisotropicFriction_2=function(){return b.asm._emscripten_bind_btGhostObject_setAnisotropicFriction_2.apply(null,arguments)},gq=b._emscripten_bind_btConstraintSolver___destroy___0=function(){return b.asm._emscripten_bind_btConstraintSolver___destroy___0.apply(null,arguments)},hq=b._emscripten_bind_btDbvtBroadphase___destroy___0=
-function(){return b.asm._emscripten_bind_btDbvtBroadphase___destroy___0.apply(null,arguments)},iq=b._emscripten_bind_ClosestConvexResultCallback_set_m_closestHitFraction_1=function(){return b.asm._emscripten_bind_ClosestConvexResultCallback_set_m_closestHitFraction_1.apply(null,arguments)},jq=b._emscripten_bind_btCapsuleShape_btCapsuleShape_2=function(){return b.asm._emscripten_bind_btCapsuleShape_btCapsuleShape_2.apply(null,arguments)},kq=b._emscripten_bind_btTypedConstraint_enableFeedback_1=function(){return b.asm._emscripten_bind_btTypedConstraint_enableFeedback_1.apply(null,
-arguments)},lq=b._emscripten_bind_btWheelInfoConstructionInfo_get_m_frictionSlip_0=function(){return b.asm._emscripten_bind_btWheelInfoConstructionInfo_get_m_frictionSlip_0.apply(null,arguments)},mq=b._emscripten_bind_btGhostObject_activate_0=function(){return b.asm._emscripten_bind_btGhostObject_activate_0.apply(null,arguments)},nq=b._emscripten_bind_AllHitsRayResultCallback_get_m_closestHitFraction_0=function(){return b.asm._emscripten_bind_AllHitsRayResultCallback_get_m_closestHitFraction_0.apply(null,
-arguments)},oq=b._emscripten_bind_btGeneric6DofSpringConstraint_setLinearLowerLimit_1=function(){return b.asm._emscripten_bind_btGeneric6DofSpringConstraint_setLinearLowerLimit_1.apply(null,arguments)},pq=b._emscripten_bind_btWheelInfo_set_m_clippedInvContactDotSuspension_1=function(){return b.asm._emscripten_bind_btWheelInfo_set_m_clippedInvContactDotSuspension_1.apply(null,arguments)},qq=b._emscripten_bind_btRigidBodyConstructionInfo_get_m_additionalDampingFactor_0=function(){return b.asm._emscripten_bind_btRigidBodyConstructionInfo_get_m_additionalDampingFactor_0.apply(null,
-arguments)},rq=b._emscripten_bind_btRigidBody_setAnisotropicFriction_2=function(){return b.asm._emscripten_bind_btRigidBody_setAnisotropicFriction_2.apply(null,arguments)},sq=b._emscripten_bind_btTriangleMeshShape_setLocalScaling_1=function(){return b.asm._emscripten_bind_btTriangleMeshShape_setLocalScaling_1.apply(null,arguments)},tq=b._emscripten_bind_ConvexResultCallback_set_m_closestHitFraction_1=function(){return b.asm._emscripten_bind_ConvexResultCallback_set_m_closestHitFraction_1.apply(null,
-arguments)},uq=b._emscripten_bind_btGeneric6DofSpringConstraint_enableSpring_2=function(){return b.asm._emscripten_bind_btGeneric6DofSpringConstraint_enableSpring_2.apply(null,arguments)},vq=b._emscripten_bind_btPersistentManifold_btPersistentManifold_0=function(){return b.asm._emscripten_bind_btPersistentManifold_btPersistentManifold_0.apply(null,arguments)},wq=b._emscripten_bind_ConvexResultCallback_get_m_collisionFilterMask_0=function(){return b.asm._emscripten_bind_ConvexResultCallback_get_m_collisionFilterMask_0.apply(null,
-arguments)},xq=b._emscripten_bind_ClosestRayResultCallback_ClosestRayResultCallback_2=function(){return b.asm._emscripten_bind_ClosestRayResultCallback_ClosestRayResultCallback_2.apply(null,arguments)},yq=b._emscripten_bind_btVector4___destroy___0=function(){return b.asm._emscripten_bind_btVector4___destroy___0.apply(null,arguments)},zq=b._emscripten_bind_btPairCachingGhostObject_isKinematicObject_0=function(){return b.asm._emscripten_bind_btPairCachingGhostObject_isKinematicObject_0.apply(null,arguments)},
-Aq=b._emscripten_bind_btPairCachingGhostObject_getActivationState_0=function(){return b.asm._emscripten_bind_btPairCachingGhostObject_getActivationState_0.apply(null,arguments)},Bq=b._emscripten_bind_ClosestRayResultCallback_set_m_collisionFilterMask_1=function(){return b.asm._emscripten_bind_ClosestRayResultCallback_set_m_collisionFilterMask_1.apply(null,arguments)},Cq=b._emscripten_bind_btStaticPlaneShape_calculateLocalInertia_2=function(){return b.asm._emscripten_bind_btStaticPlaneShape_calculateLocalInertia_2.apply(null,
-arguments)},Dq=b._emscripten_bind_btVehicleTuning_set_m_maxSuspensionForce_1=function(){return b.asm._emscripten_bind_btVehicleTuning_set_m_maxSuspensionForce_1.apply(null,arguments)},Eq=b._emscripten_bind_btCollisionObject_setCcdMotionThreshold_1=function(){return b.asm._emscripten_bind_btCollisionObject_setCcdMotionThreshold_1.apply(null,arguments)},Fq=b._emscripten_bind_btKinematicCharacterController_btKinematicCharacterController_4=function(){return b.asm._emscripten_bind_btKinematicCharacterController_btKinematicCharacterController_4.apply(null,
-arguments)},Gq=b._emscripten_bind_btHeightfieldTerrainShape_getMargin_0=function(){return b.asm._emscripten_bind_btHeightfieldTerrainShape_getMargin_0.apply(null,arguments)},Hq=b._emscripten_bind_btWheelInfo_get_m_brake_0=function(){return b.asm._emscripten_bind_btWheelInfo_get_m_brake_0.apply(null,arguments)},Iq=b._emscripten_bind_btRigidBodyConstructionInfo_get_m_angularSleepingThreshold_0=function(){return b.asm._emscripten_bind_btRigidBodyConstructionInfo_get_m_angularSleepingThreshold_0.apply(null,
-arguments)},Jq=b._emscripten_bind_btWheelInfo_get_m_deltaRotation_0=function(){return b.asm._emscripten_bind_btWheelInfo_get_m_deltaRotation_0.apply(null,arguments)},Kq=b._emscripten_bind_btPoint2PointConstraint_getPivotInB_0=function(){return b.asm._emscripten_bind_btPoint2PointConstraint_getPivotInB_0.apply(null,arguments)},Lq=b._emscripten_bind_btKinematicCharacterController_playerStep_2=function(){return b.asm._emscripten_bind_btKinematicCharacterController_playerStep_2.apply(null,arguments)},
-Mq=b._emscripten_bind_btDispatcherInfo___destroy___0=function(){return b.asm._emscripten_bind_btDispatcherInfo___destroy___0.apply(null,arguments)},ub=b.__GLOBAL__sub_I_btConeTwistConstraint_cpp=function(){return b.asm.__GLOBAL__sub_I_btConeTwistConstraint_cpp.apply(null,arguments)},Nq=b._emscripten_bind_btDbvtBroadphase_getOverlappingPairCache_0=function(){return b.asm._emscripten_bind_btDbvtBroadphase_getOverlappingPairCache_0.apply(null,arguments)},Oq=b._emscripten_bind_btCapsuleShapeX_getLocalScaling_0=
-function(){return b.asm._emscripten_bind_btCapsuleShapeX_getLocalScaling_0.apply(null,arguments)},Pq=b._emscripten_bind_btCylinderShape_getMargin_0=function(){return b.asm._emscripten_bind_btCylinderShape_getMargin_0.apply(null,arguments)},Qq=b._emscripten_bind_btStaticPlaneShape_setLocalScaling_1=function(){return b.asm._emscripten_bind_btStaticPlaneShape_setLocalScaling_1.apply(null,arguments)},Rq=b._emscripten_bind_btConvexTriangleMeshShape_calculateLocalInertia_2=function(){return b.asm._emscripten_bind_btConvexTriangleMeshShape_calculateLocalInertia_2.apply(null,
-arguments)},Sq=b._emscripten_bind_btConvexTriangleMeshShape_setLocalScaling_1=function(){return b.asm._emscripten_bind_btConvexTriangleMeshShape_setLocalScaling_1.apply(null,arguments)},Tq=b._emscripten_bind_AllHitsRayResultCallback_set_m_closestHitFraction_1=function(){return b.asm._emscripten_bind_AllHitsRayResultCallback_set_m_closestHitFraction_1.apply(null,arguments)},Uq=b._emscripten_bind_ClosestConvexResultCallback_get_m_convexToWorld_0=function(){return b.asm._emscripten_bind_ClosestConvexResultCallback_get_m_convexToWorld_0.apply(null,
-arguments)},Vq=b._emscripten_bind_btGhostObject_getWorldTransform_0=function(){return b.asm._emscripten_bind_btGhostObject_getWorldTransform_0.apply(null,arguments)},Wq=b._emscripten_bind_btDiscreteDynamicsWorld_getPairCache_0=function(){return b.asm._emscripten_bind_btDiscreteDynamicsWorld_getPairCache_0.apply(null,arguments)},Xq=b._emscripten_bind_LocalConvexResult_set_m_hitFraction_1=function(){return b.asm._emscripten_bind_LocalConvexResult_set_m_hitFraction_1.apply(null,arguments)},Yq=b._emscripten_bind_tScalarArray_clear_0=
-function(){return b.asm._emscripten_bind_tScalarArray_clear_0.apply(null,arguments)},Zq=b._emscripten_bind_btCapsuleShapeZ_calculateLocalInertia_2=function(){return b.asm._emscripten_bind_btCapsuleShapeZ_calculateLocalInertia_2.apply(null,arguments)},$q=b._emscripten_bind_btDispatcherInfo_get_m_timeStep_0=function(){return b.asm._emscripten_bind_btDispatcherInfo_get_m_timeStep_0.apply(null,arguments)},ar=b._emscripten_bind_btHingeConstraint_setAngularOnly_1=function(){return b.asm._emscripten_bind_btHingeConstraint_setAngularOnly_1.apply(null,
-arguments)},br=b._emscripten_bind_btVehicleTuning_set_m_suspensionCompression_1=function(){return b.asm._emscripten_bind_btVehicleTuning_set_m_suspensionCompression_1.apply(null,arguments)},cr=b._emscripten_bind_btDynamicsWorld___destroy___0=function(){return b.asm._emscripten_bind_btDynamicsWorld___destroy___0.apply(null,arguments)},dr=b._emscripten_bind_btMotionState___destroy___0=function(){return b.asm._emscripten_bind_btMotionState___destroy___0.apply(null,arguments)},er=b._emscripten_bind_btCollisionObject_setCollisionFlags_1=
-function(){return b.asm._emscripten_bind_btCollisionObject_setCollisionFlags_1.apply(null,arguments)},fr=b._emscripten_bind_btWheelInfoConstructionInfo_set_m_maxSuspensionTravelCm_1=function(){return b.asm._emscripten_bind_btWheelInfoConstructionInfo_set_m_maxSuspensionTravelCm_1.apply(null,arguments)},gr=b._emscripten_bind_btPairCachingGhostObject_getRollingFriction_0=function(){return b.asm._emscripten_bind_btPairCachingGhostObject_getRollingFriction_0.apply(null,arguments)},hr=b._emscripten_bind_btDiscreteDynamicsWorld_addCollisionObject_1=
-function(){return b.asm._emscripten_bind_btDiscreteDynamicsWorld_addCollisionObject_1.apply(null,arguments)},ir=b._emscripten_bind_btDiscreteDynamicsWorld_addCollisionObject_2=function(){return b.asm._emscripten_bind_btDiscreteDynamicsWorld_addCollisionObject_2.apply(null,arguments)},jr=b._emscripten_bind_btDiscreteDynamicsWorld_addCollisionObject_3=function(){return b.asm._emscripten_bind_btDiscreteDynamicsWorld_addCollisionObject_3.apply(null,arguments)},kr=b._emscripten_bind_btWheelInfo_set_m_suspensionStiffness_1=
-function(){return b.asm._emscripten_bind_btWheelInfo_set_m_suspensionStiffness_1.apply(null,arguments)},lr=b._emscripten_bind_RaycastInfo_set_m_suspensionLength_1=function(){return b.asm._emscripten_bind_RaycastInfo_set_m_suspensionLength_1.apply(null,arguments)},mr=b._emscripten_bind_btDispatcher_getManifoldByIndexInternal_1=function(){return b.asm._emscripten_bind_btDispatcher_getManifoldByIndexInternal_1.apply(null,arguments)},nr=b._emscripten_bind_btVector4_setValue_4=function(){return b.asm._emscripten_bind_btVector4_setValue_4.apply(null,
-arguments)},or=b._emscripten_bind_btFixedConstraint_setBreakingImpulseThreshold_1=function(){return b.asm._emscripten_bind_btFixedConstraint_setBreakingImpulseThreshold_1.apply(null,arguments)},pr=b._emscripten_bind_btWheelInfo_set_m_steering_1=function(){return b.asm._emscripten_bind_btWheelInfo_set_m_steering_1.apply(null,arguments)},qr=b._emscripten_bind_btPairCachingGhostObject_setWorldTransform_1=function(){return b.asm._emscripten_bind_btPairCachingGhostObject_setWorldTransform_1.apply(null,
-arguments)},rr=b._emscripten_bind_btCollisionObject_isStaticOrKinematicObject_0=function(){return b.asm._emscripten_bind_btCollisionObject_isStaticOrKinematicObject_0.apply(null,arguments)},sr=b._emscripten_bind_btHingeConstraint_getBreakingImpulseThreshold_0=function(){return b.asm._emscripten_bind_btHingeConstraint_getBreakingImpulseThreshold_0.apply(null,arguments)},tr=b._emscripten_bind_btDefaultCollisionConstructionInfo___destroy___0=function(){return b.asm._emscripten_bind_btDefaultCollisionConstructionInfo___destroy___0.apply(null,
-arguments)},ur=b._emscripten_bind_btGhostObject_setCcdSweptSphereRadius_1=function(){return b.asm._emscripten_bind_btGhostObject_setCcdSweptSphereRadius_1.apply(null,arguments)},vr=b._emscripten_bind_btPoint2PointConstraint_btPoint2PointConstraint_4=function(){return b.asm._emscripten_bind_btPoint2PointConstraint_btPoint2PointConstraint_4.apply(null,arguments)},wr=b._emscripten_bind_btConeTwistConstraint_setLimit_2=function(){return b.asm._emscripten_bind_btConeTwistConstraint_setLimit_2.apply(null,
-arguments)},xr=b._emscripten_bind_btPoint2PointConstraint_btPoint2PointConstraint_2=function(){return b.asm._emscripten_bind_btPoint2PointConstraint_btPoint2PointConstraint_2.apply(null,arguments)},yr=b._emscripten_bind_btKinematicCharacterController_setJumpSpeed_1=function(){return b.asm._emscripten_bind_btKinematicCharacterController_setJumpSpeed_1.apply(null,arguments)},zr=b._emscripten_bind_btConeShapeX_calculateLocalInertia_2=function(){return b.asm._emscripten_bind_btConeShapeX_calculateLocalInertia_2.apply(null,
-arguments)},Ar=b._emscripten_enum_PHY_ScalarType_PHY_FIXEDPOINT88=function(){return b.asm._emscripten_enum_PHY_ScalarType_PHY_FIXEDPOINT88.apply(null,arguments)},Br=b._emscripten_bind_btPairCachingGhostObject_getOverlappingObject_1=function(){return b.asm._emscripten_bind_btPairCachingGhostObject_getOverlappingObject_1.apply(null,arguments)},Cr=b._emscripten_bind_btConvexTriangleMeshShape_getLocalScaling_0=function(){return b.asm._emscripten_bind_btConvexTriangleMeshShape_getLocalScaling_0.apply(null,
-arguments)},Dr=b._emscripten_bind_btRigidBodyConstructionInfo___destroy___0=function(){return b.asm._emscripten_bind_btRigidBodyConstructionInfo___destroy___0.apply(null,arguments)},Er=b._emscripten_bind_btWheelInfo_set_m_wheelAxleCS_1=function(){return b.asm._emscripten_bind_btWheelInfo_set_m_wheelAxleCS_1.apply(null,arguments)},Fr=b._emscripten_bind_btRigidBody_getWorldTransform_0=function(){return b.asm._emscripten_bind_btRigidBody_getWorldTransform_0.apply(null,arguments)},Mb=b._sbrk=function(){return b.asm._sbrk.apply(null,
-arguments)},Gr=b._emscripten_bind_btPoint2PointConstraint_setPivotA_1=function(){return b.asm._emscripten_bind_btPoint2PointConstraint_setPivotA_1.apply(null,arguments)},Hr=b._emscripten_bind_ClosestConvexResultCallback_set_m_convexToWorld_1=function(){return b.asm._emscripten_bind_ClosestConvexResultCallback_set_m_convexToWorld_1.apply(null,arguments)},Fb=b._memcpy=function(){return b.asm._memcpy.apply(null,arguments)},Ir=b._emscripten_bind_btGhostObject_setInterpolationAngularVelocity_1=function(){return b.asm._emscripten_bind_btGhostObject_setInterpolationAngularVelocity_1.apply(null,
-arguments)},Jr=b._emscripten_bind_btRigidBody_getCcdSweptSphereRadius_0=function(){return b.asm._emscripten_bind_btRigidBody_getCcdSweptSphereRadius_0.apply(null,arguments)},Kr=b._emscripten_bind_btCapsuleShape_calculateLocalInertia_2=function(){return b.asm._emscripten_bind_btCapsuleShape_calculateLocalInertia_2.apply(null,arguments)},Lr=b._emscripten_bind_btRigidBody___destroy___0=function(){return b.asm._emscripten_bind_btRigidBody___destroy___0.apply(null,arguments)},Mr=b._emscripten_bind_btVector3_y_0=
-function(){return b.asm._emscripten_bind_btVector3_y_0.apply(null,arguments)},Nr=b._emscripten_bind_btVehicleTuning_get_m_maxSuspensionForce_0=function(){return b.asm._emscripten_bind_btVehicleTuning_get_m_maxSuspensionForce_0.apply(null,arguments)},Or=b._emscripten_bind_btBvhTriangleMeshShape_btBvhTriangleMeshShape_2=function(){return b.asm._emscripten_bind_btBvhTriangleMeshShape_btBvhTriangleMeshShape_2.apply(null,arguments)},Pr=b._emscripten_bind_btBvhTriangleMeshShape_btBvhTriangleMeshShape_3=
-function(){return b.asm._emscripten_bind_btBvhTriangleMeshShape_btBvhTriangleMeshShape_3.apply(null,arguments)},Qr=b._emscripten_bind_LocalShapeInfo_get_m_triangleIndex_0=function(){return b.asm._emscripten_bind_LocalShapeInfo_get_m_triangleIndex_0.apply(null,arguments)},Rr=b._emscripten_bind_btHeightfieldTerrainShape_btHeightfieldTerrainShape_9=function(){return b.asm._emscripten_bind_btHeightfieldTerrainShape_btHeightfieldTerrainShape_9.apply(null,arguments)},Sr=b._emscripten_bind_btQuaternion_setRotation_2=
-function(){return b.asm._emscripten_bind_btQuaternion_setRotation_2.apply(null,arguments)},Tr=b._emscripten_bind_btGhostObject_setCollisionShape_1=function(){return b.asm._emscripten_bind_btGhostObject_setCollisionShape_1.apply(null,arguments)},Ur=b._emscripten_bind_btDispatcherInfo_set_m_allowedCcdPenetration_1=function(){return b.asm._emscripten_bind_btDispatcherInfo_set_m_allowedCcdPenetration_1.apply(null,arguments)},Vr=b._emscripten_bind_btRigidBody_setRollingFriction_1=function(){return b.asm._emscripten_bind_btRigidBody_setRollingFriction_1.apply(null,
-arguments)},Wr=b._emscripten_bind_btPairCachingGhostObject_setRollingFriction_1=function(){return b.asm._emscripten_bind_btPairCachingGhostObject_setRollingFriction_1.apply(null,arguments)},Xr=b._emscripten_bind_btDiscreteDynamicsWorld_setGravity_1=function(){return b.asm._emscripten_bind_btDiscreteDynamicsWorld_setGravity_1.apply(null,arguments)};b._emscripten_get_global_libc=function(){return b.asm._emscripten_get_global_libc.apply(null,arguments)};
-var Yr=b._emscripten_bind_btVehicleTuning_set_m_suspensionStiffness_1=function(){return b.asm._emscripten_bind_btVehicleTuning_set_m_suspensionStiffness_1.apply(null,arguments)},Zr=b._emscripten_bind_btVector4_z_0=function(){return b.asm._emscripten_bind_btVector4_z_0.apply(null,arguments)},$r=b._emscripten_bind_btCollisionObject_forceActivationState_1=function(){return b.asm._emscripten_bind_btCollisionObject_forceActivationState_1.apply(null,arguments)},as=b._emscripten_bind_btKinematicCharacterController_onGround_0=
-function(){return b.asm._emscripten_bind_btKinematicCharacterController_onGround_0.apply(null,arguments)},Ka=b._free=function(){return b.asm._free.apply(null,arguments)},bs=b._emscripten_bind_btGeneric6DofConstraint_getBreakingImpulseThreshold_0=function(){return b.asm._emscripten_bind_btGeneric6DofConstraint_getBreakingImpulseThreshold_0.apply(null,arguments)},cs=b._emscripten_bind_btRaycastVehicle_updateFriction_1=function(){return b.asm._emscripten_bind_btRaycastVehicle_updateFriction_1.apply(null,
-arguments)},ds=b._emscripten_bind_ClosestConvexResultCallback_set_m_collisionFilterMask_1=function(){return b.asm._emscripten_bind_ClosestConvexResultCallback_set_m_collisionFilterMask_1.apply(null,arguments)},es=b._emscripten_bind_btVector3_normalize_0=function(){return b.asm._emscripten_bind_btVector3_normalize_0.apply(null,arguments)},gs=b._emscripten_bind_btStridingMeshInterface___destroy___0=function(){return b.asm._emscripten_bind_btStridingMeshInterface___destroy___0.apply(null,arguments)};
-b.runPostSets=function(){return b.asm.runPostSets.apply(null,arguments)};
-var hs=b._emscripten_bind_btRigidBody_setSleepingThresholds_2=function(){return b.asm._emscripten_bind_btRigidBody_setSleepingThresholds_2.apply(null,arguments)},is=b._emscripten_bind_AllHitsRayResultCallback_get_m_collisionFilterMask_0=function(){return b.asm._emscripten_bind_AllHitsRayResultCallback_get_m_collisionFilterMask_0.apply(null,arguments)},js=b._emscripten_bind_btCollisionObject_setWorldTransform_1=function(){return b.asm._emscripten_bind_btCollisionObject_setWorldTransform_1.apply(null,arguments)},
-ks=b._emscripten_bind_LocalConvexResult_get_m_localShapeInfo_0=function(){return b.asm._emscripten_bind_LocalConvexResult_get_m_localShapeInfo_0.apply(null,arguments)},ls=b._emscripten_bind_btCollisionObject_getBroadphaseHandle_0=function(){return b.asm._emscripten_bind_btCollisionObject_getBroadphaseHandle_0.apply(null,arguments)},ms=b._emscripten_bind_btRigidBody_getUserIndex_0=function(){return b.asm._emscripten_bind_btRigidBody_getUserIndex_0.apply(null,arguments)},ns=b._emscripten_bind_btRigidBodyConstructionInfo_get_m_linearDamping_0=
-function(){return b.asm._emscripten_bind_btRigidBodyConstructionInfo_get_m_linearDamping_0.apply(null,arguments)},ps=b._emscripten_bind_tScalarArray_size_0=function(){return b.asm._emscripten_bind_tScalarArray_size_0.apply(null,arguments)},qs=b._emscripten_bind_btRigidBody_getAabb_2=function(){return b.asm._emscripten_bind_btRigidBody_getAabb_2.apply(null,arguments)},rs=b._emscripten_bind_AllHitsRayResultCallback_get_m_rayFromWorld_0=function(){return b.asm._emscripten_bind_AllHitsRayResultCallback_get_m_rayFromWorld_0.apply(null,
-arguments)},ss=b._emscripten_bind_btConvexShape_setMargin_1=function(){return b.asm._emscripten_bind_btConvexShape_setMargin_1.apply(null,arguments)},ts=b._emscripten_bind_AllHitsRayResultCallback_get_m_hitPointWorld_0=function(){return b.asm._emscripten_bind_AllHitsRayResultCallback_get_m_hitPointWorld_0.apply(null,arguments)},us=b._emscripten_bind_btRigidBodyConstructionInfo_get_m_linearSleepingThreshold_0=function(){return b.asm._emscripten_bind_btRigidBodyConstructionInfo_get_m_linearSleepingThreshold_0.apply(null,
-arguments)},vs=b._emscripten_bind_btRigidBody_activate_1=function(){return b.asm._emscripten_bind_btRigidBody_activate_1.apply(null,arguments)},xs=b._emscripten_bind_btGhostObject_getInterpolationLinearVelocity_0=function(){return b.asm._emscripten_bind_btGhostObject_getInterpolationLinearVelocity_0.apply(null,arguments)},ys=b._emscripten_bind_btCompoundShape_getLocalScaling_0=function(){return b.asm._emscripten_bind_btCompoundShape_getLocalScaling_0.apply(null,arguments)},zs=b._emscripten_bind_btFixedConstraint_btFixedConstraint_4=
-function(){return b.asm._emscripten_bind_btFixedConstraint_btFixedConstraint_4.apply(null,arguments)},As=b._emscripten_bind_btGImpactMeshShape_calculateLocalInertia_2=function(){return b.asm._emscripten_bind_btGImpactMeshShape_calculateLocalInertia_2.apply(null,arguments)},Bs=b._emscripten_bind_btWheelInfoConstructionInfo_set_m_maxSuspensionForce_1=function(){return b.asm._emscripten_bind_btWheelInfoConstructionInfo_set_m_maxSuspensionForce_1.apply(null,arguments)},Cs=b._emscripten_bind_btGhostObject_setActivationState_1=
-function(){return b.asm._emscripten_bind_btGhostObject_setActivationState_1.apply(null,arguments)},Ds=b._emscripten_bind_btGhostObject_getRollingFriction_0=function(){return b.asm._emscripten_bind_btGhostObject_getRollingFriction_0.apply(null,arguments)},Es=b._emscripten_bind_btCollisionWorld_contactPairTest_3=function(){return b.asm._emscripten_bind_btCollisionWorld_contactPairTest_3.apply(null,arguments)},Fs=b._emscripten_bind_btDispatcherInfo_get_m_useContinuous_0=function(){return b.asm._emscripten_bind_btDispatcherInfo_get_m_useContinuous_0.apply(null,
-arguments)},Gs=b._emscripten_bind_btHingeConstraint_setMaxMotorImpulse_1=function(){return b.asm._emscripten_bind_btHingeConstraint_setMaxMotorImpulse_1.apply(null,arguments)},Hs=b._emscripten_bind_btCollisionObject_setUserIndex_1=function(){return b.asm._emscripten_bind_btCollisionObject_setUserIndex_1.apply(null,arguments)},Is=b._emscripten_bind_btCylinderShapeX___destroy___0=function(){return b.asm._emscripten_bind_btCylinderShapeX___destroy___0.apply(null,arguments)},Js=b._emscripten_bind_btRigidBodyConstructionInfo_set_m_linearSleepingThreshold_1=
-function(){return b.asm._emscripten_bind_btRigidBodyConstructionInfo_set_m_linearSleepingThreshold_1.apply(null,arguments)},Ks=b._emscripten_bind_btManifoldPoint_getPositionWorldOnA_0=function(){return b.asm._emscripten_bind_btManifoldPoint_getPositionWorldOnA_0.apply(null,arguments)},Ls=b._emscripten_bind_ContactResultCallback___destroy___0=function(){return b.asm._emscripten_bind_ContactResultCallback___destroy___0.apply(null,arguments)},Ms=b._emscripten_bind_btDispatcherInfo_get_m_useConvexConservativeDistanceUtil_0=
-function(){return b.asm._emscripten_bind_btDispatcherInfo_get_m_useConvexConservativeDistanceUtil_0.apply(null,arguments)},Ns=b._emscripten_bind_btVector4_x_0=function(){return b.asm._emscripten_bind_btVector4_x_0.apply(null,arguments)},Os=b._emscripten_bind_btConstraintSetting_btConstraintSetting_0=function(){return b.asm._emscripten_bind_btConstraintSetting_btConstraintSetting_0.apply(null,arguments)},Ps=b._emscripten_bind_btRigidBody_getMotionState_0=function(){return b.asm._emscripten_bind_btRigidBody_getMotionState_0.apply(null,
-arguments)},Qs=b._emscripten_bind_btKinematicCharacterController_getGhostObject_0=function(){return b.asm._emscripten_bind_btKinematicCharacterController_getGhostObject_0.apply(null,arguments)},Rs=b._emscripten_bind_AllHitsRayResultCallback_set_m_hitPointWorld_1=function(){return b.asm._emscripten_bind_AllHitsRayResultCallback_set_m_hitPointWorld_1.apply(null,arguments)},Ss=b._emscripten_bind_btTriangleMeshShape___destroy___0=function(){return b.asm._emscripten_bind_btTriangleMeshShape___destroy___0.apply(null,
-arguments)},Ts=b._emscripten_bind_btKinematicCharacterController_setWalkDirection_1=function(){return b.asm._emscripten_bind_btKinematicCharacterController_setWalkDirection_1.apply(null,arguments)},Us=b._emscripten_bind_btDynamicsWorld_removeAction_1=function(){return b.asm._emscripten_bind_btDynamicsWorld_removeAction_1.apply(null,arguments)},Vs=b._emscripten_bind_AllConvexResultCallback_get_m_closestHitFraction_0=function(){return b.asm._emscripten_bind_AllConvexResultCallback_get_m_closestHitFraction_0.apply(null,
-arguments)},Ws=b._emscripten_bind_btManifoldPoint_get_m_localPointA_0=function(){return b.asm._emscripten_bind_btManifoldPoint_get_m_localPointA_0.apply(null,arguments)},Xs=b._emscripten_bind_btDefaultCollisionConstructionInfo_btDefaultCollisionConstructionInfo_0=function(){return b.asm._emscripten_bind_btDefaultCollisionConstructionInfo_btDefaultCollisionConstructionInfo_0.apply(null,arguments)},Ys=b._emscripten_bind_btVehicleRaycasterResult_set_m_hitPointInWorld_1=function(){return b.asm._emscripten_bind_btVehicleRaycasterResult_set_m_hitPointInWorld_1.apply(null,
-arguments)},Zs=b._emscripten_bind_btStaticPlaneShape_getLocalScaling_0=function(){return b.asm._emscripten_bind_btStaticPlaneShape_getLocalScaling_0.apply(null,arguments)},$s=b._emscripten_bind_btManifoldPoint_set_m_normalWorldOnB_1=function(){return b.asm._emscripten_bind_btManifoldPoint_set_m_normalWorldOnB_1.apply(null,arguments)},at=b._emscripten_bind_btTriangleMeshShape_getLocalScaling_0=function(){return b.asm._emscripten_bind_btTriangleMeshShape_getLocalScaling_0.apply(null,arguments)},bt=
-b._emscripten_bind_btGhostObject_setUserPointer_1=function(){return b.asm._emscripten_bind_btGhostObject_setUserPointer_1.apply(null,arguments)},ct=b._emscripten_bind_btKinematicCharacterController_getGravity_0=function(){return b.asm._emscripten_bind_btKinematicCharacterController_getGravity_0.apply(null,arguments)},dt=b._emscripten_enum_PHY_ScalarType_PHY_SHORT=function(){return b.asm._emscripten_enum_PHY_ScalarType_PHY_SHORT.apply(null,arguments)},et=b._emscripten_bind_btConeTwistConstraint_getBreakingImpulseThreshold_0=
-function(){return b.asm._emscripten_bind_btConeTwistConstraint_getBreakingImpulseThreshold_0.apply(null,arguments)},ft=b._emscripten_bind_btGeneric6DofConstraint_setAngularLowerLimit_1=function(){return b.asm._emscripten_bind_btGeneric6DofConstraint_setAngularLowerLimit_1.apply(null,arguments)},gt=b._emscripten_bind_btVehicleRaycasterResult_get_m_distFraction_0=function(){return b.asm._emscripten_bind_btVehicleRaycasterResult_get_m_distFraction_0.apply(null,arguments)},ht=b._emscripten_bind_btQuaternion_op_sub_1=
-function(){return b.asm._emscripten_bind_btQuaternion_op_sub_1.apply(null,arguments)},it=b._emscripten_bind_btVector4_normalize_0=function(){return b.asm._emscripten_bind_btVector4_normalize_0.apply(null,arguments)},jt=b._emscripten_bind_btQuaternion_setY_1=function(){return b.asm._emscripten_bind_btQuaternion_setY_1.apply(null,arguments)},kt=b._emscripten_bind_btConeShape_calculateLocalInertia_2=function(){return b.asm._emscripten_bind_btConeShape_calculateLocalInertia_2.apply(null,arguments)},lt=
-b._emscripten_bind_btDispatcher_getNumManifolds_0=function(){return b.asm._emscripten_bind_btDispatcher_getNumManifolds_0.apply(null,arguments)},mt=b._emscripten_bind_btGImpactShapeInterface_setLocalScaling_1=function(){return b.asm._emscripten_bind_btGImpactShapeInterface_setLocalScaling_1.apply(null,arguments)},Rb=b._llvm_bswap_i32=function(){return b.asm._llvm_bswap_i32.apply(null,arguments)},nt=b._emscripten_bind_AllConvexResultCallback_set_m_hitNormalWorld_1=function(){return b.asm._emscripten_bind_AllConvexResultCallback_set_m_hitNormalWorld_1.apply(null,
-arguments)},ot=b._emscripten_bind_btRaycastVehicle_getForwardVector_0=function(){return b.asm._emscripten_bind_btRaycastVehicle_getForwardVector_0.apply(null,arguments)},pt=b._emscripten_bind_btKinematicCharacterController_setVelocityForTimeInterval_2=function(){return b.asm._emscripten_bind_btKinematicCharacterController_setVelocityForTimeInterval_2.apply(null,arguments)},qt=b._emscripten_bind_btWheelInfo_set_m_suspensionRelativeVelocity_1=function(){return b.asm._emscripten_bind_btWheelInfo_set_m_suspensionRelativeVelocity_1.apply(null,
-arguments)},rt=b._emscripten_bind_btSphereShape_setLocalScaling_1=function(){return b.asm._emscripten_bind_btSphereShape_setLocalScaling_1.apply(null,arguments)},st=b._emscripten_bind_btVector4_w_0=function(){return b.asm._emscripten_bind_btVector4_w_0.apply(null,arguments)},tt=b._emscripten_bind_btWheelInfo_get_m_worldTransform_0=function(){return b.asm._emscripten_bind_btWheelInfo_get_m_worldTransform_0.apply(null,arguments)},ut=b._emscripten_bind_btManifoldPoint_get_m_normalWorldOnB_0=function(){return b.asm._emscripten_bind_btManifoldPoint_get_m_normalWorldOnB_0.apply(null,
-arguments)},vt=b._emscripten_bind_btBvhTriangleMeshShape___destroy___0=function(){return b.asm._emscripten_bind_btBvhTriangleMeshShape___destroy___0.apply(null,arguments)},wt=b._emscripten_bind_btDefaultVehicleRaycaster_castRay_3=function(){return b.asm._emscripten_bind_btDefaultVehicleRaycaster_castRay_3.apply(null,arguments)},xt=b._emscripten_bind_btPoint2PointConstraint_setParam_3=function(){return b.asm._emscripten_bind_btPoint2PointConstraint_setParam_3.apply(null,arguments)},yt=b._emscripten_bind_LocalConvexResult_LocalConvexResult_5=
-function(){return b.asm._emscripten_bind_LocalConvexResult_LocalConvexResult_5.apply(null,arguments)},zt=b._emscripten_bind_btContactSolverInfo_get_m_numIterations_0=function(){return b.asm._emscripten_bind_btContactSolverInfo_get_m_numIterations_0.apply(null,arguments)},At=b._emscripten_bind_btWheelInfoConstructionInfo_get_m_maxSuspensionTravelCm_0=function(){return b.asm._emscripten_bind_btWheelInfoConstructionInfo_get_m_maxSuspensionTravelCm_0.apply(null,arguments)},Bt=b._emscripten_bind_AllHitsRayResultCallback_set_m_hitNormalWorld_1=
-function(){return b.asm._emscripten_bind_AllHitsRayResultCallback_set_m_hitNormalWorld_1.apply(null,arguments)},Ct=b._emscripten_bind_btDiscreteDynamicsWorld_removeConstraint_1=function(){return b.asm._emscripten_bind_btDiscreteDynamicsWorld_removeConstraint_1.apply(null,arguments)},Dt=b._emscripten_bind_btVector4_y_0=function(){return b.asm._emscripten_bind_btVector4_y_0.apply(null,arguments)},Et=b._emscripten_bind_btRaycastVehicle_getUserConstraintType_0=function(){return b.asm._emscripten_bind_btRaycastVehicle_getUserConstraintType_0.apply(null,
-arguments)},Ft=b._emscripten_bind_btGeneric6DofConstraint___destroy___0=function(){return b.asm._emscripten_bind_btGeneric6DofConstraint___destroy___0.apply(null,arguments)},Gt=b._emscripten_bind_VoidPtr___destroy___0=function(){return b.asm._emscripten_bind_VoidPtr___destroy___0.apply(null,arguments)},Ht=b._emscripten_bind_btRigidBody_getBroadphaseHandle_0=function(){return b.asm._emscripten_bind_btRigidBody_getBroadphaseHandle_0.apply(null,arguments)},It=b._emscripten_bind_btVehicleTuning_get_m_maxSuspensionTravelCm_0=
-function(){return b.asm._emscripten_bind_btVehicleTuning_get_m_maxSuspensionTravelCm_0.apply(null,arguments)},Jt=b._emscripten_bind_btConvexHullShape_addPoint_1=function(){return b.asm._emscripten_bind_btConvexHullShape_addPoint_1.apply(null,arguments)},Kt=b._emscripten_bind_btCollisionShape_getLocalScaling_0=function(){return b.asm._emscripten_bind_btCollisionShape_getLocalScaling_0.apply(null,arguments)},Lt=b._emscripten_bind_btQuaternion_length2_0=function(){return b.asm._emscripten_bind_btQuaternion_length2_0.apply(null,
-arguments)},Mt=b._emscripten_bind_btRaycastVehicle_resetSuspension_0=function(){return b.asm._emscripten_bind_btRaycastVehicle_resetSuspension_0.apply(null,arguments)},Nt=b._emscripten_bind_btPoint2PointConstraint_getBreakingImpulseThreshold_0=function(){return b.asm._emscripten_bind_btPoint2PointConstraint_getBreakingImpulseThreshold_0.apply(null,arguments)},Ot=b._emscripten_bind_btRigidBody_activate_0=function(){return b.asm._emscripten_bind_btRigidBody_activate_0.apply(null,arguments)},Pt=b._emscripten_bind_btTransform_getOrigin_0=
-function(){return b.asm._emscripten_bind_btTransform_getOrigin_0.apply(null,arguments)},Qt=b._emscripten_bind_btBroadphaseProxy___destroy___0=function(){return b.asm._emscripten_bind_btBroadphaseProxy___destroy___0.apply(null,arguments)},Rt=b._emscripten_bind_btRigidBody_isStaticObject_0=function(){return b.asm._emscripten_bind_btRigidBody_isStaticObject_0.apply(null,arguments)},St=b._emscripten_bind_tBtCollisionObjectArray_pop_back_0=function(){return b.asm._emscripten_bind_tBtCollisionObjectArray_pop_back_0.apply(null,
-arguments)},Tt=b._emscripten_bind_btSliderConstraint_setLowerAngLimit_1=function(){return b.asm._emscripten_bind_btSliderConstraint_setLowerAngLimit_1.apply(null,arguments)},Ut=b._emscripten_bind_btHingeConstraint___destroy___0=function(){return b.asm._emscripten_bind_btHingeConstraint___destroy___0.apply(null,arguments)},Vt=b._emscripten_bind_btPairCachingGhostObject_getUserPointer_0=function(){return b.asm._emscripten_bind_btPairCachingGhostObject_getUserPointer_0.apply(null,arguments)},Wt=b._emscripten_bind_ContactResultCallback_addSingleResult_7=
-function(){return b.asm._emscripten_bind_ContactResultCallback_addSingleResult_7.apply(null,arguments)},Xt=b._emscripten_bind_AllHitsRayResultCallback_get_m_rayToWorld_0=function(){return b.asm._emscripten_bind_AllHitsRayResultCallback_get_m_rayToWorld_0.apply(null,arguments)},Yt=b._emscripten_bind_btHingeConstraint_enableFeedback_1=function(){return b.asm._emscripten_bind_btHingeConstraint_enableFeedback_1.apply(null,arguments)},Zt=b._emscripten_bind_btConvexShape_calculateLocalInertia_2=function(){return b.asm._emscripten_bind_btConvexShape_calculateLocalInertia_2.apply(null,
-arguments)},zb=b._memset=function(){return b.asm._memset.apply(null,arguments)},$t=b._emscripten_bind_btGeneric6DofConstraint_setLinearLowerLimit_1=function(){return b.asm._emscripten_bind_btGeneric6DofConstraint_setLinearLowerLimit_1.apply(null,arguments)},au=b._emscripten_bind_ClosestRayResultCallback_get_m_hitNormalWorld_0=function(){return b.asm._emscripten_bind_ClosestRayResultCallback_get_m_hitNormalWorld_0.apply(null,arguments)},bu=b._emscripten_bind_btBroadphaseProxy_get_m_collisionFilterGroup_0=
-function(){return b.asm._emscripten_bind_btBroadphaseProxy_get_m_collisionFilterGroup_0.apply(null,arguments)},cu=b._emscripten_bind_btTriangleMesh_btTriangleMesh_0=function(){return b.asm._emscripten_bind_btTriangleMesh_btTriangleMesh_0.apply(null,arguments)},du=b._emscripten_bind_btTriangleMesh_btTriangleMesh_1=function(){return b.asm._emscripten_bind_btTriangleMesh_btTriangleMesh_1.apply(null,arguments)},eu=b._emscripten_bind_btTriangleMesh_btTriangleMesh_2=function(){return b.asm._emscripten_bind_btTriangleMesh_btTriangleMesh_2.apply(null,
-arguments)},fu=b._emscripten_bind_btCollisionObject_isStaticObject_0=function(){return b.asm._emscripten_bind_btCollisionObject_isStaticObject_0.apply(null,arguments)},gu=b._emscripten_bind_btWheelInfo_set_m_frictionSlip_1=function(){return b.asm._emscripten_bind_btWheelInfo_set_m_frictionSlip_1.apply(null,arguments)},hu=b._emscripten_bind_btRigidBody_getCollisionShape_0=function(){return b.asm._emscripten_bind_btRigidBody_getCollisionShape_0.apply(null,arguments)},iu=b._emscripten_bind_btManifoldPoint_set_m_positionWorldOnA_1=
-function(){return b.asm._emscripten_bind_btManifoldPoint_set_m_positionWorldOnA_1.apply(null,arguments)},ju=b._emscripten_bind_btRigidBody_setCenterOfMassTransform_1=function(){return b.asm._emscripten_bind_btRigidBody_setCenterOfMassTransform_1.apply(null,arguments)},ku=b._emscripten_bind_AllConvexResultCallback_set_m_closestHitFraction_1=function(){return b.asm._emscripten_bind_AllConvexResultCallback_set_m_closestHitFraction_1.apply(null,arguments)},lu=b._emscripten_bind_btManifoldPoint_get_m_localPointB_0=
-function(){return b.asm._emscripten_bind_btManifoldPoint_get_m_localPointB_0.apply(null,arguments)},mu=b._emscripten_bind_btQuaternion_inverse_0=function(){return b.asm._emscripten_bind_btQuaternion_inverse_0.apply(null,arguments)},nu=b._emscripten_bind_btDiscreteDynamicsWorld_contactPairTest_3=function(){return b.asm._emscripten_bind_btDiscreteDynamicsWorld_contactPairTest_3.apply(null,arguments)},ou=b._emscripten_bind_ClosestConvexResultCallback_get_m_collisionFilterMask_0=function(){return b.asm._emscripten_bind_ClosestConvexResultCallback_get_m_collisionFilterMask_0.apply(null,
-arguments)},pu=b._emscripten_bind_btSliderConstraint_setLowerLinLimit_1=function(){return b.asm._emscripten_bind_btSliderConstraint_setLowerLinLimit_1.apply(null,arguments)},qu=b._emscripten_bind_btRigidBody_getAngularVelocity_0=function(){return b.asm._emscripten_bind_btRigidBody_getAngularVelocity_0.apply(null,arguments)},ru=b._emscripten_bind_AllConvexResultCallback_get_m_hitNormalWorld_0=function(){return b.asm._emscripten_bind_AllConvexResultCallback_get_m_hitNormalWorld_0.apply(null,arguments)},
-su=b._emscripten_bind_btRigidBodyConstructionInfo_set_m_angularDamping_1=function(){return b.asm._emscripten_bind_btRigidBodyConstructionInfo_set_m_angularDamping_1.apply(null,arguments)},tu=b._emscripten_bind_btCollisionObject_setCcdSweptSphereRadius_1=function(){return b.asm._emscripten_bind_btCollisionObject_setCcdSweptSphereRadius_1.apply(null,arguments)},uu=b._emscripten_bind_btWheelInfo_get_m_wheelsRadius_0=function(){return b.asm._emscripten_bind_btWheelInfo_get_m_wheelsRadius_0.apply(null,
-arguments)},vu=b._emscripten_bind_btRigidBody_setLinearVelocity_1=function(){return b.asm._emscripten_bind_btRigidBody_setLinearVelocity_1.apply(null,arguments)},wu=b._emscripten_bind_btWheelInfoConstructionInfo_get_m_wheelDirectionCS_0=function(){return b.asm._emscripten_bind_btWheelInfoConstructionInfo_get_m_wheelDirectionCS_0.apply(null,arguments)},xu=b._emscripten_bind_btRigidBody_getFlags_0=function(){return b.asm._emscripten_bind_btRigidBody_getFlags_0.apply(null,arguments)},yu=b._emscripten_bind_btVehicleTuning_btVehicleTuning_0=
-function(){return b.asm._emscripten_bind_btVehicleTuning_btVehicleTuning_0.apply(null,arguments)},zu=b._emscripten_bind_RayResultCallback_set_m_collisionObject_1=function(){return b.asm._emscripten_bind_RayResultCallback_set_m_collisionObject_1.apply(null,arguments)},Au=b._emscripten_bind_ClosestRayResultCallback_set_m_rayToWorld_1=function(){return b.asm._emscripten_bind_ClosestRayResultCallback_set_m_rayToWorld_1.apply(null,arguments)},Bu=b._emscripten_bind_btGhostObject_getRestitution_0=function(){return b.asm._emscripten_bind_btGhostObject_getRestitution_0.apply(null,
-arguments)},Cu=b._emscripten_bind_btWheelInfo_set_m_wheelsDampingRelaxation_1=function(){return b.asm._emscripten_bind_btWheelInfo_set_m_wheelsDampingRelaxation_1.apply(null,arguments)},Du=b._emscripten_bind_btWheelInfo_get_m_clippedInvContactDotSuspension_0=function(){return b.asm._emscripten_bind_btWheelInfo_get_m_clippedInvContactDotSuspension_0.apply(null,arguments)},Eu=b._emscripten_bind_btDynamicsWorld_addAction_1=function(){return b.asm._emscripten_bind_btDynamicsWorld_addAction_1.apply(null,
-arguments)},Fu=b._emscripten_bind_btDiscreteDynamicsWorld_removeAction_1=function(){return b.asm._emscripten_bind_btDiscreteDynamicsWorld_removeAction_1.apply(null,arguments)},Gu=b._emscripten_bind_btPairCachingGhostObject_getFriction_0=function(){return b.asm._emscripten_bind_btPairCachingGhostObject_getFriction_0.apply(null,arguments)},Hu=b._emscripten_bind_btGeneric6DofSpringConstraint_setDamping_2=function(){return b.asm._emscripten_bind_btGeneric6DofSpringConstraint_setDamping_2.apply(null,arguments)},
-Iu=b._emscripten_bind_btRigidBodyConstructionInfo_set_m_linearDamping_1=function(){return b.asm._emscripten_bind_btRigidBodyConstructionInfo_set_m_linearDamping_1.apply(null,arguments)},Ju=b._emscripten_bind_AllHitsRayResultCallback_set_m_hitFractions_1=function(){return b.asm._emscripten_bind_AllHitsRayResultCallback_set_m_hitFractions_1.apply(null,arguments)},Ku=b._emscripten_bind_btRigidBody_setGravity_1=function(){return b.asm._emscripten_bind_btRigidBody_setGravity_1.apply(null,arguments)},Lu=
-b._emscripten_bind_btWheelInfo_get_m_rotation_0=function(){return b.asm._emscripten_bind_btWheelInfo_get_m_rotation_0.apply(null,arguments)},Mu=b._emscripten_enum_PHY_ScalarType_PHY_FLOAT=function(){return b.asm._emscripten_enum_PHY_ScalarType_PHY_FLOAT.apply(null,arguments)},Nu=b._emscripten_bind_btWheelInfo_set_m_skidInfo_1=function(){return b.asm._emscripten_bind_btWheelInfo_set_m_skidInfo_1.apply(null,arguments)},Ou=b._emscripten_bind_btWheelInfoConstructionInfo_set_m_suspensionRestLength_1=function(){return b.asm._emscripten_bind_btWheelInfoConstructionInfo_set_m_suspensionRestLength_1.apply(null,
-arguments)},Pu=b._emscripten_bind_btKinematicCharacterController_setFallSpeed_1=function(){return b.asm._emscripten_bind_btKinematicCharacterController_setFallSpeed_1.apply(null,arguments)},Qu=b._emscripten_bind_btRigidBody_setActivationState_1=function(){return b.asm._emscripten_bind_btRigidBody_setActivationState_1.apply(null,arguments)},Ru=b._emscripten_bind_btGImpactMeshShape_setLocalScaling_1=function(){return b.asm._emscripten_bind_btGImpactMeshShape_setLocalScaling_1.apply(null,arguments)},
-Su=b._emscripten_bind_ClosestConvexResultCallback_hasHit_0=function(){return b.asm._emscripten_bind_ClosestConvexResultCallback_hasHit_0.apply(null,arguments)},Tu=b._emscripten_bind_btConvexTriangleMeshShape___destroy___0=function(){return b.asm._emscripten_bind_btConvexTriangleMeshShape___destroy___0.apply(null,arguments)},Uu=b._emscripten_bind_AllHitsRayResultCallback_set_m_rayToWorld_1=function(){return b.asm._emscripten_bind_AllHitsRayResultCallback_set_m_rayToWorld_1.apply(null,arguments)},Vu=
-b._emscripten_bind_btWheelInfoConstructionInfo_get_m_wheelsDampingRelaxation_0=function(){return b.asm._emscripten_bind_btWheelInfoConstructionInfo_get_m_wheelsDampingRelaxation_0.apply(null,arguments)},Wu=b._emscripten_bind_btConeTwistConstraint_getParam_2=function(){return b.asm._emscripten_bind_btConeTwistConstraint_getParam_2.apply(null,arguments)},Xu=b._emscripten_bind_ClosestRayResultCallback_get_m_collisionObject_0=function(){return b.asm._emscripten_bind_ClosestRayResultCallback_get_m_collisionObject_0.apply(null,
-arguments)},Yu=b._emscripten_bind_btTriangleMesh_addTriangle_3=function(){return b.asm._emscripten_bind_btTriangleMesh_addTriangle_3.apply(null,arguments)},Zu=b._emscripten_bind_btGhostObject_getOverlappingObject_1=function(){return b.asm._emscripten_bind_btGhostObject_getOverlappingObject_1.apply(null,arguments)},$u=b._emscripten_bind_btTriangleMesh_addTriangle_4=function(){return b.asm._emscripten_bind_btTriangleMesh_addTriangle_4.apply(null,arguments)},av=b._emscripten_bind_btGImpactShapeInterface_calculateLocalInertia_2=
-function(){return b.asm._emscripten_bind_btGImpactShapeInterface_calculateLocalInertia_2.apply(null,arguments)},bv=b._emscripten_bind_btRigidBody_applyTorqueImpulse_1=function(){return b.asm._emscripten_bind_btRigidBody_applyTorqueImpulse_1.apply(null,arguments)},cv=b._emscripten_bind_btVector3_op_add_1=function(){return b.asm._emscripten_bind_btVector3_op_add_1.apply(null,arguments)},dv=b._emscripten_bind_btRigidBody_setCollisionFlags_1=function(){return b.asm._emscripten_bind_btRigidBody_setCollisionFlags_1.apply(null,
-arguments)},ev=b._emscripten_bind_btFixedConstraint_enableFeedback_1=function(){return b.asm._emscripten_bind_btFixedConstraint_enableFeedback_1.apply(null,arguments)},fv=b._emscripten_bind_btWheelInfo_set_m_suspensionRestLength1_1=function(){return b.asm._emscripten_bind_btWheelInfo_set_m_suspensionRestLength1_1.apply(null,arguments)},gv=b._emscripten_bind_btRaycastVehicle_setUserConstraintType_1=function(){return b.asm._emscripten_bind_btRaycastVehicle_setUserConstraintType_1.apply(null,arguments)},
-hv=b._emscripten_bind_btConeShape___destroy___0=function(){return b.asm._emscripten_bind_btConeShape___destroy___0.apply(null,arguments)},iv=b._emscripten_bind_btCapsuleShape_getLocalScaling_0=function(){return b.asm._emscripten_bind_btCapsuleShape_getLocalScaling_0.apply(null,arguments)},jv=b._emscripten_bind_btCapsuleShapeZ_btCapsuleShapeZ_2=function(){return b.asm._emscripten_bind_btCapsuleShapeZ_btCapsuleShapeZ_2.apply(null,arguments)},kv=b._emscripten_bind_btDispatcherInfo_get_m_enableSPU_0=
-function(){return b.asm._emscripten_bind_btDispatcherInfo_get_m_enableSPU_0.apply(null,arguments)},lv=b._emscripten_bind_btSliderConstraint_btSliderConstraint_5=function(){return b.asm._emscripten_bind_btSliderConstraint_btSliderConstraint_5.apply(null,arguments)},mv=b._emscripten_bind_btSliderConstraint_btSliderConstraint_3=function(){return b.asm._emscripten_bind_btSliderConstraint_btSliderConstraint_3.apply(null,arguments)},nv=b._emscripten_bind_btTransform___destroy___0=function(){return b.asm._emscripten_bind_btTransform___destroy___0.apply(null,
-arguments)},ov=b._emscripten_bind_btWheelInfo_get_m_wheelAxleCS_0=function(){return b.asm._emscripten_bind_btWheelInfo_get_m_wheelAxleCS_0.apply(null,arguments)},pv=b._emscripten_bind_btDynamicsWorld_convexSweepTest_5=function(){return b.asm._emscripten_bind_btDynamicsWorld_convexSweepTest_5.apply(null,arguments)},qv=b._emscripten_bind_btSliderConstraint___destroy___0=function(){return b.asm._emscripten_bind_btSliderConstraint___destroy___0.apply(null,arguments)},rv=b._emscripten_bind_btRigidBody_forceActivationState_1=
-function(){return b.asm._emscripten_bind_btRigidBody_forceActivationState_1.apply(null,arguments)},sv=b._emscripten_bind_btPoint2PointConstraint_setPivotB_1=function(){return b.asm._emscripten_bind_btPoint2PointConstraint_setPivotB_1.apply(null,arguments)},tv=b._emscripten_bind_btManifoldPoint_getDistance_0=function(){return b.asm._emscripten_bind_btManifoldPoint_getDistance_0.apply(null,arguments)},uv=b._emscripten_bind_RayResultCallback_get_m_closestHitFraction_0=function(){return b.asm._emscripten_bind_RayResultCallback_get_m_closestHitFraction_0.apply(null,
-arguments)},vv=b._emscripten_bind_RaycastInfo_set_m_hardPointWS_1=function(){return b.asm._emscripten_bind_RaycastInfo_set_m_hardPointWS_1.apply(null,arguments)},wv=b._emscripten_bind_btKinematicCharacterController_getMaxSlope_0=function(){return b.asm._emscripten_bind_btKinematicCharacterController_getMaxSlope_0.apply(null,arguments)},xv=b._emscripten_bind_btDynamicsWorld_updateSingleAabb_1=function(){return b.asm._emscripten_bind_btDynamicsWorld_updateSingleAabb_1.apply(null,arguments)},yv=b._emscripten_bind_btRigidBody_getRollingFriction_0=
-function(){return b.asm._emscripten_bind_btRigidBody_getRollingFriction_0.apply(null,arguments)},zv=b._emscripten_bind_btWheelInfo_get_m_wheelsDampingCompression_0=function(){return b.asm._emscripten_bind_btWheelInfo_get_m_wheelsDampingCompression_0.apply(null,arguments)},Av=b._emscripten_bind_btRaycastVehicle_addWheel_7=function(){return b.asm._emscripten_bind_btRaycastVehicle_addWheel_7.apply(null,arguments)},Bv=b._emscripten_bind_btQuaternion_op_add_1=function(){return b.asm._emscripten_bind_btQuaternion_op_add_1.apply(null,
-arguments)},Cv=b._emscripten_bind_ClosestRayResultCallback_set_m_hitNormalWorld_1=function(){return b.asm._emscripten_bind_ClosestRayResultCallback_set_m_hitNormalWorld_1.apply(null,arguments)},Dv=b._emscripten_bind_btRaycastVehicle_updateWheelTransformsWS_2=function(){return b.asm._emscripten_bind_btRaycastVehicle_updateWheelTransformsWS_2.apply(null,arguments)},Ev=b._emscripten_bind_btStaticPlaneShape___destroy___0=function(){return b.asm._emscripten_bind_btStaticPlaneShape___destroy___0.apply(null,
-arguments)},Fv=b._emscripten_bind_btHingeConstraint_enableMotor_1=function(){return b.asm._emscripten_bind_btHingeConstraint_enableMotor_1.apply(null,arguments)},Gv=b._emscripten_bind_btPairCachingGhostObject_getRestitution_0=function(){return b.asm._emscripten_bind_btPairCachingGhostObject_getRestitution_0.apply(null,arguments)},Hv=b._emscripten_bind_btCylinderShapeZ_setLocalScaling_1=function(){return b.asm._emscripten_bind_btCylinderShapeZ_setLocalScaling_1.apply(null,arguments)},Iv=b._emscripten_bind_btBoxShape_setLocalScaling_1=
-function(){return b.asm._emscripten_bind_btBoxShape_setLocalScaling_1.apply(null,arguments)},Jv=b._emscripten_bind_btConeShapeZ___destroy___0=function(){return b.asm._emscripten_bind_btConeShapeZ___destroy___0.apply(null,arguments)},Kv=b._emscripten_bind_btDynamicsWorld_getPairCache_0=function(){return b.asm._emscripten_bind_btDynamicsWorld_getPairCache_0.apply(null,arguments)},Lv=b._emscripten_bind_btWheelInfoConstructionInfo_get_m_wheelAxleCS_0=function(){return b.asm._emscripten_bind_btWheelInfoConstructionInfo_get_m_wheelAxleCS_0.apply(null,
-arguments)},Mv=b._emscripten_bind_btDiscreteDynamicsWorld_convexSweepTest_5=function(){return b.asm._emscripten_bind_btDiscreteDynamicsWorld_convexSweepTest_5.apply(null,arguments)},Nv=b._emscripten_bind_RaycastInfo_get_m_isInContact_0=function(){return b.asm._emscripten_bind_RaycastInfo_get_m_isInContact_0.apply(null,arguments)},Ov=b._emscripten_bind_btRigidBody_setRestitution_1=function(){return b.asm._emscripten_bind_btRigidBody_setRestitution_1.apply(null,arguments)},Pv=b._emscripten_bind_btVector4_btVector4_0=
-function(){return b.asm._emscripten_bind_btVector4_btVector4_0.apply(null,arguments)},Qv=b._emscripten_bind_btDispatcherInfo_get_m_enableSatConvex_0=function(){return b.asm._emscripten_bind_btDispatcherInfo_get_m_enableSatConvex_0.apply(null,arguments)},Rv=b._emscripten_bind_btCollisionObject_getCcdMotionThreshold_0=function(){return b.asm._emscripten_bind_btCollisionObject_getCcdMotionThreshold_0.apply(null,arguments)},Sv=b._emscripten_bind_btVector4_btVector4_4=function(){return b.asm._emscripten_bind_btVector4_btVector4_4.apply(null,
-arguments)},Tv=b._emscripten_bind_btConvexHullShape_getLocalScaling_0=function(){return b.asm._emscripten_bind_btConvexHullShape_getLocalScaling_0.apply(null,arguments)},Uv=b._emscripten_bind_tVector3Array___destroy___0=function(){return b.asm._emscripten_bind_tVector3Array___destroy___0.apply(null,arguments)},Vv=b._emscripten_bind_btKinematicCharacterController___destroy___0=function(){return b.asm._emscripten_bind_btKinematicCharacterController___destroy___0.apply(null,arguments)},Wv=b._emscripten_bind_btRigidBody_setFlags_1=
-function(){return b.asm._emscripten_bind_btRigidBody_setFlags_1.apply(null,arguments)},Xv=b._emscripten_bind_btGhostObject_getCcdMotionThreshold_0=function(){return b.asm._emscripten_bind_btGhostObject_getCcdMotionThreshold_0.apply(null,arguments)},Yv=b._emscripten_bind_btTypedConstraint_setParam_3=function(){return b.asm._emscripten_bind_btTypedConstraint_setParam_3.apply(null,arguments)},Zv=b._emscripten_bind_LocalConvexResult_set_m_hitCollisionObject_1=function(){return b.asm._emscripten_bind_LocalConvexResult_set_m_hitCollisionObject_1.apply(null,
-arguments)},$v=b._emscripten_bind_btVector4_op_sub_1=function(){return b.asm._emscripten_bind_btVector4_op_sub_1.apply(null,arguments)},aw=b._emscripten_bind_btGeneric6DofSpringConstraint_setAngularLowerLimit_1=function(){return b.asm._emscripten_bind_btGeneric6DofSpringConstraint_setAngularLowerLimit_1.apply(null,arguments)},bw=b._emscripten_bind_tBtCollisionObjectArray_push_back_1=function(){return b.asm._emscripten_bind_tBtCollisionObjectArray_push_back_1.apply(null,arguments)},cw=b._emscripten_bind_btDiscreteDynamicsWorld_rayTest_3=
-function(){return b.asm._emscripten_bind_btDiscreteDynamicsWorld_rayTest_3.apply(null,arguments)},dw=b._emscripten_bind_btWheelInfo_get_m_raycastInfo_0=function(){return b.asm._emscripten_bind_btWheelInfo_get_m_raycastInfo_0.apply(null,arguments)},ew=b._emscripten_bind_btContactSolverInfo_get_m_splitImpulse_0=function(){return b.asm._emscripten_bind_btContactSolverInfo_get_m_splitImpulse_0.apply(null,arguments)},fw=b._emscripten_bind_btConvexShape_getMargin_0=function(){return b.asm._emscripten_bind_btConvexShape_getMargin_0.apply(null,
-arguments)},gw=b._emscripten_bind_btRaycastVehicle_getSteeringValue_1=function(){return b.asm._emscripten_bind_btRaycastVehicle_getSteeringValue_1.apply(null,arguments)},hw=b._emscripten_bind_btWheelInfoConstructionInfo_get_m_wheelRadius_0=function(){return b.asm._emscripten_bind_btWheelInfoConstructionInfo_get_m_wheelRadius_0.apply(null,arguments)},iw=b._emscripten_bind_btKinematicCharacterController_setMaxJumpHeight_1=function(){return b.asm._emscripten_bind_btKinematicCharacterController_setMaxJumpHeight_1.apply(null,
-arguments)},jw=b._emscripten_bind_btPairCachingGhostObject_isActive_0=function(){return b.asm._emscripten_bind_btPairCachingGhostObject_isActive_0.apply(null,arguments)},kw=b._emscripten_bind_btWheelInfo_set_m_wheelDirectionCS_1=function(){return b.asm._emscripten_bind_btWheelInfo_set_m_wheelDirectionCS_1.apply(null,arguments)},lw=b._emscripten_bind_btVehicleTuning_get_m_frictionSlip_0=function(){return b.asm._emscripten_bind_btVehicleTuning_get_m_frictionSlip_0.apply(null,arguments)},mw=b._emscripten_bind_btCollisionObject_getInterpolationAngularVelocity_0=
-function(){return b.asm._emscripten_bind_btCollisionObject_getInterpolationAngularVelocity_0.apply(null,arguments)};b.dynCall_viiiii=function(){return b.asm.dynCall_viiiii.apply(null,arguments)};b.dynCall_viiiifffffifi=function(){return b.asm.dynCall_viiiifffffifi.apply(null,arguments)};b.dynCall_vif=function(){return b.asm.dynCall_vif.apply(null,arguments)};b.dynCall_viifii=function(){return b.asm.dynCall_viifii.apply(null,arguments)};b.dynCall_vi=function(){return b.asm.dynCall_vi.apply(null,arguments)};
-b.dynCall_vii=function(){return b.asm.dynCall_vii.apply(null,arguments)};b.dynCall_iiiiiiiiiii=function(){return b.asm.dynCall_iiiiiiiiiii.apply(null,arguments)};b.dynCall_viiiif=function(){return b.asm.dynCall_viiiif.apply(null,arguments)};b.dynCall_ii=function(){return b.asm.dynCall_ii.apply(null,arguments)};b.dynCall_viifi=function(){return b.asm.dynCall_viifi.apply(null,arguments)};b.dynCall_viiiiiiiii=function(){return b.asm.dynCall_viiiiiiiii.apply(null,arguments)};
-b.dynCall_viiif=function(){return b.asm.dynCall_viiif.apply(null,arguments)};b.dynCall_viffiii=function(){return b.asm.dynCall_viffiii.apply(null,arguments)};b.dynCall_iiiiii=function(){return b.asm.dynCall_iiiiii.apply(null,arguments)};b.dynCall_viiifii=function(){return b.asm.dynCall_viiifii.apply(null,arguments)};b.dynCall_fiifii=function(){return b.asm.dynCall_fiifii.apply(null,arguments)};b.dynCall_fiiiiiiiii=function(){return b.asm.dynCall_fiiiiiiiii.apply(null,arguments)};
-b.dynCall_iiii=function(){return b.asm.dynCall_iiii.apply(null,arguments)};b.dynCall_fif=function(){return b.asm.dynCall_fif.apply(null,arguments)};b.dynCall_vifi=function(){return b.asm.dynCall_vifi.apply(null,arguments)};b.dynCall_viiiiii=function(){return b.asm.dynCall_viiiiii.apply(null,arguments)};b.dynCall_iiif=function(){return b.asm.dynCall_iiif.apply(null,arguments)};b.dynCall_fiii=function(){return b.asm.dynCall_fiii.apply(null,arguments)};
-b.dynCall_iiiiiii=function(){return b.asm.dynCall_iiiiiii.apply(null,arguments)};b.dynCall_fiiiiiiiiii=function(){return b.asm.dynCall_fiiiiiiiiii.apply(null,arguments)};b.dynCall_fiiiii=function(){return b.asm.dynCall_fiiiii.apply(null,arguments)};b.dynCall_viiiiiii=function(){return b.asm.dynCall_viiiiiii.apply(null,arguments)};b.dynCall_vifii=function(){return b.asm.dynCall_vifii.apply(null,arguments)};b.dynCall_fi=function(){return b.asm.dynCall_fi.apply(null,arguments)};
-b.dynCall_viiiiiiiiii=function(){return b.asm.dynCall_viiiiiiiiii.apply(null,arguments)};b.dynCall_iii=function(){return b.asm.dynCall_iii.apply(null,arguments)};b.dynCall_fiiiiiiii=function(){return b.asm.dynCall_fiiiiiiii.apply(null,arguments)};b.dynCall_iifif=function(){return b.asm.dynCall_iifif.apply(null,arguments)};b.dynCall_viiiiffffiif=function(){return b.asm.dynCall_viiiiffffiif.apply(null,arguments)};b.dynCall_fiiii=function(){return b.asm.dynCall_fiiii.apply(null,arguments)};
-b.dynCall_iiiii=function(){return b.asm.dynCall_iiiii.apply(null,arguments)};b.dynCall_viii=function(){return b.asm.dynCall_viii.apply(null,arguments)};b.dynCall_v=function(){return b.asm.dynCall_v.apply(null,arguments)};b.dynCall_iiiiiiiii=function(){return b.asm.dynCall_iiiiiiiii.apply(null,arguments)};b.dynCall_viif=function(){return b.asm.dynCall_viif.apply(null,arguments)};b.dynCall_fiiifii=function(){return b.asm.dynCall_fiiifii.apply(null,arguments)};
-b.dynCall_viiii=function(){return b.asm.dynCall_viiii.apply(null,arguments)};h.u=b.stackAlloc;h.N=b.stackSave;h.M=b.stackRestore;h.S=b.establishStackSpace;h.e=b.setTempRet0;h.J=b.getTempRet0;b.asm=Tb;
-if(sb)if("function"===typeof b.locateFile?sb=b.locateFile(sb):b.memoryInitializerPrefixURL&&(sb=b.memoryInitializerPrefixURL+sb),ea||fa){var nw=b.readBinary(sb);Aa.set(nw,h.i)}else{var pw=function(){b.readAsync(sb,ow,function(){throw"could not load memory initializer "+sb;})};qb();var ow=function(a){a.byteLength&&(a=new Uint8Array(a));Aa.set(a,h.i);b.memoryInitializerRequest&&delete b.memoryInitializerRequest.response;rb()};if(b.memoryInitializerRequest){var qw=function(){var a=b.memoryInitializerRequest;
-200!==a.status&&0!==a.status?(console.warn("a problem seems to have happened with Module.memoryInitializerRequest, status: "+a.status+", retrying "+sb),pw()):ow(a.response)};b.memoryInitializerRequest.response?setTimeout(qw,0):b.memoryInitializerRequest.addEventListener("load",qw)}else pw()}b.then=function(a){if(b.calledRun)a(b);else{var c=b.onRuntimeInitialized;b.onRuntimeInitialized=function(){c&&c();a(b)}}return b};
-function ja(a){this.name="ExitStatus";this.message="Program terminated with exit("+a+")";this.status=a}ja.prototype=Error();ja.prototype.constructor=ja;var rw=null,pb=function sw(){b.calledRun||tw();b.calledRun||(pb=sw)};
-b.callMain=b.Q=function(a){function c(){for(var a=0;3>a;a++)e.push(0)}a=a||[];ib||(ib=!0,bb(db));var d=a.length+1,e=[ya(kb(b.thisProgram),"i8",0)];c();for(var f=0;f<d-1;f+=1)e.push(ya(kb(a[f]),"i8",0)),c();e.push(0);e=ya(e,"i32",0);try{var g=b._main(d,e,0);uw(g,!0)}catch(k){k instanceof ja||("SimulateInfiniteLoop"==k?b.noExitRuntime=!0:((a=k)&&"object"===typeof k&&k.stack&&(a=[k,k.stack]),b.h("exception thrown: "+a),b.quit(1,k)))}finally{}};
-function tw(a){function c(){if(!b.calledRun&&(b.calledRun=!0,!qa)){ib||(ib=!0,bb(db));bb(eb);if(b.onRuntimeInitialized)b.onRuntimeInitialized();b._main&&vw&&b.callMain(a);if(b.postRun)for("function"==typeof b.postRun&&(b.postRun=[b.postRun]);b.postRun.length;){var c=b.postRun.shift();hb.unshift(c)}bb(hb)}}a=a||b.arguments;null===rw&&(rw=Date.now());if(!(0<nb)){if(b.preRun)for("function"==typeof b.preRun&&(b.preRun=[b.preRun]);b.preRun.length;)jb();bb(cb);0<nb||b.calledRun||(b.setStatus?(b.setStatus("Running..."),
-setTimeout(function(){setTimeout(function(){b.setStatus("")},1);c()},1)):c())}}b.run=b.run=tw;function uw(a,c){if(!c||!b.noExitRuntime){if(!b.noExitRuntime&&(qa=!0,ka=void 0,bb(gb),b.onExit))b.onExit(a);ea&&process.exit(a);b.quit(a,new ja(a))}}b.exit=b.exit=uw;var ww=[];
-function ra(a){void 0!==a?(b.print(a),b.h(a),a=JSON.stringify(a)):a="";qa=!0;var c="abort("+a+") at "+La()+"\nIf this abort() is unexpected, build with -s ASSERTIONS=1 which can give more information.";ww&&ww.forEach(function(d){c=d(c,a)});throw c;}b.abort=b.abort=ra;if(b.preInit)for("function"==typeof b.preInit&&(b.preInit=[b.preInit]);0<b.preInit.length;)b.preInit.pop()();var vw=!0;b.noInitialRun&&(vw=!1);b.noExitRuntime=!0;tw();function n(){}n.prototype=Object.create(n.prototype);
-n.prototype.constructor=n;n.prototype.b=n;n.c={};b.WrapperObject=n;function p(a){return(a||n).c}b.getCache=p;function q(a,c){var d=p(c),e=d[a];if(e)return e;e=Object.create((c||n).prototype);e.a=a;return d[a]=e}b.wrapPointer=q;b.castObject=function(a,c){return q(a.a,c)};b.NULL=q(0);b.destroy=function(a){if(!a.__destroy__)throw"Error: Cannot destroy object. (Did you create it yourself?)";a.__destroy__();delete p(a.b)[a.a]};b.compare=function(a,c){return a.a===c.a};b.getPointer=function(a){return a.a};
-b.getClass=function(a){return a.b};var xw=0,yw=0,zw=0,Aw=[],Bw=0;function r(){throw"cannot construct a btCollisionShape, no constructor in IDL";}r.prototype=Object.create(n.prototype);r.prototype.constructor=r;r.prototype.b=r;r.c={};b.btCollisionShape=r;r.prototype.setLocalScaling=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Cj(c,a)};r.prototype.getLocalScaling=function(){return q(Kt(this.a),t)};
-r.prototype.calculateLocalInertia=function(a,c){var d=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);Xf(d,a,c)};r.prototype.setMargin=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);tf(c,a)};r.prototype.getMargin=function(){return Up(this.a)};r.prototype.__destroy__=function(){ip(this.a)};function w(){this.a=Yc();p(w)[this.a]=this}w.prototype=Object.create(n.prototype);w.prototype.constructor=w;w.prototype.b=w;w.c={};b.btCollisionObject=w;
-w.prototype.setAnisotropicFriction=function(a,c){var d=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);jo(d,a,c)};w.prototype.getCollisionShape=function(){return q(yn(this.a),r)};w.prototype.setContactProcessingThreshold=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);qj(c,a)};w.prototype.setActivationState=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Pf(c,a)};
-w.prototype.forceActivationState=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);$r(c,a)};w.prototype.activate=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);void 0===a?sd(c):rd(c,a)};w.prototype.isActive=function(){return!!ac(this.a)};w.prototype.isKinematicObject=function(){return!!bd(this.a)};w.prototype.isStaticObject=function(){return!!fu(this.a)};w.prototype.isStaticOrKinematicObject=function(){return!!rr(this.a)};w.prototype.getRestitution=function(){return Md(this.a)};
-w.prototype.setRestitution=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Kl(c,a)};w.prototype.getFriction=function(){return Sh(this.a)};w.prototype.setFriction=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Jn(c,a)};w.prototype.getRollingFriction=function(){return dd(this.a)};w.prototype.setRollingFriction=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Sj(c,a)};w.prototype.getCollisionFlags=function(){return dj(this.a)};
-w.prototype.setCollisionFlags=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);er(c,a)};w.prototype.getWorldTransform=function(){return q(Vg(this.a),x)};w.prototype.setWorldTransform=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);js(c,a)};w.prototype.setCollisionShape=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);hp(c,a)};w.prototype.getCcdMotionThreshold=function(){return Rv(this.a)};
-w.prototype.setCcdMotionThreshold=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Eq(c,a)};w.prototype.getCcdSweptSphereRadius=function(){return Op(this.a)};w.prototype.setCcdSweptSphereRadius=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);tu(c,a)};w.prototype.getUserIndex=function(){return uc(this.a)};w.prototype.setUserIndex=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Hs(c,a)};w.prototype.getUserPointer=function(){return q(Pg(this.a),Cw)};
-w.prototype.setUserPointer=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);zg(c,a)};w.prototype.getInterpolationAngularVelocity=function(){return q(mw(this.a),t)};w.prototype.setInterpolationAngularVelocity=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);tg(c,a)};w.prototype.getInterpolationLinearVelocity=function(){return q(ql(this.a),t)};w.prototype.setInterpolationLinearVelocity=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Me(c,a)};
-w.prototype.getBroadphaseHandle=function(){return q(ls(this.a),Dw)};w.prototype.getActivationState=function(){return pc(this.a)};w.prototype.__destroy__=function(){Ep(this.a)};function Ew(){throw"cannot construct a btTypedConstraint, no constructor in IDL";}Ew.prototype=Object.create(n.prototype);Ew.prototype.constructor=Ew;Ew.prototype.b=Ew;Ew.c={};b.btTypedConstraint=Ew;Ew.prototype.enableFeedback=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);kq(c,a)};
-Ew.prototype.getBreakingImpulseThreshold=function(){return fo(this.a)};Ew.prototype.setBreakingImpulseThreshold=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);xe(c,a)};Ew.prototype.getParam=function(a,c){var d=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);return Xb(d,a,c)};Ew.prototype.setParam=function(a,c,d){var e=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);d&&"object"===typeof d&&(d=d.a);Yv(e,a,c,d)};Ew.prototype.__destroy__=function(){dm(this.a)};
-function y(){throw"cannot construct a btCollisionWorld, no constructor in IDL";}y.prototype=Object.create(n.prototype);y.prototype.constructor=y;y.prototype.b=y;y.c={};b.btCollisionWorld=y;y.prototype.getDispatcher=function(){return q(Pj(this.a),Fw)};y.prototype.rayTest=function(a,c,d){var e=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);d&&"object"===typeof d&&(d=d.a);yg(e,a,c,d)};y.prototype.getPairCache=function(){return q(Go(this.a),Gw)};
-y.prototype.getDispatchInfo=function(){return q(aj(this.a),z)};y.prototype.addCollisionObject=function(a,c,d){var e=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);d&&"object"===typeof d&&(d=d.a);void 0===c?rm(e,a):void 0===d?sm(e,a,c):Aj(e,a,c,d)};y.prototype.removeCollisionObject=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);td(c,a)};y.prototype.getBroadphase=function(){return q(Hi(this.a),Hw)};
-y.prototype.convexSweepTest=function(a,c,d,e,f){var g=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);d&&"object"===typeof d&&(d=d.a);e&&"object"===typeof e&&(e=e.a);f&&"object"===typeof f&&(f=f.a);Zf(g,a,c,d,e,f)};y.prototype.contactPairTest=function(a,c,d){var e=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);d&&"object"===typeof d&&(d=d.a);Es(e,a,c,d)};
-y.prototype.contactTest=function(a,c){var d=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);Rg(d,a,c)};y.prototype.updateSingleAabb=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);ld(c,a)};y.prototype.__destroy__=function(){he(this.a)};function Iw(){throw"cannot construct a btConcaveShape, no constructor in IDL";}Iw.prototype=Object.create(r.prototype);Iw.prototype.constructor=Iw;Iw.prototype.b=Iw;Iw.c={};b.btConcaveShape=Iw;
-Iw.prototype.setLocalScaling=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);wi(c,a)};Iw.prototype.getLocalScaling=function(){return q(hl(this.a),t)};Iw.prototype.calculateLocalInertia=function(a,c){var d=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);yk(d,a,c)};Iw.prototype.__destroy__=function(){qi(this.a)};function Jw(a,c){a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);this.a=jq(a,c);p(Jw)[this.a]=this}Jw.prototype=Object.create(r.prototype);
-Jw.prototype.constructor=Jw;Jw.prototype.b=Jw;Jw.c={};b.btCapsuleShape=Jw;Jw.prototype.setMargin=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Dm(c,a)};Jw.prototype.getMargin=function(){return Tj(this.a)};Jw.prototype.getUpAxis=function(){return Jg(this.a)};Jw.prototype.getRadius=function(){return Ic(this.a)};Jw.prototype.getHalfHeight=function(){return rg(this.a)};Jw.prototype.setLocalScaling=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);uh(c,a)};
-Jw.prototype.getLocalScaling=function(){return q(iv(this.a),t)};Jw.prototype.calculateLocalInertia=function(a,c){var d=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);Kr(d,a,c)};Jw.prototype.__destroy__=function(){Ek(this.a)};function Kw(){throw"cannot construct a btGImpactShapeInterface, no constructor in IDL";}Kw.prototype=Object.create(Iw.prototype);Kw.prototype.constructor=Kw;Kw.prototype.b=Kw;Kw.c={};b.btGImpactShapeInterface=Kw;Kw.prototype.updateBound=function(){Tn(this.a)};
-Kw.prototype.setLocalScaling=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);mt(c,a)};Kw.prototype.getLocalScaling=function(){return q(jn(this.a),t)};Kw.prototype.calculateLocalInertia=function(a,c){var d=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);av(d,a,c)};Kw.prototype.__destroy__=function(){Wo(this.a)};function B(){throw"cannot construct a btDynamicsWorld, no constructor in IDL";}B.prototype=Object.create(y.prototype);B.prototype.constructor=B;
-B.prototype.b=B;B.c={};b.btDynamicsWorld=B;B.prototype.addAction=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Eu(c,a)};B.prototype.removeAction=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Us(c,a)};B.prototype.getSolverInfo=function(){return q(sn(this.a),Lw)};B.prototype.getDispatcher=function(){return q(Zj(this.a),Fw)};B.prototype.rayTest=function(a,c,d){var e=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);d&&"object"===typeof d&&(d=d.a);Xc(e,a,c,d)};
-B.prototype.getPairCache=function(){return q(Kv(this.a),Gw)};B.prototype.getDispatchInfo=function(){return q(Ce(this.a),z)};B.prototype.addCollisionObject=function(a,c,d){var e=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);d&&"object"===typeof d&&(d=d.a);void 0===c?Um(e,a):void 0===d?Wm(e,a,c):Ne(e,a,c,d)};B.prototype.removeCollisionObject=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Ud(c,a)};B.prototype.getBroadphase=function(){return q(un(this.a),Hw)};
-B.prototype.convexSweepTest=function(a,c,d,e,f){var g=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);d&&"object"===typeof d&&(d=d.a);e&&"object"===typeof e&&(e=e.a);f&&"object"===typeof f&&(f=f.a);pv(g,a,c,d,e,f)};B.prototype.contactPairTest=function(a,c,d){var e=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);d&&"object"===typeof d&&(d=d.a);Fo(e,a,c,d)};
-B.prototype.contactTest=function(a,c){var d=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);Fm(d,a,c)};B.prototype.updateSingleAabb=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);xv(c,a)};B.prototype.__destroy__=function(){cr(this.a)};function Mw(){throw"cannot construct a btTriangleMeshShape, no constructor in IDL";}Mw.prototype=Object.create(Iw.prototype);Mw.prototype.constructor=Mw;Mw.prototype.b=Mw;Mw.c={};b.btTriangleMeshShape=Mw;
-Mw.prototype.setLocalScaling=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);sq(c,a)};Mw.prototype.getLocalScaling=function(){return q(at(this.a),t)};Mw.prototype.calculateLocalInertia=function(a,c){var d=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);Ro(d,a,c)};Mw.prototype.__destroy__=function(){Ss(this.a)};function D(){this.a=vh();p(D)[this.a]=this}D.prototype=Object.create(w.prototype);D.prototype.constructor=D;D.prototype.b=D;D.c={};b.btGhostObject=D;
-D.prototype.getNumOverlappingObjects=function(){return eo(this.a)};D.prototype.getOverlappingObject=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);return q(Zu(c,a),w)};D.prototype.setAnisotropicFriction=function(a,c){var d=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);fq(d,a,c)};D.prototype.getCollisionShape=function(){return q(go(this.a),r)};D.prototype.setContactProcessingThreshold=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Gi(c,a)};
-D.prototype.setActivationState=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Cs(c,a)};D.prototype.forceActivationState=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);No(c,a)};D.prototype.activate=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);void 0===a?mq(c):qo(c,a)};D.prototype.isActive=function(){return!!Yh(this.a)};D.prototype.isKinematicObject=function(){return!!uk(this.a)};D.prototype.isStaticObject=function(){return!!Vm(this.a)};
-D.prototype.isStaticOrKinematicObject=function(){return!!bc(this.a)};D.prototype.getRestitution=function(){return Bu(this.a)};D.prototype.setRestitution=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Hn(c,a)};D.prototype.getFriction=function(){return Ub(this.a)};D.prototype.setFriction=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);xg(c,a)};D.prototype.getRollingFriction=function(){return Ds(this.a)};
-D.prototype.setRollingFriction=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);$k(c,a)};D.prototype.getCollisionFlags=function(){return Pn(this.a)};D.prototype.setCollisionFlags=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);ak(c,a)};D.prototype.getWorldTransform=function(){return q(Vq(this.a),x)};D.prototype.setWorldTransform=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Eg(c,a)};
-D.prototype.setCollisionShape=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Tr(c,a)};D.prototype.getCcdMotionThreshold=function(){return Xv(this.a)};D.prototype.setCcdMotionThreshold=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);rj(c,a)};D.prototype.getCcdSweptSphereRadius=function(){return Om(this.a)};D.prototype.setCcdSweptSphereRadius=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);ur(c,a)};D.prototype.getUserIndex=function(){return hn(this.a)};
-D.prototype.setUserIndex=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);En(c,a)};D.prototype.getUserPointer=function(){return q(Dh(this.a),Cw)};D.prototype.setUserPointer=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);bt(c,a)};D.prototype.getInterpolationAngularVelocity=function(){return q(Cc(this.a),t)};D.prototype.setInterpolationAngularVelocity=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Ir(c,a)};
-D.prototype.getInterpolationLinearVelocity=function(){return q(xs(this.a),t)};D.prototype.setInterpolationLinearVelocity=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);pn(c,a)};D.prototype.getBroadphaseHandle=function(){return q($i(this.a),Dw)};D.prototype.getActivationState=function(){return So(this.a)};D.prototype.__destroy__=function(){Ei(this.a)};function Nw(a,c){a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);this.a=wh(a,c);p(Nw)[this.a]=this}Nw.prototype=Object.create(r.prototype);
-Nw.prototype.constructor=Nw;Nw.prototype.b=Nw;Nw.c={};b.btConeShape=Nw;Nw.prototype.setLocalScaling=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);fp(c,a)};Nw.prototype.getLocalScaling=function(){return q(np(this.a),t)};Nw.prototype.calculateLocalInertia=function(a,c){var d=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);kt(d,a,c)};Nw.prototype.__destroy__=function(){hv(this.a)};function Ow(){throw"cannot construct a btActionInterface, no constructor in IDL";}
-Ow.prototype=Object.create(n.prototype);Ow.prototype.constructor=Ow;Ow.prototype.b=Ow;Ow.c={};b.btActionInterface=Ow;Ow.prototype.updateAction=function(a,c){var d=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);Dd(d,a,c)};Ow.prototype.__destroy__=function(){Im(this.a)};
-function t(a,c,d){a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);d&&"object"===typeof d&&(d=d.a);this.a=void 0===a?Np():void 0===c?_emscripten_bind_btVector3_btVector3_1(a):void 0===d?_emscripten_bind_btVector3_btVector3_2(a,c):Mp(a,c,d);p(t)[this.a]=this}t.prototype=Object.create(n.prototype);t.prototype.constructor=t;t.prototype.b=t;t.c={};b.btVector3=t;t.prototype.length=t.prototype.length=function(){return Ee(this.a)};t.prototype.x=function(){return wn(this.a)};
-t.prototype.y=function(){return Mr(this.a)};t.prototype.z=function(){return Rp(this.a)};t.prototype.setX=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);yd(c,a)};t.prototype.setY=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Oh(c,a)};t.prototype.setZ=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Id(c,a)};t.prototype.setValue=function(a,c,d){var e=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);d&&"object"===typeof d&&(d=d.a);Mn(e,a,c,d)};
-t.prototype.normalize=function(){es(this.a)};t.prototype.rotate=function(a,c){var d=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);return q(Zm(d,a,c),t)};t.prototype.dot=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);return Ch(c,a)};t.prototype.op_mul=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);return q(Wc(c,a),t)};t.prototype.op_add=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);return q(cv(c,a),t)};
-t.prototype.op_sub=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);return q(If(c,a),t)};t.prototype.__destroy__=function(){ln(this.a)};function Pw(){throw"cannot construct a btVehicleRaycaster, no constructor in IDL";}Pw.prototype=Object.create(n.prototype);Pw.prototype.constructor=Pw;Pw.prototype.b=Pw;Pw.c={};b.btVehicleRaycaster=Pw;Pw.prototype.castRay=function(a,c,d){var e=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);d&&"object"===typeof d&&(d=d.a);Vj(e,a,c,d)};
-Pw.prototype.__destroy__=function(){fh(this.a)};function Qw(){throw"cannot construct a btQuadWord, no constructor in IDL";}Qw.prototype=Object.create(n.prototype);Qw.prototype.constructor=Qw;Qw.prototype.b=Qw;Qw.c={};b.btQuadWord=Qw;Qw.prototype.x=function(){return $c(this.a)};Qw.prototype.y=function(){return Xg(this.a)};Qw.prototype.z=function(){return zc(this.a)};Qw.prototype.w=function(){return lh(this.a)};Qw.prototype.setX=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Rh(c,a)};
-Qw.prototype.setY=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Vd(c,a)};Qw.prototype.setZ=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);pm(c,a)};Qw.prototype.setW=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);cf(c,a)};Qw.prototype.__destroy__=function(){$p(this.a)};function Rw(a){a&&"object"===typeof a&&(a=a.a);this.a=Ii(a);p(Rw)[this.a]=this}Rw.prototype=Object.create(r.prototype);Rw.prototype.constructor=Rw;Rw.prototype.b=Rw;Rw.c={};b.btCylinderShape=Rw;
-Rw.prototype.setMargin=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);fe(c,a)};Rw.prototype.getMargin=function(){return Pq(this.a)};Rw.prototype.setLocalScaling=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Xi(c,a)};Rw.prototype.getLocalScaling=function(){return q(Uo(this.a),t)};Rw.prototype.calculateLocalInertia=function(a,c){var d=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);qk(d,a,c)};Rw.prototype.__destroy__=function(){Vb(this.a)};
-function Sw(){throw"cannot construct a btConvexShape, no constructor in IDL";}Sw.prototype=Object.create(r.prototype);Sw.prototype.constructor=Sw;Sw.prototype.b=Sw;Sw.c={};b.btConvexShape=Sw;Sw.prototype.setLocalScaling=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Fk(c,a)};Sw.prototype.getLocalScaling=function(){return q(xj(this.a),t)};Sw.prototype.calculateLocalInertia=function(a,c){var d=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);Zt(d,a,c)};
-Sw.prototype.setMargin=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);ss(c,a)};Sw.prototype.getMargin=function(){return fw(this.a)};Sw.prototype.__destroy__=function(){zl(this.a)};function Fw(){throw"cannot construct a btDispatcher, no constructor in IDL";}Fw.prototype=Object.create(n.prototype);Fw.prototype.constructor=Fw;Fw.prototype.b=Fw;Fw.c={};b.btDispatcher=Fw;Fw.prototype.getNumManifolds=function(){return lt(this.a)};
-Fw.prototype.getManifoldByIndexInternal=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);return q(mr(c,a),Tw)};Fw.prototype.__destroy__=function(){wl(this.a)};function E(a,c,d,e,f){a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);d&&"object"===typeof d&&(d=d.a);e&&"object"===typeof e&&(e=e.a);f&&"object"===typeof f&&(f=f.a);this.a=void 0===e?yo(a,c,d):void 0===f?_emscripten_bind_btGeneric6DofConstraint_btGeneric6DofConstraint_4(a,c,d,e):qe(a,c,d,e,f);p(E)[this.a]=this}
-E.prototype=Object.create(Ew.prototype);E.prototype.constructor=E;E.prototype.b=E;E.c={};b.btGeneric6DofConstraint=E;E.prototype.setLinearLowerLimit=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);$t(c,a)};E.prototype.setLinearUpperLimit=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Kk(c,a)};E.prototype.setAngularLowerLimit=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);ft(c,a)};
-E.prototype.setAngularUpperLimit=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);uf(c,a)};E.prototype.getFrameOffsetA=function(){return q(Ld(this.a),x)};E.prototype.enableFeedback=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Wb(c,a)};E.prototype.getBreakingImpulseThreshold=function(){return bs(this.a)};E.prototype.setBreakingImpulseThreshold=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Ko(c,a)};
-E.prototype.getParam=function(a,c){var d=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);return mg(d,a,c)};E.prototype.setParam=function(a,c,d){var e=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);d&&"object"===typeof d&&(d=d.a);ad(e,a,c,d)};E.prototype.__destroy__=function(){Ft(this.a)};function Uw(){throw"cannot construct a btStridingMeshInterface, no constructor in IDL";}Uw.prototype=Object.create(n.prototype);Uw.prototype.constructor=Uw;
-Uw.prototype.b=Uw;Uw.c={};b.btStridingMeshInterface=Uw;Uw.prototype.__destroy__=function(){gs(this.a)};function Vw(){throw"cannot construct a btMotionState, no constructor in IDL";}Vw.prototype=Object.create(n.prototype);Vw.prototype.constructor=Vw;Vw.prototype.b=Vw;Vw.c={};b.btMotionState=Vw;Vw.prototype.getWorldTransform=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);rn(c,a)};Vw.prototype.setWorldTransform=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Pd(c,a)};
-Vw.prototype.__destroy__=function(){dr(this.a)};function Ww(){throw"cannot construct a ConvexResultCallback, no constructor in IDL";}Ww.prototype=Object.create(n.prototype);Ww.prototype.constructor=Ww;Ww.prototype.b=Ww;Ww.c={};b.ConvexResultCallback=Ww;Ww.prototype.hasHit=function(){return!!Wf(this.a)};Ww.prototype.get_m_collisionFilterGroup=function(){return Ql(this.a)};Ww.prototype.set_m_collisionFilterGroup=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);oo(c,a)};
-Ww.prototype.get_m_collisionFilterMask=function(){return wq(this.a)};Ww.prototype.set_m_collisionFilterMask=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Se(c,a)};Ww.prototype.get_m_closestHitFraction=function(){return kp(this.a)};Ww.prototype.set_m_closestHitFraction=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);tq(c,a)};Ww.prototype.__destroy__=function(){ed(this.a)};function Xw(){throw"cannot construct a ContactResultCallback, no constructor in IDL";}Xw.prototype=Object.create(n.prototype);
-Xw.prototype.constructor=Xw;Xw.prototype.b=Xw;Xw.c={};b.ContactResultCallback=Xw;Xw.prototype.addSingleResult=function(a,c,d,e,f,g,k){var m=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);d&&"object"===typeof d&&(d=d.a);e&&"object"===typeof e&&(e=e.a);f&&"object"===typeof f&&(f=f.a);g&&"object"===typeof g&&(g=g.a);k&&"object"===typeof k&&(k=k.a);return Wt(m,a,c,d,e,f,g,k)};Xw.prototype.__destroy__=function(){Ls(this.a)};
-function Yw(){throw"cannot construct a RayResultCallback, no constructor in IDL";}Yw.prototype=Object.create(n.prototype);Yw.prototype.constructor=Yw;Yw.prototype.b=Yw;Yw.c={};b.RayResultCallback=Yw;Yw.prototype.hasHit=function(){return!!Nk(this.a)};Yw.prototype.get_m_collisionFilterGroup=function(){return jl(this.a)};Yw.prototype.set_m_collisionFilterGroup=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Uj(c,a)};Yw.prototype.get_m_collisionFilterMask=function(){return Oj(this.a)};
-Yw.prototype.set_m_collisionFilterMask=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Ie(c,a)};Yw.prototype.get_m_closestHitFraction=function(){return uv(this.a)};Yw.prototype.set_m_closestHitFraction=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);ei(c,a)};Yw.prototype.get_m_collisionObject=function(){return q(Mm(this.a),w)};Yw.prototype.set_m_collisionObject=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);zu(c,a)};Yw.prototype.__destroy__=function(){di(this.a)};
-function Zw(){throw"cannot construct a btMatrix3x3, no constructor in IDL";}Zw.prototype=Object.create(n.prototype);Zw.prototype.constructor=Zw;Zw.prototype.b=Zw;Zw.c={};b.btMatrix3x3=Zw;Zw.prototype.setEulerZYX=function(a,c,d){var e=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);d&&"object"===typeof d&&(d=d.a);Fj(e,a,c,d)};Zw.prototype.getRotation=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);bk(c,a)};
-Zw.prototype.getRow=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);return q(jp(c,a),t)};Zw.prototype.__destroy__=function(){Uf(this.a)};function z(){throw"cannot construct a btDispatcherInfo, no constructor in IDL";}z.prototype=Object.create(n.prototype);z.prototype.constructor=z;z.prototype.b=z;z.c={};b.btDispatcherInfo=z;z.prototype.get_m_timeStep=function(){return $q(this.a)};z.prototype.set_m_timeStep=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Lp(c,a)};
-z.prototype.get_m_stepCount=function(){return Xe(this.a)};z.prototype.set_m_stepCount=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Ji(c,a)};z.prototype.get_m_dispatchFunc=function(){return lp(this.a)};z.prototype.set_m_dispatchFunc=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Od(c,a)};z.prototype.get_m_timeOfImpact=function(){return sc(this.a)};z.prototype.set_m_timeOfImpact=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);wd(c,a)};z.prototype.get_m_useContinuous=function(){return!!Fs(this.a)};
-z.prototype.set_m_useContinuous=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);$b(c,a)};z.prototype.get_m_enableSatConvex=function(){return!!Qv(this.a)};z.prototype.set_m_enableSatConvex=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);ej(c,a)};z.prototype.get_m_enableSPU=function(){return!!kv(this.a)};z.prototype.set_m_enableSPU=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Mf(c,a)};z.prototype.get_m_useEpa=function(){return!!Df(this.a)};
-z.prototype.set_m_useEpa=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);dh(c,a)};z.prototype.get_m_allowedCcdPenetration=function(){return zn(this.a)};z.prototype.set_m_allowedCcdPenetration=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Ur(c,a)};z.prototype.get_m_useConvexConservativeDistanceUtil=function(){return!!Ms(this.a)};z.prototype.set_m_useConvexConservativeDistanceUtil=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);mf(c,a)};
-z.prototype.get_m_convexConservativeDistanceThreshold=function(){return Gj(this.a)};z.prototype.set_m_convexConservativeDistanceThreshold=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);il(c,a)};z.prototype.__destroy__=function(){Mq(this.a)};function $w(){this.a=Ad();p($w)[this.a]=this}$w.prototype=Object.create(Vw.prototype);$w.prototype.constructor=$w;$w.prototype.b=$w;$w.c={};b.LayaMotionState=$w;
-$w.prototype.getWorldTransform=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Fg(c,a)};$w.prototype.setWorldTransform=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);ud(c,a)};$w.prototype.__destroy__=function(){Ym(this.a)};function F(){throw"cannot construct a btWheelInfoConstructionInfo, no constructor in IDL";}F.prototype=Object.create(n.prototype);F.prototype.constructor=F;F.prototype.b=F;F.c={};b.btWheelInfoConstructionInfo=F;
-F.prototype.get_m_chassisConnectionCS=function(){return q(cm(this.a),t)};F.prototype.set_m_chassisConnectionCS=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);xm(c,a)};F.prototype.get_m_wheelDirectionCS=function(){return q(wu(this.a),t)};F.prototype.set_m_wheelDirectionCS=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);en(c,a)};F.prototype.get_m_wheelAxleCS=function(){return q(Lv(this.a),t)};
-F.prototype.set_m_wheelAxleCS=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);fn(c,a)};F.prototype.get_m_suspensionRestLength=function(){return de(this.a)};F.prototype.set_m_suspensionRestLength=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Ou(c,a)};F.prototype.get_m_maxSuspensionTravelCm=function(){return At(this.a)};F.prototype.set_m_maxSuspensionTravelCm=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);fr(c,a)};F.prototype.get_m_wheelRadius=function(){return hw(this.a)};
-F.prototype.set_m_wheelRadius=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Rm(c,a)};F.prototype.get_m_suspensionStiffness=function(){return Af(this.a)};F.prototype.set_m_suspensionStiffness=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Qe(c,a)};F.prototype.get_m_wheelsDampingCompression=function(){return Nf(this.a)};F.prototype.set_m_wheelsDampingCompression=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Sd(c,a)};F.prototype.get_m_wheelsDampingRelaxation=function(){return Vu(this.a)};
-F.prototype.set_m_wheelsDampingRelaxation=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);dc(c,a)};F.prototype.get_m_frictionSlip=function(){return lq(this.a)};F.prototype.set_m_frictionSlip=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Ao(c,a)};F.prototype.get_m_maxSuspensionForce=function(){return ul(this.a)};F.prototype.set_m_maxSuspensionForce=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Bs(c,a)};F.prototype.get_m_bIsFrontWheel=function(){return!!mk(this.a)};
-F.prototype.set_m_bIsFrontWheel=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Dk(c,a)};F.prototype.__destroy__=function(){od(this.a)};function ax(a,c){a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);this.a=void 0===c?Ge(a):Fe(a,c);p(ax)[this.a]=this}ax.prototype=Object.create(Sw.prototype);ax.prototype.constructor=ax;ax.prototype.b=ax;ax.c={};b.btConvexTriangleMeshShape=ax;ax.prototype.setLocalScaling=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Sq(c,a)};
-ax.prototype.getLocalScaling=function(){return q(Cr(this.a),t)};ax.prototype.calculateLocalInertia=function(a,c){var d=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);Rq(d,a,c)};ax.prototype.setMargin=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Gp(c,a)};ax.prototype.getMargin=function(){return Yd(this.a)};ax.prototype.__destroy__=function(){Tu(this.a)};function Hw(){throw"cannot construct a btBroadphaseInterface, no constructor in IDL";}Hw.prototype=Object.create(n.prototype);
-Hw.prototype.constructor=Hw;Hw.prototype.b=Hw;Hw.c={};b.btBroadphaseInterface=Hw;Hw.prototype.__destroy__=function(){Vp(this.a)};function bx(a){a&&"object"===typeof a&&(a=a.a);this.a=void 0===a?ij():kj(a);p(bx)[this.a]=this}bx.prototype=Object.create(n.prototype);bx.prototype.constructor=bx;bx.prototype.b=bx;bx.c={};b.btDefaultCollisionConfiguration=bx;bx.prototype.__destroy__=function(){Kn(this.a)};
-function G(a,c,d,e){a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);d&&"object"===typeof d&&(d=d.a);e&&"object"===typeof e&&(e=e.a);this.a=void 0===e?xn(a,c,d):$l(a,c,d,e);p(G)[this.a]=this}G.prototype=Object.create(n.prototype);G.prototype.constructor=G;G.prototype.b=G;G.c={};b.btRigidBodyConstructionInfo=G;G.prototype.get_m_linearDamping=function(){return ns(this.a)};G.prototype.set_m_linearDamping=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Iu(c,a)};
-G.prototype.get_m_angularDamping=function(){return Mc(this.a)};G.prototype.set_m_angularDamping=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);su(c,a)};G.prototype.get_m_friction=function(){return ef(this.a)};G.prototype.set_m_friction=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);$e(c,a)};G.prototype.get_m_rollingFriction=function(){return mp(this.a)};G.prototype.set_m_rollingFriction=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Cn(c,a)};
-G.prototype.get_m_restitution=function(){return xc(this.a)};G.prototype.set_m_restitution=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Zd(c,a)};G.prototype.get_m_linearSleepingThreshold=function(){return us(this.a)};G.prototype.set_m_linearSleepingThreshold=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Js(c,a)};G.prototype.get_m_angularSleepingThreshold=function(){return Iq(this.a)};
-G.prototype.set_m_angularSleepingThreshold=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);xf(c,a)};G.prototype.get_m_additionalDamping=function(){return!!lk(this.a)};G.prototype.set_m_additionalDamping=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);vo(c,a)};G.prototype.get_m_additionalDampingFactor=function(){return qq(this.a)};G.prototype.set_m_additionalDampingFactor=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);pj(c,a)};
-G.prototype.get_m_additionalLinearDampingThresholdSqr=function(){return Xh(this.a)};G.prototype.set_m_additionalLinearDampingThresholdSqr=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);yj(c,a)};G.prototype.get_m_additionalAngularDampingThresholdSqr=function(){return Ok(this.a)};G.prototype.set_m_additionalAngularDampingThresholdSqr=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Yl(c,a)};G.prototype.get_m_additionalAngularDampingFactor=function(){return uj(this.a)};
-G.prototype.set_m_additionalAngularDampingFactor=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);xh(c,a)};G.prototype.__destroy__=function(){Dr(this.a)};function cx(){throw"cannot construct a btCollisionConfiguration, no constructor in IDL";}cx.prototype=Object.create(n.prototype);cx.prototype.constructor=cx;cx.prototype.b=cx;cx.c={};b.btCollisionConfiguration=cx;cx.prototype.__destroy__=function(){zd(this.a)};function Tw(){this.a=vq();p(Tw)[this.a]=this}Tw.prototype=Object.create(n.prototype);
-Tw.prototype.constructor=Tw;Tw.prototype.b=Tw;Tw.c={};b.btPersistentManifold=Tw;Tw.prototype.getBody0=function(){return q(gi(this.a),w)};Tw.prototype.getBody1=function(){return q(Tp(this.a),w)};Tw.prototype.getNumContacts=function(){return fk(this.a)};Tw.prototype.getContactPoint=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);return q(Ue(c,a),H)};Tw.prototype.__destroy__=function(){Rf(this.a)};
-function dx(a){a&&"object"===typeof a&&(a=a.a);this.a=void 0===a?dl():el(a);p(dx)[this.a]=this}dx.prototype=Object.create(r.prototype);dx.prototype.constructor=dx;dx.prototype.b=dx;dx.c={};b.btCompoundShape=dx;dx.prototype.addChildShape=function(a,c){var d=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);vl(d,a,c)};dx.prototype.removeChildShapeByIndex=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);De(c,a)};dx.prototype.getNumChildShapes=function(){return sh(this.a)};
-dx.prototype.getChildShape=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);return q(Ri(c,a),r)};dx.prototype.setMargin=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);ti(c,a)};dx.prototype.getMargin=function(){return hc(this.a)};dx.prototype.updateChildTransform=function(a,c,d){var e=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);d&&"object"===typeof d&&(d=d.a);void 0===d?cc(e,a,c):fd(e,a,c,d)};
-dx.prototype.setLocalScaling=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);tm(c,a)};dx.prototype.getLocalScaling=function(){return q(ys(this.a),t)};dx.prototype.calculateLocalInertia=function(a,c){var d=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);Zi(d,a,c)};dx.prototype.__destroy__=function(){mh(this.a)};function I(a,c){a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);this.a=Yo(a,c);p(I)[this.a]=this}I.prototype=Object.create(Ww.prototype);
-I.prototype.constructor=I;I.prototype.b=I;I.c={};b.ClosestConvexResultCallback=I;I.prototype.hasHit=function(){return!!Su(this.a)};I.prototype.get_m_convexFromWorld=function(){return q(ng(this.a),t)};I.prototype.set_m_convexFromWorld=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Io(c,a)};I.prototype.get_m_convexToWorld=function(){return q(Uq(this.a),t)};I.prototype.set_m_convexToWorld=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Hr(c,a)};
-I.prototype.get_m_hitNormalWorld=function(){return q(am(this.a),t)};I.prototype.set_m_hitNormalWorld=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);id(c,a)};I.prototype.get_m_hitPointWorld=function(){return q(Sp(this.a),t)};I.prototype.set_m_hitPointWorld=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);He(c,a)};I.prototype.get_m_hitCollisionObject=function(){return q(Sk(this.a),w)};
-I.prototype.set_m_hitCollisionObject=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Ip(c,a)};I.prototype.get_m_collisionFilterGroup=function(){return Cm(this.a)};I.prototype.set_m_collisionFilterGroup=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);um(c,a)};I.prototype.get_m_collisionFilterMask=function(){return ou(this.a)};I.prototype.set_m_collisionFilterMask=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);ds(c,a)};I.prototype.get_m_closestHitFraction=function(){return li(this.a)};
-I.prototype.set_m_closestHitFraction=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);iq(c,a)};I.prototype.__destroy__=function(){Sm(this.a)};function J(a,c){a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);this.a=rl(a,c);p(J)[this.a]=this}J.prototype=Object.create(Yw.prototype);J.prototype.constructor=J;J.prototype.b=J;J.c={};b.AllHitsRayResultCallback=J;J.prototype.hasHit=function(){return!!Cd(this.a)};J.prototype.get_m_collisionObjects=function(){return q(Kj(this.a),ex)};
-J.prototype.set_m_collisionObjects=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);rh(c,a)};J.prototype.get_m_rayFromWorld=function(){return q(rs(this.a),t)};J.prototype.set_m_rayFromWorld=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Be(c,a)};J.prototype.get_m_rayToWorld=function(){return q(Xt(this.a),t)};J.prototype.set_m_rayToWorld=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Uu(c,a)};J.prototype.get_m_hitNormalWorld=function(){return q(Tg(this.a),fx)};
-J.prototype.set_m_hitNormalWorld=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Bt(c,a)};J.prototype.get_m_hitPointWorld=function(){return q(ts(this.a),fx)};J.prototype.set_m_hitPointWorld=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Rs(c,a)};J.prototype.get_m_hitFractions=function(){return q(Wh(this.a),gx)};J.prototype.set_m_hitFractions=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Ju(c,a)};J.prototype.get_m_collisionFilterGroup=function(){return th(this.a)};
-J.prototype.set_m_collisionFilterGroup=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);zj(c,a)};J.prototype.get_m_collisionFilterMask=function(){return is(this.a)};J.prototype.set_m_collisionFilterMask=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);af(c,a)};J.prototype.get_m_closestHitFraction=function(){return nq(this.a)};J.prototype.set_m_closestHitFraction=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Tq(c,a)};
-J.prototype.get_m_collisionObject=function(){return q(jd(this.a),w)};J.prototype.set_m_collisionObject=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);nl(c,a)};J.prototype.__destroy__=function(){jm(this.a)};function hx(a){a&&"object"===typeof a&&(a=a.a);this.a=pe(a);p(hx)[this.a]=this}hx.prototype=Object.create(Pw.prototype);hx.prototype.constructor=hx;hx.prototype.b=hx;hx.c={};b.btDefaultVehicleRaycaster=hx;
-hx.prototype.castRay=function(a,c,d){var e=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);d&&"object"===typeof d&&(d=d.a);wt(e,a,c,d)};hx.prototype.__destroy__=function(){Zn(this.a)};function ix(){this.a=Os();p(ix)[this.a]=this}ix.prototype=Object.create(n.prototype);ix.prototype.constructor=ix;ix.prototype.b=ix;ix.c={};b.btConstraintSetting=ix;ix.prototype.get_m_tau=function(){return ep(this.a)};
-ix.prototype.set_m_tau=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);kg(c,a)};ix.prototype.get_m_damping=function(){return Di(this.a)};ix.prototype.set_m_damping=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);eg(c,a)};ix.prototype.get_m_impulseClamp=function(){return Sf(this.a)};ix.prototype.set_m_impulseClamp=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Nh(c,a)};ix.prototype.__destroy__=function(){bi(this.a)};
-function jx(){throw"cannot construct a LocalShapeInfo, no constructor in IDL";}jx.prototype=Object.create(n.prototype);jx.prototype.constructor=jx;jx.prototype.b=jx;jx.c={};b.LocalShapeInfo=jx;jx.prototype.get_m_shapePart=function(){return se(this.a)};jx.prototype.set_m_shapePart=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);gf(c,a)};jx.prototype.get_m_triangleIndex=function(){return Qr(this.a)};
-jx.prototype.set_m_triangleIndex=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);lc(c,a)};jx.prototype.__destroy__=function(){Qd(this.a)};function K(a){a&&"object"===typeof a&&(a=a.a);this.a=Cp(a);p(K)[this.a]=this}K.prototype=Object.create(w.prototype);K.prototype.constructor=K;K.prototype.b=K;K.c={};b.btRigidBody=K;K.prototype.getCenterOfMassTransform=function(){return q(Xj(this.a),x)};K.prototype.setCenterOfMassTransform=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);ju(c,a)};
-K.prototype.setSleepingThresholds=function(a,c){var d=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);hs(d,a,c)};K.prototype.getLinearSleepingThreshold=function(){return eq(this.a)};K.prototype.getAngularSleepingThreshold=function(){return Ho(this.a)};K.prototype.setDamping=function(a,c){var d=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);Yj(d,a,c)};
-K.prototype.setMassProps=function(a,c){var d=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);Ln(d,a,c)};K.prototype.setLinearFactor=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);kf(c,a)};K.prototype.applyTorque=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Dj(c,a)};K.prototype.applyForce=function(a,c){var d=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);ig(d,a,c)};
-K.prototype.applyCentralForce=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Ll(c,a)};K.prototype.applyTorqueImpulse=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);bv(c,a)};K.prototype.applyImpulse=function(a,c){var d=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);wk(d,a,c)};K.prototype.applyCentralImpulse=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Oc(c,a)};K.prototype.updateInertiaTensor=function(){ll(this.a)};
-K.prototype.getLinearVelocity=function(){return q(nc(this.a),t)};K.prototype.getAngularVelocity=function(){return q(qu(this.a),t)};K.prototype.setLinearVelocity=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);vu(c,a)};K.prototype.setAngularVelocity=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Ck(c,a)};K.prototype.getMotionState=function(){return q(Ps(this.a),Vw)};K.prototype.setMotionState=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Nj(c,a)};
-K.prototype.setAngularFactor=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);nn(c,a)};K.prototype.upcast=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);return q(Ug(c,a),K)};K.prototype.getAabb=function(a,c){var d=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);qs(d,a,c)};K.prototype.applyGravity=function(){Ye(this.a)};K.prototype.getGravity=function(){return q(Li(this.a),t)};
-K.prototype.setGravity=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Ku(c,a)};K.prototype.getTotalForce=function(){return q(ho(this.a),t)};K.prototype.getTotalTorque=function(){return q(qg(this.a),t)};K.prototype.getFlags=function(){return xu(this.a)};K.prototype.setFlags=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Wv(c,a)};K.prototype.clearForces=function(){bf(this.a)};
-K.prototype.setAnisotropicFriction=function(a,c){var d=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);rq(d,a,c)};K.prototype.getCollisionShape=function(){return q(hu(this.a),r)};K.prototype.setContactProcessingThreshold=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);tk(c,a)};K.prototype.setActivationState=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Qu(c,a)};
-K.prototype.forceActivationState=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);rv(c,a)};K.prototype.activate=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);void 0===a?Ot(c):vs(c,a)};K.prototype.isActive=function(){return!!Ui(this.a)};K.prototype.isKinematicObject=function(){return!!Wd(this.a)};K.prototype.isStaticObject=function(){return!!Rt(this.a)};K.prototype.isStaticOrKinematicObject=function(){return!!pi(this.a)};K.prototype.getRestitution=function(){return An(this.a)};
-K.prototype.setRestitution=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Ov(c,a)};K.prototype.getFriction=function(){return kd(this.a)};K.prototype.setFriction=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Cg(c,a)};K.prototype.getRollingFriction=function(){return yv(this.a)};K.prototype.setRollingFriction=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Vr(c,a)};K.prototype.getCollisionFlags=function(){return Bj(this.a)};
-K.prototype.setCollisionFlags=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);dv(c,a)};K.prototype.getWorldTransform=function(){return q(Fr(this.a),x)};K.prototype.setWorldTransform=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);$n(c,a)};K.prototype.setCollisionShape=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);lf(c,a)};K.prototype.getCcdMotionThreshold=function(){return Ah(this.a)};
-K.prototype.setCcdMotionThreshold=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);gg(c,a)};K.prototype.getCcdSweptSphereRadius=function(){return Jr(this.a)};K.prototype.setCcdSweptSphereRadius=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Ag(c,a)};K.prototype.getUserIndex=function(){return ms(this.a)};K.prototype.setUserIndex=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);$h(c,a)};K.prototype.getUserPointer=function(){return q(Hj(this.a),Cw)};
-K.prototype.setUserPointer=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);kc(c,a)};K.prototype.getInterpolationAngularVelocity=function(){return q(Xd(this.a),t)};K.prototype.setInterpolationAngularVelocity=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);io(c,a)};K.prototype.getInterpolationLinearVelocity=function(){return q(te(this.a),t)};K.prototype.setInterpolationLinearVelocity=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Do(c,a)};
-K.prototype.getBroadphaseHandle=function(){return q(Ht(this.a),Dw)};K.prototype.getActivationState=function(){return oj(this.a)};K.prototype.__destroy__=function(){Lr(this.a)};function kx(){this.a=Vo();p(kx)[this.a]=this}kx.prototype=Object.create(n.prototype);kx.prototype.constructor=kx;kx.prototype.b=kx;kx.c={};b.btDbvtBroadphase=kx;kx.prototype.getOverlappingPairCache=function(){return q(Nq(this.a),Gw)};kx.prototype.__destroy__=function(){hq(this.a)};
-function lx(a){a&&"object"===typeof a&&(a=a.a);this.a=xd(a);p(lx)[this.a]=this}lx.prototype=Object.create(Fw.prototype);lx.prototype.constructor=lx;lx.prototype.b=lx;lx.c={};b.btCollisionDispatcher=lx;lx.prototype.getNumManifolds=function(){return eh(this.a)};lx.prototype.getManifoldByIndexInternal=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);return q(vg(c,a),Tw)};lx.prototype.__destroy__=function(){Nc(this.a)};
-function mx(a,c,d,e,f){a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);d&&"object"===typeof d&&(d=d.a);e&&"object"===typeof e&&(e=e.a);f&&"object"===typeof f&&(f=f.a);this.a=void 0===d?Lh(a,c):void 0===e?Mh(a,c,d):void 0===f?Ph(a,c,d,e):Qh(a,c,d,e,f);p(mx)[this.a]=this}mx.prototype=Object.create(n.prototype);mx.prototype.constructor=mx;mx.prototype.b=mx;mx.c={};b.btAxisSweep3=mx;mx.prototype.__destroy__=function(){nh(this.a)};
-function Cw(){throw"cannot construct a VoidPtr, no constructor in IDL";}Cw.prototype=Object.create(n.prototype);Cw.prototype.constructor=Cw;Cw.prototype.b=Cw;Cw.c={};b.VoidPtr=Cw;Cw.prototype.__destroy__=function(){Gt(this.a)};
-function L(a,c,d,e){a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);d&&"object"===typeof d&&(d=d.a);e&&"object"===typeof e&&(e=e.a);this.a=void 0===d?oi(a,c):void 0===e?_emscripten_bind_btConeTwistConstraint_btConeTwistConstraint_3(a,c,d):ri(a,c,d,e);p(L)[this.a]=this}L.prototype=Object.create(Ew.prototype);L.prototype.constructor=L;L.prototype.b=L;L.c={};b.btConeTwistConstraint=L;
-L.prototype.setLimit=function(a,c){var d=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);wr(d,a,c)};L.prototype.setAngularOnly=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);In(c,a)};L.prototype.setDamping=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);be(c,a)};L.prototype.enableMotor=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);fj(c,a)};L.prototype.setMaxMotorImpulse=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);ek(c,a)};
-L.prototype.setMaxMotorImpulseNormalized=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Sg(c,a)};L.prototype.setMotorTarget=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Gl(c,a)};L.prototype.setMotorTargetInConstraintSpace=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Jp(c,a)};L.prototype.enableFeedback=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);ii(c,a)};L.prototype.getBreakingImpulseThreshold=function(){return et(this.a)};
-L.prototype.setBreakingImpulseThreshold=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);wm(c,a)};L.prototype.getParam=function(a,c){var d=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);return Wu(d,a,c)};L.prototype.setParam=function(a,c,d){var e=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);d&&"object"===typeof d&&(d=d.a);El(e,a,c,d)};L.prototype.__destroy__=function(){Zp(this.a)};
-function M(a,c,d,e,f,g,k){a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);d&&"object"===typeof d&&(d=d.a);e&&"object"===typeof e&&(e=e.a);f&&"object"===typeof f&&(f=f.a);g&&"object"===typeof g&&(g=g.a);k&&"object"===typeof k&&(k=k.a);this.a=void 0===d?Bc(a,c):void 0===e?Xl(a,c,d):void 0===f?Gh(a,c,d,e):void 0===g?Vl(a,c,d,e,f):void 0===k?Sl(a,c,d,e,f,g):Tl(a,c,d,e,f,g,k);p(M)[this.a]=this}M.prototype=Object.create(Ew.prototype);M.prototype.constructor=M;M.prototype.b=M;M.c={};
-b.btHingeConstraint=M;M.prototype.setLimit=function(a,c,d,e,f){var g=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);d&&"object"===typeof d&&(d=d.a);e&&"object"===typeof e&&(e=e.a);f&&"object"===typeof f&&(f=f.a);void 0===f?Xn(g,a,c,d,e):Yn(g,a,c,d,e,f)};M.prototype.enableAngularMotor=function(a,c,d){var e=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);d&&"object"===typeof d&&(d=d.a);sk(e,a,c,d)};
-M.prototype.setAngularOnly=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);ar(c,a)};M.prototype.enableMotor=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Fv(c,a)};M.prototype.setMaxMotorImpulse=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Gs(c,a)};M.prototype.setMotorTarget=function(a,c){var d=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);sj(d,a,c)};M.prototype.enableFeedback=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Yt(c,a)};
-M.prototype.getBreakingImpulseThreshold=function(){return sr(this.a)};M.prototype.setBreakingImpulseThreshold=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Ol(c,a)};M.prototype.getParam=function(a,c){var d=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);return jf(d,a,c)};M.prototype.setParam=function(a,c,d){var e=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);d&&"object"===typeof d&&(d=d.a);xi(e,a,c,d)};M.prototype.__destroy__=function(){Ut(this.a)};
-function nx(a,c){a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);this.a=Bo(a,c);p(nx)[this.a]=this}nx.prototype=Object.create(Nw.prototype);nx.prototype.constructor=nx;nx.prototype.b=nx;nx.c={};b.btConeShapeZ=nx;nx.prototype.setLocalScaling=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Uk(c,a)};nx.prototype.getLocalScaling=function(){return q(qn(this.a),t)};
-nx.prototype.calculateLocalInertia=function(a,c){var d=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);jg(d,a,c)};nx.prototype.__destroy__=function(){Jv(this.a)};function ox(a,c){a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);this.a=hi(a,c);p(ox)[this.a]=this}ox.prototype=Object.create(Nw.prototype);ox.prototype.constructor=ox;ox.prototype.b=ox;ox.c={};b.btConeShapeX=ox;
-ox.prototype.setLocalScaling=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);zi(c,a)};ox.prototype.getLocalScaling=function(){return q(hh(this.a),t)};ox.prototype.calculateLocalInertia=function(a,c){var d=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);zr(d,a,c)};ox.prototype.__destroy__=function(){cj(this.a)};function px(a,c){a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);this.a=void 0===a?cu():void 0===c?du(a):eu(a,c);p(px)[this.a]=this}
-px.prototype=Object.create(Uw.prototype);px.prototype.constructor=px;px.prototype.b=px;px.c={};b.btTriangleMesh=px;px.prototype.addTriangle=function(a,c,d,e){var f=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);d&&"object"===typeof d&&(d=d.a);e&&"object"===typeof e&&(e=e.a);void 0===e?Yu(f,a,c,d):$u(f,a,c,d,e)};px.prototype.__destroy__=function(){up(this.a)};function qx(){this.a=Bi();p(qx)[this.a]=this}qx.prototype=Object.create(r.prototype);qx.prototype.constructor=qx;
-qx.prototype.b=qx;qx.c={};b.btConvexHullShape=qx;qx.prototype.addPoint=function(a,c){var d=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);void 0===c?Jt(d,a):Uh(d,a,c)};qx.prototype.setMargin=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);hg(c,a)};qx.prototype.getMargin=function(){return Pc(this.a)};qx.prototype.setLocalScaling=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Jj(c,a)};qx.prototype.getLocalScaling=function(){return q(Tv(this.a),t)};
-qx.prototype.calculateLocalInertia=function(a,c){var d=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);lg(d,a,c)};qx.prototype.__destroy__=function(){Ig(this.a)};function N(){this.a=yu();p(N)[this.a]=this}N.prototype=Object.create(n.prototype);N.prototype.constructor=N;N.prototype.b=N;N.c={};b.btVehicleTuning=N;N.prototype.get_m_suspensionStiffness=function(){return Td(this.a)};
-N.prototype.set_m_suspensionStiffness=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Yr(c,a)};N.prototype.get_m_suspensionCompression=function(){return xl(this.a)};N.prototype.set_m_suspensionCompression=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);br(c,a)};N.prototype.get_m_suspensionDamping=function(){return Lm(this.a)};N.prototype.set_m_suspensionDamping=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Fp(c,a)};N.prototype.get_m_maxSuspensionTravelCm=function(){return It(this.a)};
-N.prototype.set_m_maxSuspensionTravelCm=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Yk(c,a)};N.prototype.get_m_frictionSlip=function(){return lw(this.a)};N.prototype.set_m_frictionSlip=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);ec(c,a)};N.prototype.get_m_maxSuspensionForce=function(){return Nr(this.a)};N.prototype.set_m_maxSuspensionForce=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Dq(c,a)};
-function rx(){throw"cannot construct a btCollisionObjectWrapper, no constructor in IDL";}rx.prototype=Object.create(n.prototype);rx.prototype.constructor=rx;rx.prototype.b=rx;rx.c={};b.btCollisionObjectWrapper=rx;function sx(a){a&&"object"===typeof a&&(a=a.a);this.a=mc(a);p(sx)[this.a]=this}sx.prototype=Object.create(Kw.prototype);sx.prototype.constructor=sx;sx.prototype.b=sx;sx.c={};b.btGImpactMeshShape=sx;
-sx.prototype.setLocalScaling=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Ru(c,a)};sx.prototype.getLocalScaling=function(){return q(Ak(this.a),t)};sx.prototype.calculateLocalInertia=function(a,c){var d=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);As(d,a,c)};sx.prototype.updateBound=function(){Po(this.a)};sx.prototype.__destroy__=function(){Ni(this.a)};
-function tx(a,c){a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);this.a=void 0===a?Pi():void 0===c?Qi(a):Tc(a,c);p(tx)[this.a]=this}tx.prototype=Object.create(Vw.prototype);tx.prototype.constructor=tx;tx.prototype.b=tx;tx.c={};b.btDefaultMotionState=tx;tx.prototype.getWorldTransform=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Qc(c,a)};tx.prototype.setWorldTransform=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Km(c,a)};
-tx.prototype.get_m_graphicsWorldTrans=function(){return q(ae(this.a),x)};tx.prototype.set_m_graphicsWorldTrans=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Gn(c,a)};tx.prototype.__destroy__=function(){We(this.a)};function O(a){a&&"object"===typeof a&&(a=a.a);this.a=ci(a);p(O)[this.a]=this}O.prototype=Object.create(n.prototype);O.prototype.constructor=O;O.prototype.b=O;O.c={};b.btWheelInfo=O;O.prototype.getSuspensionRestLength=function(){return Fn(this.a)};
-O.prototype.updateWheel=function(a,c){var d=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);Wp(d,a,c)};O.prototype.get_m_suspensionStiffness=function(){return Ec(this.a)};O.prototype.set_m_suspensionStiffness=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);kr(c,a)};O.prototype.get_m_frictionSlip=function(){return Tk(this.a)};O.prototype.set_m_frictionSlip=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);gu(c,a)};O.prototype.get_m_engineForce=function(){return pf(this.a)};
-O.prototype.set_m_engineForce=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);dk(c,a)};O.prototype.get_m_rollInfluence=function(){return ve(this.a)};O.prototype.set_m_rollInfluence=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Jo(c,a)};O.prototype.get_m_suspensionRestLength1=function(){return Dc(this.a)};O.prototype.set_m_suspensionRestLength1=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);fv(c,a)};O.prototype.get_m_wheelsRadius=function(){return uu(this.a)};
-O.prototype.set_m_wheelsRadius=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Jf(c,a)};O.prototype.get_m_wheelsDampingCompression=function(){return zv(this.a)};O.prototype.set_m_wheelsDampingCompression=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Of(c,a)};O.prototype.get_m_wheelsDampingRelaxation=function(){return Gk(this.a)};O.prototype.set_m_wheelsDampingRelaxation=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Cu(c,a)};O.prototype.get_m_steering=function(){return dp(this.a)};
-O.prototype.set_m_steering=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);pr(c,a)};O.prototype.get_m_maxSuspensionForce=function(){return Fi(this.a)};O.prototype.set_m_maxSuspensionForce=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Ci(c,a)};O.prototype.get_m_maxSuspensionTravelCm=function(){return bn(this.a)};O.prototype.set_m_maxSuspensionTravelCm=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);ao(c,a)};O.prototype.get_m_wheelsSuspensionForce=function(){return mm(this.a)};
-O.prototype.set_m_wheelsSuspensionForce=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);bo(c,a)};O.prototype.get_m_bIsFrontWheel=function(){return!!lo(this.a)};O.prototype.set_m_bIsFrontWheel=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);fg(c,a)};O.prototype.get_m_raycastInfo=function(){return q(dw(this.a),P)};O.prototype.set_m_raycastInfo=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Qg(c,a)};
-O.prototype.get_m_chassisConnectionPointCS=function(){return q(dq(this.a),t)};O.prototype.set_m_chassisConnectionPointCS=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);cd(c,a)};O.prototype.get_m_worldTransform=function(){return q(tt(this.a),x)};O.prototype.set_m_worldTransform=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Cl(c,a)};O.prototype.get_m_wheelDirectionCS=function(){return q(Rn(this.a),t)};
-O.prototype.set_m_wheelDirectionCS=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);kw(c,a)};O.prototype.get_m_wheelAxleCS=function(){return q(ov(this.a),t)};O.prototype.set_m_wheelAxleCS=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Er(c,a)};O.prototype.get_m_rotation=function(){return Lu(this.a)};O.prototype.set_m_rotation=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);km(c,a)};O.prototype.get_m_deltaRotation=function(){return Jq(this.a)};
-O.prototype.set_m_deltaRotation=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);kn(c,a)};O.prototype.get_m_brake=function(){return Hq(this.a)};O.prototype.set_m_brake=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Bl(c,a)};O.prototype.get_m_clippedInvContactDotSuspension=function(){return Du(this.a)};O.prototype.set_m_clippedInvContactDotSuspension=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);pq(c,a)};O.prototype.get_m_suspensionRelativeVelocity=function(){return ok(this.a)};
-O.prototype.set_m_suspensionRelativeVelocity=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);qt(c,a)};O.prototype.get_m_skidInfo=function(){return Am(this.a)};O.prototype.set_m_skidInfo=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Nu(c,a)};O.prototype.__destroy__=function(){Fh(this.a)};
-function Q(a,c,d,e){a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);d&&"object"===typeof d&&(d=d.a);e&&"object"===typeof e&&(e=e.a);this.a=void 0===a?Pv():void 0===c?_emscripten_bind_btVector4_btVector4_1(a):void 0===d?_emscripten_bind_btVector4_btVector4_2(a,c):void 0===e?_emscripten_bind_btVector4_btVector4_3(a,c,d):Sv(a,c,d,e);p(Q)[this.a]=this}Q.prototype=Object.create(t.prototype);Q.prototype.constructor=Q;Q.prototype.b=Q;Q.c={};b.btVector4=Q;Q.prototype.w=function(){return st(this.a)};
-Q.prototype.setValue=function(a,c,d,e){var f=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);d&&"object"===typeof d&&(d=d.a);e&&"object"===typeof e&&(e=e.a);nr(f,a,c,d,e)};Q.prototype.length=Q.prototype.length=function(){return Dn(this.a)};Q.prototype.x=function(){return Ns(this.a)};Q.prototype.y=function(){return Dt(this.a)};Q.prototype.z=function(){return Zr(this.a)};Q.prototype.setX=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Mg(c,a)};
-Q.prototype.setY=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Qm(c,a)};Q.prototype.setZ=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Wg(c,a)};Q.prototype.normalize=function(){it(this.a)};Q.prototype.rotate=function(a,c){var d=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);return q($d(d,a,c),t)};Q.prototype.dot=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);return Qj(c,a)};
-Q.prototype.op_mul=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);return q(cn(c,a),t)};Q.prototype.op_add=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);return q(Eh(c,a),t)};Q.prototype.op_sub=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);return q($v(c,a),t)};Q.prototype.__destroy__=function(){yq(this.a)};function ux(){this.a=Xs();p(ux)[this.a]=this}ux.prototype=Object.create(n.prototype);ux.prototype.constructor=ux;ux.prototype.b=ux;ux.c={};
-b.btDefaultCollisionConstructionInfo=ux;ux.prototype.__destroy__=function(){tr(this.a)};function vx(){throw"cannot construct a btVehicleRaycasterResult, no constructor in IDL";}vx.prototype=Object.create(n.prototype);vx.prototype.constructor=vx;vx.prototype.b=vx;vx.c={};b.btVehicleRaycasterResult=vx;vx.prototype.get_m_hitPointInWorld=function(){return q(gj(this.a),t)};vx.prototype.set_m_hitPointInWorld=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Ys(c,a)};
-vx.prototype.get_m_hitNormalInWorld=function(){return q(jc(this.a),t)};vx.prototype.set_m_hitNormalInWorld=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);tn(c,a)};vx.prototype.get_m_distFraction=function(){return gt(this.a)};vx.prototype.set_m_distFraction=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);ui(c,a)};vx.prototype.__destroy__=function(){cg(this.a)};function wx(){throw"cannot construct a btConstraintSolver, no constructor in IDL";}wx.prototype=Object.create(n.prototype);
-wx.prototype.constructor=wx;wx.prototype.b=wx;wx.c={};b.btConstraintSolver=wx;wx.prototype.__destroy__=function(){gq(this.a)};function R(a,c,d){a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);d&&"object"===typeof d&&(d=d.a);this.a=Vi(a,c,d);p(R)[this.a]=this}R.prototype=Object.create(Ow.prototype);R.prototype.constructor=R;R.prototype.b=R;R.c={};b.btRaycastVehicle=R;
-R.prototype.applyEngineForce=function(a,c){var d=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);xp(d,a,c)};R.prototype.setSteeringValue=function(a,c){var d=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);rf(d,a,c)};R.prototype.getWheelTransformWS=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);return q(Wj(c,a),x)};
-R.prototype.updateWheelTransform=function(a,c){var d=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);Zc(d,a,c)};R.prototype.addWheel=function(a,c,d,e,f,g,k){var m=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);d&&"object"===typeof d&&(d=d.a);e&&"object"===typeof e&&(e=e.a);f&&"object"===typeof f&&(f=f.a);g&&"object"===typeof g&&(g=g.a);k&&"object"===typeof k&&(k=k.a);return q(Av(m,a,c,d,e,f,g,k),O)};R.prototype.getNumWheels=function(){return Xk(this.a)};
-R.prototype.getRigidBody=function(){return q(ap(this.a),K)};R.prototype.getWheelInfo=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);return q(ag(c,a),O)};R.prototype.setBrake=function(a,c){var d=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);zp(d,a,c)};R.prototype.setCoordinateSystem=function(a,c,d){var e=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);d&&"object"===typeof d&&(d=d.a);hj(e,a,c,d)};R.prototype.getCurrentSpeedKmHour=function(){return of(this.a)};
-R.prototype.getChassisWorldTransform=function(){return q(Il(this.a),x)};R.prototype.rayCast=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);return ge(c,a)};R.prototype.updateVehicle=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Dp(c,a)};R.prototype.resetSuspension=function(){Mt(this.a)};R.prototype.getSteeringValue=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);return gw(c,a)};
-R.prototype.updateWheelTransformsWS=function(a,c){var d=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);void 0===c?Al(d,a):Dv(d,a,c)};R.prototype.setPitchControl=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Ng(c,a)};R.prototype.updateSuspension=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Gd(c,a)};R.prototype.updateFriction=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);cs(c,a)};R.prototype.getRightAxis=function(){return Bf(this.a)};
-R.prototype.getUpAxis=function(){return nf(this.a)};R.prototype.getForwardAxis=function(){return ro(this.a)};R.prototype.getForwardVector=function(){return q(ot(this.a),t)};R.prototype.getUserConstraintType=function(){return Et(this.a)};R.prototype.setUserConstraintType=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);gv(c,a)};R.prototype.setUserConstraintId=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Ik(c,a)};R.prototype.getUserConstraintId=function(){return Vn(this.a)};
-R.prototype.updateAction=function(a,c){var d=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);Wn(d,a,c)};R.prototype.__destroy__=function(){$o(this.a)};function fx(){throw"cannot construct a tVector3Array, no constructor in IDL";}fx.prototype=Object.create(n.prototype);fx.prototype.constructor=fx;fx.prototype.b=fx;fx.c={};b.tVector3Array=fx;fx.prototype.size=function(){return Ej(this.a)};
-fx.prototype.at=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);return q(jk(c,a),t)};fx.prototype.clear=function(){qp(this.a)};fx.prototype.push_back=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);ml(c,a)};fx.prototype.pop_back=function(){kk(this.a)};fx.prototype.__destroy__=function(){Uv(this.a)};function xx(a){a&&"object"===typeof a&&(a=a.a);this.a=em(a);p(xx)[this.a]=this}xx.prototype=Object.create(Rw.prototype);xx.prototype.constructor=xx;xx.prototype.b=xx;xx.c={};
-b.btCylinderShapeX=xx;xx.prototype.setMargin=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);ih(c,a)};xx.prototype.getMargin=function(){return Pk(this.a)};xx.prototype.setLocalScaling=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);gk(c,a)};xx.prototype.getLocalScaling=function(){return q(Lk(this.a),t)};xx.prototype.calculateLocalInertia=function(a,c){var d=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);Rd(d,a,c)};xx.prototype.__destroy__=function(){Is(this.a)};
-function yx(a){a&&"object"===typeof a&&(a=a.a);this.a=ik(a);p(yx)[this.a]=this}yx.prototype=Object.create(Rw.prototype);yx.prototype.constructor=yx;yx.prototype.b=yx;yx.c={};b.btCylinderShapeZ=yx;yx.prototype.setMargin=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Bg(c,a)};yx.prototype.getMargin=function(){return rc(this.a)};yx.prototype.setLocalScaling=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Hv(c,a)};yx.prototype.getLocalScaling=function(){return q(gp(this.a),t)};
-yx.prototype.calculateLocalInertia=function(a,c){var d=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);on(d,a,c)};yx.prototype.__destroy__=function(){Tf(this.a)};function zx(){this.a=Hm();p(zx)[this.a]=this}zx.prototype=Object.create(n.prototype);zx.prototype.constructor=zx;zx.prototype.b=zx;zx.c={};b.btSequentialImpulseConstraintSolver=zx;zx.prototype.__destroy__=function(){wj(this.a)};function P(){throw"cannot construct a RaycastInfo, no constructor in IDL";}P.prototype=Object.create(n.prototype);
-P.prototype.constructor=P;P.prototype.b=P;P.c={};b.RaycastInfo=P;P.prototype.get_m_contactNormalWS=function(){return q(fi(this.a),t)};P.prototype.set_m_contactNormalWS=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);To(c,a)};P.prototype.get_m_contactPointWS=function(){return q(pg(this.a),t)};P.prototype.set_m_contactPointWS=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Xo(c,a)};P.prototype.get_m_suspensionLength=function(){return On(this.a)};
-P.prototype.set_m_suspensionLength=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);lr(c,a)};P.prototype.get_m_hardPointWS=function(){return q(ji(this.a),t)};P.prototype.set_m_hardPointWS=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);vv(c,a)};P.prototype.get_m_wheelDirectionWS=function(){return q(cq(this.a),t)};P.prototype.set_m_wheelDirectionWS=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);ic(c,a)};P.prototype.get_m_wheelAxleWS=function(){return q(Lc(this.a),t)};
-P.prototype.set_m_wheelAxleWS=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Bp(c,a)};P.prototype.get_m_isInContact=function(){return!!Nv(this.a)};P.prototype.set_m_isInContact=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);me(c,a)};P.prototype.get_m_groundObject=function(){return zk(this.a)};P.prototype.set_m_groundObject=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);po(c,a)};P.prototype.__destroy__=function(){mn(this.a)};
-function Ax(a,c,d,e,f,g,k,m,v){a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);d&&"object"===typeof d&&(d=d.a);e&&"object"===typeof e&&(e=e.a);f&&"object"===typeof f&&(f=f.a);g&&"object"===typeof g&&(g=g.a);k&&"object"===typeof k&&(k=k.a);m&&"object"===typeof m&&(m=m.a);v&&"object"===typeof v&&(v=v.a);this.a=Rr(a,c,d,e,f,g,k,m,v);p(Ax)[this.a]=this}Ax.prototype=Object.create(Iw.prototype);Ax.prototype.constructor=Ax;Ax.prototype.b=Ax;Ax.c={};b.btHeightfieldTerrainShape=Ax;
-Ax.prototype.setMargin=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Bm(c,a)};Ax.prototype.getMargin=function(){return Gq(this.a)};Ax.prototype.setLocalScaling=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Ed(c,a)};Ax.prototype.getLocalScaling=function(){return q(Kf(this.a),t)};Ax.prototype.calculateLocalInertia=function(a,c){var d=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);Lj(d,a,c)};Ax.prototype.__destroy__=function(){$m(this.a)};
-function S(a,c,d,e){a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);d&&"object"===typeof d&&(d=d.a);e&&"object"===typeof e&&(e=e.a);this.a=fc(a,c,d,e);p(S)[this.a]=this}S.prototype=Object.create(B.prototype);S.prototype.constructor=S;S.prototype.b=S;S.c={};b.btDiscreteDynamicsWorld=S;S.prototype.setGravity=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Xr(c,a)};S.prototype.getGravity=function(){return q(Pp(this.a),t)};
-S.prototype.addRigidBody=function(a,c,d){var e=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);d&&"object"===typeof d&&(d=d.a);void 0===c?hm(e,a):void 0===d?_emscripten_bind_btDiscreteDynamicsWorld_addRigidBody_2(e,a,c):gm(e,a,c,d)};S.prototype.removeRigidBody=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Hg(c,a)};S.prototype.addConstraint=function(a,c){var d=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);void 0===c?wf(d,a):vf(d,a,c)};
-S.prototype.removeConstraint=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Ct(c,a)};S.prototype.stepSimulation=function(a,c,d){var e=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);d&&"object"===typeof d&&(d=d.a);return void 0===c?Sc(e,a):void 0===d?Vc(e,a,c):Uc(e,a,c,d)};S.prototype.clearForces=function(){tj(this.a)};S.prototype.setApplySpeculativeContactRestitution=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Dl(c,a)};
-S.prototype.getApplySpeculativeContactRestitution=function(){return!!qf(this.a)};S.prototype.getDispatcher=function(){return q(Xm(this.a),Fw)};S.prototype.rayTest=function(a,c,d){var e=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);d&&"object"===typeof d&&(d=d.a);cw(e,a,c,d)};S.prototype.getPairCache=function(){return q(Wq(this.a),Gw)};S.prototype.getDispatchInfo=function(){return q(yi(this.a),z)};
-S.prototype.addCollisionObject=function(a,c,d){var e=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);d&&"object"===typeof d&&(d=d.a);void 0===c?hr(e,a):void 0===d?ir(e,a,c):jr(e,a,c,d)};S.prototype.removeCollisionObject=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Hp(c,a)};S.prototype.getBroadphase=function(){return q(Kg(this.a),Hw)};
-S.prototype.convexSweepTest=function(a,c,d,e,f){var g=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);d&&"object"===typeof d&&(d=d.a);e&&"object"===typeof e&&(e=e.a);f&&"object"===typeof f&&(f=f.a);Mv(g,a,c,d,e,f)};S.prototype.contactPairTest=function(a,c,d){var e=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);d&&"object"===typeof d&&(d=d.a);nu(e,a,c,d)};
-S.prototype.contactTest=function(a,c){var d=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);oh(d,a,c)};S.prototype.updateSingleAabb=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Ef(c,a)};S.prototype.addAction=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Lg(c,a)};S.prototype.removeAction=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Fu(c,a)};S.prototype.getSolverInfo=function(){return q(ee(this.a),Lw)};S.prototype.__destroy__=function(){yl(this.a)};
-function Bx(){this.a=Oo();p(Bx)[this.a]=this}Bx.prototype=Object.create(n.prototype);Bx.prototype.constructor=Bx;Bx.prototype.b=Bx;Bx.c={};b.btGhostPairCallback=Bx;Bx.prototype.__destroy__=function(){Vh(this.a)};function Cx(){throw"cannot construct a btOverlappingPairCallback, no constructor in IDL";}Cx.prototype=Object.create(n.prototype);Cx.prototype.constructor=Cx;Cx.prototype.b=Cx;Cx.c={};b.btOverlappingPairCallback=Cx;Cx.prototype.__destroy__=function(){ym(this.a)};
-function T(a,c,d,e){a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);d&&"object"===typeof d&&(d=d.a);e&&"object"===typeof e&&(e=e.a);this.a=Fq(a,c,d,e);p(T)[this.a]=this}T.prototype=Object.create(Ow.prototype);T.prototype.constructor=T;T.prototype.b=T;T.c={};b.btKinematicCharacterController=T;T.prototype.setUp=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);ph(c,a)};T.prototype.setWalkDirection=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Ts(c,a)};
-T.prototype.setVelocityForTimeInterval=function(a,c){var d=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);pt(d,a,c)};T.prototype.warp=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);pp(c,a)};T.prototype.preStep=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);vp(c,a)};T.prototype.playerStep=function(a,c){var d=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);Lq(d,a,c)};
-T.prototype.setFallSpeed=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Pu(c,a)};T.prototype.setJumpSpeed=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);yr(c,a)};T.prototype.setMaxJumpHeight=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);iw(c,a)};T.prototype.canJump=function(){return!!Si(this.a)};T.prototype.jump=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Og(c,a)};T.prototype.setGravity=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);ne(c,a)};
-T.prototype.getGravity=function(){return q(ct(this.a),t)};T.prototype.setMaxSlope=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);yc(c,a)};T.prototype.getMaxSlope=function(){return wv(this.a)};T.prototype.getGhostObject=function(){return q(Qs(this.a),U)};T.prototype.setUseGhostSweepTest=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Kd(c,a)};T.prototype.onGround=function(){return!!as(this.a)};
-T.prototype.setUpInterpolate=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Ij(c,a)};T.prototype.updateAction=function(a,c){var d=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);Mi(d,a,c)};T.prototype.__destroy__=function(){Vv(this.a)};function Dx(a,c){a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);this.a=gl(a,c);p(Dx)[this.a]=this}Dx.prototype=Object.create(Iw.prototype);Dx.prototype.constructor=Dx;Dx.prototype.b=Dx;Dx.c={};b.btStaticPlaneShape=Dx;
-Dx.prototype.setLocalScaling=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Qq(c,a)};Dx.prototype.getLocalScaling=function(){return q(Zs(this.a),t)};Dx.prototype.calculateLocalInertia=function(a,c){var d=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);Cq(d,a,c)};Dx.prototype.__destroy__=function(){Ev(this.a)};function Gw(){throw"cannot construct a btOverlappingPairCache, no constructor in IDL";}Gw.prototype=Object.create(n.prototype);Gw.prototype.constructor=Gw;
-Gw.prototype.b=Gw;Gw.c={};b.btOverlappingPairCache=Gw;Gw.prototype.setInternalGhostPairCallback=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);fl(c,a)};Gw.prototype.__destroy__=function(){Zh(this.a)};function ex(){throw"cannot construct a tBtCollisionObjectArray, no constructor in IDL";}ex.prototype=Object.create(n.prototype);ex.prototype.constructor=ex;ex.prototype.b=ex;ex.c={};b.tBtCollisionObjectArray=ex;ex.prototype.size=function(){return gn(this.a)};
-ex.prototype.at=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);return q(Mo(c,a),w)};ex.prototype.clear=function(){Zk(this.a)};ex.prototype.push_back=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);bw(c,a)};ex.prototype.pop_back=function(){St(this.a)};ex.prototype.__destroy__=function(){Qp(this.a)};
-function Ex(a,c,d,e){a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);d&&"object"===typeof d&&(d=d.a);e&&"object"===typeof e&&(e=e.a);this.a=zs(a,c,d,e);p(Ex)[this.a]=this}Ex.prototype=Object.create(Ew.prototype);Ex.prototype.constructor=Ex;Ex.prototype.b=Ex;Ex.c={};b.btFixedConstraint=Ex;Ex.prototype.enableFeedback=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);ev(c,a)};Ex.prototype.getBreakingImpulseThreshold=function(){return ke(this.a)};
-Ex.prototype.setBreakingImpulseThreshold=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);or(c,a)};Ex.prototype.getParam=function(a,c){var d=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);return df(d,a,c)};Ex.prototype.setParam=function(a,c,d){var e=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);d&&"object"===typeof d&&(d=d.a);xk(e,a,c,d)};Ex.prototype.__destroy__=function(){Fd(this.a)};
-function x(a,c){a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);this.a=void 0===a?Gf():void 0===c?_emscripten_bind_btTransform_btTransform_1(a):Ff(a,c);p(x)[this.a]=this}x.prototype=Object.create(n.prototype);x.prototype.constructor=x;x.prototype.b=x;x.c={};b.btTransform=x;x.prototype.setIdentity=function(){Ac(this.a)};x.prototype.setOrigin=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);sl(c,a)};
-x.prototype.setRotation=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Hh(c,a)};x.prototype.getOrigin=function(){return q(Pt(this.a),t)};x.prototype.getRotation=function(){return q(Rl(this.a),W)};x.prototype.getBasis=function(){return q(ah(this.a),Zw)};
-x.prototype.setFromOpenGLMatrix=function(a){var c=this.a;if(Bw){for(var d=0;d<Aw.length;d++)b._free(Aw[d]);Aw.length=0;b._free(xw);xw=0;yw+=Bw;Bw=0}xw||(yw+=128,xw=b._malloc(yw),assert(xw));zw=0;if("object"==typeof a&&"object"===typeof a){d=wa;assert(xw);var d=a.length*d.BYTES_PER_ELEMENT,d=d+7&-8,e;zw+d>=yw?(assert(0<d),Bw+=d,e=b._malloc(d),Aw.push(e)):(e=xw+zw,zw+=d);d=e;e=wa;var f=d;switch(e.BYTES_PER_ELEMENT){case 2:f>>=1;break;case 4:f>>=2;break;case 8:f>>=3}for(var g=0;g<a.length;g++)e[f+g]=
-a[g];a=d}$g(c,a)};x.prototype.__destroy__=function(){nv(this.a)};function X(a,c){a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);this.a=xq(a,c);p(X)[this.a]=this}X.prototype=Object.create(Yw.prototype);X.prototype.constructor=X;X.prototype.b=X;X.c={};b.ClosestRayResultCallback=X;X.prototype.hasHit=function(){return!!tl(this.a)};X.prototype.get_m_rayFromWorld=function(){return q(Zo(this.a),t)};
-X.prototype.set_m_rayFromWorld=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);bq(c,a)};X.prototype.get_m_rayToWorld=function(){return q(wg(this.a),t)};X.prototype.set_m_rayToWorld=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Au(c,a)};X.prototype.get_m_hitNormalWorld=function(){return q(au(this.a),t)};X.prototype.set_m_hitNormalWorld=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Cv(c,a)};X.prototype.get_m_hitPointWorld=function(){return q(oc(this.a),t)};
-X.prototype.set_m_hitPointWorld=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);bg(c,a)};X.prototype.get_m_collisionFilterGroup=function(){return Th(this.a)};X.prototype.set_m_collisionFilterGroup=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Kh(c,a)};X.prototype.get_m_collisionFilterMask=function(){return Mk(this.a)};X.prototype.set_m_collisionFilterMask=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Bq(c,a)};X.prototype.get_m_closestHitFraction=function(){return $f(this.a)};
-X.prototype.set_m_closestHitFraction=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);we(c,a)};X.prototype.get_m_collisionObject=function(){return q(Xu(this.a),w)};X.prototype.set_m_collisionObject=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);le(c,a)};X.prototype.__destroy__=function(){gh(this.a)};function Y(a,c){a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);this.a=vd(a,c);p(Y)[this.a]=this}Y.prototype=Object.create(Ww.prototype);Y.prototype.constructor=Y;
-Y.prototype.b=Y;Y.c={};b.AllConvexResultCallback=Y;Y.prototype.hasHit=function(){return!!Yg(this.a)};Y.prototype.get_m_convexFromWorld=function(){return q(ue(this.a),t)};Y.prototype.set_m_convexFromWorld=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Mj(c,a)};Y.prototype.get_m_convexToWorld=function(){return q(vc(this.a),t)};Y.prototype.set_m_convexToWorld=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);jh(c,a)};Y.prototype.get_m_hitNormalWorld=function(){return q(ru(this.a),fx)};
-Y.prototype.set_m_hitNormalWorld=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);nt(c,a)};Y.prototype.get_m_hitPointWorld=function(){return q(Hc(this.a),fx)};Y.prototype.set_m_hitPointWorld=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);mi(c,a)};Y.prototype.get_m_hitFractions=function(){return q(co(this.a),gx)};Y.prototype.set_m_hitFractions=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);ch(c,a)};Y.prototype.get_m_collisionObjects=function(){return q(md(this.a),ex)};
-Y.prototype.set_m_collisionObjects=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Bh(c,a)};Y.prototype.get_m_collisionFilterGroup=function(){return wp(this.a)};Y.prototype.set_m_collisionFilterGroup=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Jm(c,a)};Y.prototype.get_m_collisionFilterMask=function(){return Hk(this.a)};Y.prototype.set_m_collisionFilterMask=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);oe(c,a)};Y.prototype.get_m_closestHitFraction=function(){return Vs(this.a)};
-Y.prototype.set_m_closestHitFraction=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);ku(c,a)};Y.prototype.__destroy__=function(){kh(this.a)};function Fx(){this.a=Qo();p(Fx)[this.a]=this}Fx.prototype=Object.create(Xw.prototype);Fx.prototype.constructor=Fx;Fx.prototype.b=Fx;Fx.c={};b.ConcreteContactResultCallback=Fx;
-Fx.prototype.addSingleResult=function(a,c,d,e,f,g,k){var m=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);d&&"object"===typeof d&&(d=d.a);e&&"object"===typeof e&&(e=e.a);f&&"object"===typeof f&&(f=f.a);g&&"object"===typeof g&&(g=g.a);k&&"object"===typeof k&&(k=k.a);return Xp(m,a,c,d,e,f,g,k)};Fx.prototype.__destroy__=function(){Ap(this.a)};
-function Gx(a,c,d){a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);d&&"object"===typeof d&&(d=d.a);this.a=void 0===d?Or(a,c):Pr(a,c,d);p(Gx)[this.a]=this}Gx.prototype=Object.create(Mw.prototype);Gx.prototype.constructor=Gx;Gx.prototype.b=Gx;Gx.c={};b.btBvhTriangleMeshShape=Gx;Gx.prototype.setLocalScaling=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);ye(c,a)};Gx.prototype.getLocalScaling=function(){return q(so(this.a),t)};
-Gx.prototype.calculateLocalInertia=function(a,c){var d=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);qh(d,a,c)};Gx.prototype.__destroy__=function(){vt(this.a)};
-function Hx(a,c,d,e,f){a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);d&&"object"===typeof d&&(d=d.a);e&&"object"===typeof e&&(e=e.a);f&&"object"===typeof f&&(f=f.a);this.a=void 0===e?mv(a,c,d):void 0===f?_emscripten_bind_btSliderConstraint_btSliderConstraint_4(a,c,d,e):lv(a,c,d,e,f);p(Hx)[this.a]=this}Hx.prototype=Object.create(Ew.prototype);Hx.prototype.constructor=Hx;Hx.prototype.b=Hx;Hx.c={};b.btSliderConstraint=Hx;
-Hx.prototype.setLowerLinLimit=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);pu(c,a)};Hx.prototype.setUpperLinLimit=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);ni(c,a)};Hx.prototype.setLowerAngLimit=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Tt(c,a)};Hx.prototype.setUpperAngLimit=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Eo(c,a)};Hx.prototype.enableFeedback=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);cp(c,a)};
-Hx.prototype.getBreakingImpulseThreshold=function(){return nj(this.a)};Hx.prototype.setBreakingImpulseThreshold=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);ug(c,a)};Hx.prototype.getParam=function(a,c){var d=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);return bj(d,a,c)};Hx.prototype.setParam=function(a,c,d){var e=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);d&&"object"===typeof d&&(d=d.a);Te(e,a,c,d)};Hx.prototype.__destroy__=function(){qv(this.a)};
-function U(){this.a=ce();p(U)[this.a]=this}U.prototype=Object.create(D.prototype);U.prototype.constructor=U;U.prototype.b=U;U.c={};b.btPairCachingGhostObject=U;U.prototype.setAnisotropicFriction=function(a,c){var d=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);ol(d,a,c)};U.prototype.getCollisionShape=function(){return q(Hl(this.a),r)};U.prototype.setContactProcessingThreshold=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Jk(c,a)};
-U.prototype.setActivationState=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Vk(c,a)};U.prototype.forceActivationState=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Ve(c,a)};U.prototype.activate=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);void 0===a?Oe(c):Pe(c,a)};U.prototype.isActive=function(){return!!jw(this.a)};U.prototype.isKinematicObject=function(){return!!zq(this.a)};U.prototype.isStaticObject=function(){return!!pk(this.a)};
-U.prototype.isStaticOrKinematicObject=function(){return!!hf(this.a)};U.prototype.getRestitution=function(){return Gv(this.a)};U.prototype.setRestitution=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);jj(c,a)};U.prototype.getFriction=function(){return Gu(this.a)};U.prototype.setFriction=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);bh(c,a)};U.prototype.getRollingFriction=function(){return gr(this.a)};
-U.prototype.setRollingFriction=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Wr(c,a)};U.prototype.getCollisionFlags=function(){return bm(this.a)};U.prototype.setCollisionFlags=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);ck(c,a)};U.prototype.getWorldTransform=function(){return q(cl(this.a),x)};U.prototype.setWorldTransform=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);qr(c,a)};
-U.prototype.setCollisionShape=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);op(c,a)};U.prototype.getCcdMotionThreshold=function(){return zm(this.a)};U.prototype.setCcdMotionThreshold=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Nn(c,a)};U.prototype.getCcdSweptSphereRadius=function(){return qm(this.a)};U.prototype.setCcdSweptSphereRadius=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);rk(c,a)};U.prototype.getUserIndex=function(){return Hf(this.a)};
-U.prototype.setUserIndex=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Ti(c,a)};U.prototype.getUserPointer=function(){return q(Vt(this.a),Cw)};U.prototype.setUserPointer=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);yf(c,a)};U.prototype.getInterpolationAngularVelocity=function(){return q(Yi(this.a),t)};U.prototype.setInterpolationAngularVelocity=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Je(c,a)};
-U.prototype.getInterpolationLinearVelocity=function(){return q(Rc(this.a),t)};U.prototype.setInterpolationLinearVelocity=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);kl(c,a)};U.prototype.getBroadphaseHandle=function(){return q(nk(this.a),Dw)};U.prototype.getActivationState=function(){return Aq(this.a)};U.prototype.getNumOverlappingObjects=function(){return Ih(this.a)};U.prototype.getOverlappingObject=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);return q(Br(c,a),w)};
-U.prototype.__destroy__=function(){Le(this.a)};function H(){throw"cannot construct a btManifoldPoint, no constructor in IDL";}H.prototype=Object.create(n.prototype);H.prototype.constructor=H;H.prototype.b=H;H.c={};b.btManifoldPoint=H;H.prototype.getPositionWorldOnA=function(){return q(Ks(this.a),t)};H.prototype.getPositionWorldOnB=function(){return q(to(this.a),t)};H.prototype.getAppliedImpulse=function(){return Gg(this.a)};H.prototype.getDistance=function(){return tv(this.a)};
-H.prototype.get_m_localPointA=function(){return q(Ws(this.a),t)};H.prototype.set_m_localPointA=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);yh(c,a)};H.prototype.get_m_localPointB=function(){return q(lu(this.a),t)};H.prototype.set_m_localPointB=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Hd(c,a)};H.prototype.get_m_positionWorldOnB=function(){return q(an(this.a),t)};H.prototype.set_m_positionWorldOnB=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Em(c,a)};
-H.prototype.get_m_positionWorldOnA=function(){return q(uo(this.a),t)};H.prototype.set_m_positionWorldOnA=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);iu(c,a)};H.prototype.get_m_normalWorldOnB=function(){return q(ut(this.a),t)};H.prototype.set_m_normalWorldOnB=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);$s(c,a)};H.prototype.__destroy__=function(){Bn(this.a)};
-function Ix(a,c,d,e){a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);d&&"object"===typeof d&&(d=d.a);e&&"object"===typeof e&&(e=e.a);this.a=void 0===d?xr(a,c):void 0===e?_emscripten_bind_btPoint2PointConstraint_btPoint2PointConstraint_3(a,c,d):vr(a,c,d,e);p(Ix)[this.a]=this}Ix.prototype=Object.create(Ew.prototype);Ix.prototype.constructor=Ix;Ix.prototype.b=Ix;Ix.c={};b.btPoint2PointConstraint=Ix;Ix.prototype.setPivotA=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Gr(c,a)};
-Ix.prototype.setPivotB=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);sv(c,a)};Ix.prototype.getPivotInA=function(){return q(Nm(this.a),t)};Ix.prototype.getPivotInB=function(){return q(Kq(this.a),t)};Ix.prototype.enableFeedback=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Jh(c,a)};Ix.prototype.getBreakingImpulseThreshold=function(){return Nt(this.a)};Ix.prototype.setBreakingImpulseThreshold=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Ae(c,a)};
-Ix.prototype.getParam=function(a,c){var d=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);return tp(d,a,c)};Ix.prototype.setParam=function(a,c,d){var e=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);d&&"object"===typeof d&&(d=d.a);xt(e,a,c,d)};Ix.prototype.get_m_setting=function(){return q(Rj(this.a),ix)};Ix.prototype.set_m_setting=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);bl(c,a)};Ix.prototype.__destroy__=function(){sf(this.a)};
-function Dw(){throw"cannot construct a btBroadphaseProxy, no constructor in IDL";}Dw.prototype=Object.create(n.prototype);Dw.prototype.constructor=Dw;Dw.prototype.b=Dw;Dw.c={};b.btBroadphaseProxy=Dw;Dw.prototype.get_m_collisionFilterGroup=function(){return bu(this.a)};Dw.prototype.set_m_collisionFilterGroup=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Ze(c,a)};Dw.prototype.get_m_collisionFilterMask=function(){return bp(this.a)};
-Dw.prototype.set_m_collisionFilterMask=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Oi(c,a)};Dw.prototype.__destroy__=function(){Qt(this.a)};function Z(a,c,d,e,f){a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);d&&"object"===typeof d&&(d=d.a);e&&"object"===typeof e&&(e=e.a);f&&"object"===typeof f&&(f=f.a);this.a=void 0===e?pd(a,c,d):void 0===f?_emscripten_bind_btGeneric6DofSpringConstraint_btGeneric6DofSpringConstraint_4(a,c,d,e):nd(a,c,d,e,f);p(Z)[this.a]=this}
-Z.prototype=Object.create(E.prototype);Z.prototype.constructor=Z;Z.prototype.b=Z;Z.c={};b.btGeneric6DofSpringConstraint=Z;Z.prototype.enableSpring=function(a,c){var d=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);uq(d,a,c)};Z.prototype.setStiffness=function(a,c){var d=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);Pm(d,a,c)};Z.prototype.setDamping=function(a,c){var d=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);Hu(d,a,c)};
-Z.prototype.setLinearLowerLimit=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);oq(c,a)};Z.prototype.setLinearUpperLimit=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);gd(c,a)};Z.prototype.setAngularLowerLimit=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);aw(c,a)};Z.prototype.setAngularUpperLimit=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);fm(c,a)};Z.prototype.getFrameOffsetA=function(){return q(mo(this.a),x)};
-Z.prototype.enableFeedback=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);xo(c,a)};Z.prototype.getBreakingImpulseThreshold=function(){return no(this.a)};Z.prototype.setBreakingImpulseThreshold=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Yf(c,a)};Z.prototype.getParam=function(a,c){var d=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);return zf(d,a,c)};
-Z.prototype.setParam=function(a,c,d){var e=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);d&&"object"===typeof d&&(d=d.a);Zl(e,a,c,d)};Z.prototype.__destroy__=function(){Wk(this.a)};function Jx(a){a&&"object"===typeof a&&(a=a.a);this.a=je(a);p(Jx)[this.a]=this}Jx.prototype=Object.create(r.prototype);Jx.prototype.constructor=Jx;Jx.prototype.b=Jx;Jx.c={};b.btBoxShape=Jx;Jx.prototype.setMargin=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);hk(c,a)};
-Jx.prototype.getMargin=function(){return Ke(this.a)};Jx.prototype.setLocalScaling=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Iv(c,a)};Jx.prototype.getLocalScaling=function(){return q(al(this.a),t)};Jx.prototype.calculateLocalInertia=function(a,c){var d=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);yp(d,a,c)};Jx.prototype.__destroy__=function(){ko(this.a)};
-function Kx(a,c){a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);this.a=ff(a,c);p(Kx)[this.a]=this}Kx.prototype=Object.create(Jw.prototype);Kx.prototype.constructor=Kx;Kx.prototype.b=Kx;Kx.c={};b.btCapsuleShapeX=Kx;Kx.prototype.setMargin=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);zh(c,a)};Kx.prototype.getMargin=function(){return gc(this.a)};Kx.prototype.getUpAxis=function(){return Gm(this.a)};Kx.prototype.getRadius=function(){return sp(this.a)};
-Kx.prototype.getHalfHeight=function(){return Jd(this.a)};Kx.prototype.setLocalScaling=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Fl(c,a)};Kx.prototype.getLocalScaling=function(){return q(Oq(this.a),t)};Kx.prototype.calculateLocalInertia=function(a,c){var d=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);dg(d,a,c)};Kx.prototype.__destroy__=function(){Qn(this.a)};
-function W(a,c,d,e){a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);d&&"object"===typeof d&&(d=d.a);e&&"object"===typeof e&&(e=e.a);this.a=im(a,c,d,e);p(W)[this.a]=this}W.prototype=Object.create(Qw.prototype);W.prototype.constructor=W;W.prototype.b=W;W.c={};b.btQuaternion=W;W.prototype.setValue=function(a,c,d,e){var f=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);d&&"object"===typeof d&&(d=d.a);e&&"object"===typeof e&&(e=e.a);Nd(f,a,c,d,e)};
-W.prototype.setEulerZYX=function(a,c,d){var e=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);d&&"object"===typeof d&&(d=d.a);aq(e,a,c,d)};W.prototype.setRotation=function(a,c){var d=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);Sr(d,a,c)};W.prototype.normalize=function(){Qk(this.a)};W.prototype.length2=function(){return Lt(this.a)};W.prototype.length=W.prototype.length=function(){return Lf(this.a)};
-W.prototype.dot=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);return Zb(c,a)};W.prototype.normalized=function(){return q(Tm(this.a),W)};W.prototype.getAxis=function(){return q(Un(this.a),t)};W.prototype.inverse=function(){return q(mu(this.a),W)};W.prototype.getAngle=function(){return mj(this.a)};W.prototype.getAngleShortestPath=function(){return hd(this.a)};W.prototype.angle=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);return Qf(c,a)};
-W.prototype.angleShortestPath=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);return Vf(c,a)};W.prototype.op_add=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);return q(Bv(c,a),W)};W.prototype.op_sub=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);return q(ht(c,a),W)};W.prototype.op_mul=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);return q(Kp(c,a),W)};W.prototype.op_mulq=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);return q(dn(c,a),W)};
-W.prototype.op_div=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);return q(og(c,a),W)};W.prototype.x=function(){return si(this.a)};W.prototype.y=function(){return om(this.a)};W.prototype.z=function(){return Ai(this.a)};W.prototype.w=function(){return Pl(this.a)};W.prototype.setX=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);qc(c,a)};W.prototype.setY=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);jt(c,a)};
-W.prototype.setZ=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);tc(c,a)};W.prototype.setW=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Kc(c,a)};W.prototype.__destroy__=function(){Rk(this.a)};function Lx(a,c){a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);this.a=jv(a,c);p(Lx)[this.a]=this}Lx.prototype=Object.create(Jw.prototype);Lx.prototype.constructor=Lx;Lx.prototype.b=Lx;Lx.c={};b.btCapsuleShapeZ=Lx;
-Lx.prototype.setMargin=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Bd(c,a)};Lx.prototype.getMargin=function(){return Ul(this.a)};Lx.prototype.getUpAxis=function(){return Fc(this.a)};Lx.prototype.getRadius=function(){return nm(this.a)};Lx.prototype.getHalfHeight=function(){return re(this.a)};Lx.prototype.setLocalScaling=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);ki(c,a)};Lx.prototype.getLocalScaling=function(){return q(vk(this.a),t)};
-Lx.prototype.calculateLocalInertia=function(a,c){var d=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);Zq(d,a,c)};Lx.prototype.__destroy__=function(){wo(this.a)};function Lw(){throw"cannot construct a btContactSolverInfo, no constructor in IDL";}Lw.prototype=Object.create(n.prototype);Lw.prototype.constructor=Lw;Lw.prototype.b=Lw;Lw.c={};b.btContactSolverInfo=Lw;Lw.prototype.get_m_solverMode=function(){return ai(this.a)};
-Lw.prototype.set_m_solverMode=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Zg(c,a)};Lw.prototype.get_m_splitImpulse=function(){return!!ew(this.a)};Lw.prototype.set_m_splitImpulse=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Ki(c,a)};Lw.prototype.get_m_splitImpulsePenetrationThreshold=function(){return Re(this.a)};Lw.prototype.set_m_splitImpulsePenetrationThreshold=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Co(c,a)};Lw.prototype.get_m_numIterations=function(){return zt(this.a)};
-Lw.prototype.set_m_numIterations=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Cf(c,a)};Lw.prototype.__destroy__=function(){rp(this.a)};function gx(){throw"cannot construct a tScalarArray, no constructor in IDL";}gx.prototype=Object.create(n.prototype);gx.prototype.constructor=gx;gx.prototype.b=gx;gx.c={};b.tScalarArray=gx;gx.prototype.size=function(){return ps(this.a)};gx.prototype.at=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);return pl(c,a)};gx.prototype.clear=function(){Yq(this.a)};
-gx.prototype.push_back=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Sn(c,a)};gx.prototype.pop_back=function(){Gc(this.a)};gx.prototype.__destroy__=function(){qd(this.a)};function Mx(a){a&&"object"===typeof a&&(a=a.a);this.a=lm(a);p(Mx)[this.a]=this}Mx.prototype=Object.create(r.prototype);Mx.prototype.constructor=Mx;Mx.prototype.b=Mx;Mx.c={};b.btSphereShape=Mx;Mx.prototype.setMargin=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);zo(c,a)};Mx.prototype.getMargin=function(){return vn(this.a)};
-Mx.prototype.setLocalScaling=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);rt(c,a)};Mx.prototype.getLocalScaling=function(){return q(Yp(this.a),t)};Mx.prototype.calculateLocalInertia=function(a,c){var d=this.a;a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);sg(d,a,c)};Mx.prototype.__destroy__=function(){lj(this.a)};
-function Nx(a,c,d,e,f){a&&"object"===typeof a&&(a=a.a);c&&"object"===typeof c&&(c=c.a);d&&"object"===typeof d&&(d=d.a);e&&"object"===typeof e&&(e=e.a);f&&"object"===typeof f&&(f=f.a);this.a=yt(a,c,d,e,f);p(Nx)[this.a]=this}Nx.prototype=Object.create(n.prototype);Nx.prototype.constructor=Nx;Nx.prototype.b=Nx;Nx.c={};b.LocalConvexResult=Nx;Nx.prototype.get_m_hitCollisionObject=function(){return q(Wl(this.a),w)};
-Nx.prototype.set_m_hitCollisionObject=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Zv(c,a)};Nx.prototype.get_m_localShapeInfo=function(){return q(ks(this.a),jx)};Nx.prototype.set_m_localShapeInfo=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Bk(c,a)};Nx.prototype.get_m_hitNormalLocal=function(){return q(wc(this.a),t)};Nx.prototype.set_m_hitNormalLocal=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);vi(c,a)};
-Nx.prototype.get_m_hitPointLocal=function(){return q(ie(this.a),t)};Nx.prototype.set_m_hitPointLocal=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Dg(c,a)};Nx.prototype.get_m_hitFraction=function(){return Ml(this.a)};Nx.prototype.set_m_hitFraction=function(a){var c=this.a;a&&"object"===typeof a&&(a=a.a);Xq(c,a)};Nx.prototype.__destroy__=function(){vj(this.a)};
-(function(){function a(){b.BT_CONSTRAINT_ERP=Jl();b.BT_CONSTRAINT_STOP_ERP=Nl();b.BT_CONSTRAINT_CFM=Yb();b.BT_CONSTRAINT_STOP_CFM=ze();b.PHY_FLOAT=Mu();b.PHY_DOUBLE=Wi();b.PHY_INTEGER=Lo();b.PHY_SHORT=dt();b.PHY_FIXEDPOINT88=Ar();b.PHY_UCHAR=Jc()}b.calledRun?a():eb.unshift(a)})();window.Physics3D=b;
-
-  return Physics3D;
+window.Physics3D = function (initialMemory, interactive) {
+  return new Promise((resolve) => {
+    var mem = new WebAssembly.Memory({ initial: initialMemory });
+    fetch("laya.physics3D.wasm.wasm").then((response) => {
+      response.arrayBuffer().then((buffer) => {
+        WebAssembly.instantiate(buffer, {
+          LayaAirInteractive: interactive,
+          wasi_unstable: {
+            fd_close: () => { console.log('fd_close'); },
+            fd_seek: () => { console.log('fd_seek'); },
+            fd_write: () => { console.log('fd_write'); }
+          },
+          env: {
+            memory: mem,
+          }
+        }).then((physics3D) => {
+          window.Physics3D = physics3D.instance.exports;
+          resolve();
+        });
+      });
+    });
+  });
 };
+
+(function (exports, Laya) {
+	'use strict';
+
+	class ColliderShape {
+	    constructor() {
+	        this._scale = new Laya.Vector3(1, 1, 1);
+	        this._centerMatrix = new Laya.Matrix4x4();
+	        this._attatched = false;
+	        this._indexInCompound = -1;
+	        this._compoundParent = null;
+	        this._attatchedCollisionObject = null;
+	        this._referenceCount = 0;
+	        this._localOffset = new Laya.Vector3(0, 0, 0);
+	        this._localRotation = new Laya.Quaternion(0, 0, 0, 1);
+	        this.needsCustomCollisionCallback = false;
+	    }
+	    static __init__() {
+	        var bt = Laya.ILaya3D.Physics3D._bullet;
+	        ColliderShape._btScale = bt.btVector3_create(1, 1, 1);
+	        ColliderShape._btVector30 = bt.btVector3_create(0, 0, 0);
+	        ColliderShape._btQuaternion0 = bt.btQuaternion_create(0, 0, 0, 1);
+	        ColliderShape._btTransform0 = bt.btTransform_create();
+	    }
+	    static _createAffineTransformation(trans, rot, outE) {
+	        var x = rot.x, y = rot.y, z = rot.z, w = rot.w, x2 = x + x, y2 = y + y, z2 = z + z;
+	        var xx = x * x2, xy = x * y2, xz = x * z2, yy = y * y2, yz = y * z2, zz = z * z2;
+	        var wx = w * x2, wy = w * y2, wz = w * z2;
+	        outE[0] = (1 - (yy + zz));
+	        outE[1] = (xy + wz);
+	        outE[2] = (xz - wy);
+	        outE[3] = 0;
+	        outE[4] = (xy - wz);
+	        outE[5] = (1 - (xx + zz));
+	        outE[6] = (yz + wx);
+	        outE[7] = 0;
+	        outE[8] = (xz + wy);
+	        outE[9] = (yz - wx);
+	        outE[10] = (1 - (xx + yy));
+	        outE[11] = 0;
+	        outE[12] = trans.x;
+	        outE[13] = trans.y;
+	        outE[14] = trans.z;
+	        outE[15] = 1;
+	    }
+	    get type() {
+	        return this._type;
+	    }
+	    get localOffset() {
+	        return this._localOffset;
+	    }
+	    set localOffset(value) {
+	        this._localOffset = value;
+	        if (this._compoundParent)
+	            this._compoundParent._updateChildTransform(this);
+	    }
+	    get localRotation() {
+	        return this._localRotation;
+	    }
+	    set localRotation(value) {
+	        this._localRotation = value;
+	        if (this._compoundParent)
+	            this._compoundParent._updateChildTransform(this);
+	    }
+	    _setScale(value) {
+	        if (this._compoundParent) {
+	            this.updateLocalTransformations();
+	        }
+	        else {
+	            var bt = Laya.ILaya3D.Physics3D._bullet;
+	            bt.btVector3_setValue(ColliderShape._btScale, value.x, value.y, value.z);
+	            bt.btCollisionShape_setLocalScaling(this._btShape, ColliderShape._btScale);
+	        }
+	    }
+	    _addReference() {
+	        this._referenceCount++;
+	    }
+	    _removeReference() {
+	        this._referenceCount--;
+	    }
+	    updateLocalTransformations() {
+	        if (this._compoundParent) {
+	            var offset = ColliderShape._tempVector30;
+	            Laya.Vector3.multiply(this.localOffset, this._scale, offset);
+	            ColliderShape._createAffineTransformation(offset, this.localRotation, this._centerMatrix.elements);
+	        }
+	        else {
+	            ColliderShape._createAffineTransformation(this.localOffset, this.localRotation, this._centerMatrix.elements);
+	        }
+	    }
+	    cloneTo(destObject) {
+	        var destColliderShape = destObject;
+	        this._localOffset.cloneTo(destColliderShape.localOffset);
+	        this._localRotation.cloneTo(destColliderShape.localRotation);
+	        destColliderShape.localOffset = destColliderShape.localOffset;
+	        destColliderShape.localRotation = destColliderShape.localRotation;
+	    }
+	    clone() {
+	        return null;
+	    }
+	    destroy() {
+	        if (this._btShape) {
+	            Laya.ILaya3D.Physics3D._bullet.btCollisionShape_destroy(this._btShape);
+	            this._btShape = null;
+	        }
+	    }
+	}
+	ColliderShape.SHAPEORIENTATION_UPX = 0;
+	ColliderShape.SHAPEORIENTATION_UPY = 1;
+	ColliderShape.SHAPEORIENTATION_UPZ = 2;
+	ColliderShape.SHAPETYPES_BOX = 0;
+	ColliderShape.SHAPETYPES_SPHERE = 1;
+	ColliderShape.SHAPETYPES_CYLINDER = 2;
+	ColliderShape.SHAPETYPES_CAPSULE = 3;
+	ColliderShape.SHAPETYPES_CONVEXHULL = 4;
+	ColliderShape.SHAPETYPES_COMPOUND = 5;
+	ColliderShape.SHAPETYPES_STATICPLANE = 6;
+	ColliderShape.SHAPETYPES_CONE = 7;
+	ColliderShape._tempVector30 = new Laya.Vector3();
+
+	class BoxColliderShape extends ColliderShape {
+	    constructor(sizeX = 1.0, sizeY = 1.0, sizeZ = 1.0) {
+	        super();
+	        this._sizeX = sizeX;
+	        this._sizeY = sizeY;
+	        this._sizeZ = sizeZ;
+	        this._type = ColliderShape.SHAPETYPES_BOX;
+	        var bt = Laya.ILaya3D.Physics3D._bullet;
+	        bt.btVector3_setValue(BoxColliderShape._btSize, sizeX / 2, sizeY / 2, sizeZ / 2);
+	        this._btShape = bt.btBoxShape_create(BoxColliderShape._btSize);
+	    }
+	    static __init__() {
+	        BoxColliderShape._btSize = Laya.ILaya3D.Physics3D._bullet.btVector3_create(0, 0, 0);
+	    }
+	    get sizeX() {
+	        return this._sizeX;
+	    }
+	    get sizeY() {
+	        return this._sizeY;
+	    }
+	    get sizeZ() {
+	        return this._sizeZ;
+	    }
+	    clone() {
+	        var dest = new BoxColliderShape(this._sizeX, this._sizeY, this._sizeZ);
+	        this.cloneTo(dest);
+	        return dest;
+	    }
+	}
+
+	class CapsuleColliderShape extends ColliderShape {
+	    constructor(radius = 0.5, length = 1.25, orientation = ColliderShape.SHAPEORIENTATION_UPY) {
+	        super();
+	        this._radius = radius;
+	        this._length = length;
+	        this._orientation = orientation;
+	        this._type = ColliderShape.SHAPETYPES_CAPSULE;
+	        var bt = Laya.ILaya3D.Physics3D._bullet;
+	        switch (orientation) {
+	            case ColliderShape.SHAPEORIENTATION_UPX:
+	                this._btShape = bt.btCapsuleShapeX_create(radius, length - radius * 2);
+	                break;
+	            case ColliderShape.SHAPEORIENTATION_UPY:
+	                this._btShape = bt.btCapsuleShape_create(radius, length - radius * 2);
+	                break;
+	            case ColliderShape.SHAPEORIENTATION_UPZ:
+	                this._btShape = bt.btCapsuleShapeZ_create(radius, length - radius * 2);
+	                break;
+	            default:
+	                throw "CapsuleColliderShape:unknown orientation.";
+	        }
+	    }
+	    get radius() {
+	        return this._radius;
+	    }
+	    get length() {
+	        return this._length;
+	    }
+	    get orientation() {
+	        return this._orientation;
+	    }
+	    _setScale(value) {
+	        var fixScale = CapsuleColliderShape._tempVector30;
+	        switch (this.orientation) {
+	            case ColliderShape.SHAPEORIENTATION_UPX:
+	                fixScale.x = value.x;
+	                fixScale.y = fixScale.z = Math.max(value.y, value.z);
+	                break;
+	            case ColliderShape.SHAPEORIENTATION_UPY:
+	                fixScale.y = value.y;
+	                fixScale.x = fixScale.z = Math.max(value.x, value.z);
+	                break;
+	            case ColliderShape.SHAPEORIENTATION_UPZ:
+	                fixScale.z = value.z;
+	                fixScale.x = fixScale.y = Math.max(value.x, value.y);
+	                break;
+	            default:
+	                throw "CapsuleColliderShape:unknown orientation.";
+	        }
+	        super._setScale(fixScale);
+	    }
+	    clone() {
+	        var dest = new CapsuleColliderShape(this._radius, this._length, this._orientation);
+	        this.cloneTo(dest);
+	        return dest;
+	    }
+	}
+	CapsuleColliderShape._tempVector30 = new Laya.Vector3();
+
+	class CompoundColliderShape extends ColliderShape {
+	    constructor() {
+	        super();
+	        this._childColliderShapes = [];
+	        this._type = ColliderShape.SHAPETYPES_COMPOUND;
+	        this._btShape = Laya.ILaya3D.Physics3D._bullet.btCompoundShape_create();
+	    }
+	    static __init__() {
+	        var bt = Laya.ILaya3D.Physics3D._bullet;
+	        CompoundColliderShape._btVector3One = bt.btVector3_create(1, 1, 1);
+	        CompoundColliderShape._btTransform = bt.btTransform_create();
+	        CompoundColliderShape._btOffset = bt.btVector3_create(0, 0, 0);
+	        CompoundColliderShape._btRotation = bt.btQuaternion_create(0, 0, 0, 1);
+	    }
+	    _clearChildShape(shape) {
+	        shape._attatched = false;
+	        shape._compoundParent = null;
+	        shape._indexInCompound = -1;
+	    }
+	    _addReference() {
+	    }
+	    _removeReference() {
+	    }
+	    _updateChildTransform(shape) {
+	        var bt = Laya.ILaya3D.Physics3D._bullet;
+	        var offset = shape.localOffset;
+	        var rotation = shape.localRotation;
+	        var btOffset = ColliderShape._btVector30;
+	        var btQuaternion = ColliderShape._btQuaternion0;
+	        var btTransform = ColliderShape._btTransform0;
+	        bt.btVector3_setValue(btOffset, -offset.x, offset.y, offset.z);
+	        bt.btQuaternion_setValue(btQuaternion, -rotation.x, rotation.y, rotation.z, -rotation.w);
+	        bt.btTransform_setOrigin(btTransform, btOffset);
+	        bt.btTransform_setRotation(btTransform, btQuaternion);
+	        bt.btCompoundShape_updateChildTransform(this._btShape, shape._indexInCompound, btTransform, true);
+	    }
+	    addChildShape(shape) {
+	        if (shape._attatched)
+	            throw "CompoundColliderShape: this shape has attatched to other entity.";
+	        shape._attatched = true;
+	        shape._compoundParent = this;
+	        shape._indexInCompound = this._childColliderShapes.length;
+	        this._childColliderShapes.push(shape);
+	        var offset = shape.localOffset;
+	        var rotation = shape.localRotation;
+	        var bt = Laya.ILaya3D.Physics3D._bullet;
+	        bt.btVector3_setValue(CompoundColliderShape._btOffset, -offset.x, offset.y, offset.z);
+	        bt.btQuaternion_setValue(CompoundColliderShape._btRotation, -rotation.x, rotation.y, rotation.z, -rotation.w);
+	        bt.btTransform_setOrigin(CompoundColliderShape._btTransform, CompoundColliderShape._btOffset);
+	        bt.btTransform_setRotation(CompoundColliderShape._btTransform, CompoundColliderShape._btRotation);
+	        var btScale = bt.btCollisionShape_getLocalScaling(this._btShape);
+	        bt.btCollisionShape_setLocalScaling(this._btShape, CompoundColliderShape._btVector3One);
+	        bt.btCompoundShape_addChildShape(this._btShape, CompoundColliderShape._btTransform, shape._btShape);
+	        bt.btCollisionShape_setLocalScaling(this._btShape, btScale);
+	        (this._attatchedCollisionObject) && (this._attatchedCollisionObject.colliderShape = this);
+	    }
+	    removeChildShape(shape) {
+	        if (shape._compoundParent === this) {
+	            var index = shape._indexInCompound;
+	            this._clearChildShape(shape);
+	            var endShape = this._childColliderShapes[this._childColliderShapes.length - 1];
+	            endShape._indexInCompound = index;
+	            this._childColliderShapes[index] = endShape;
+	            this._childColliderShapes.pop();
+	            Laya.ILaya3D.Physics3D._bullet.btCompoundShape_removeChildShapeByIndex(this._btShape, index);
+	        }
+	    }
+	    clearChildShape() {
+	        for (var i = 0, n = this._childColliderShapes.length; i < n; i++) {
+	            this._clearChildShape(this._childColliderShapes[i]);
+	            Laya.ILaya3D.Physics3D._bullet.btCompoundShape_removeChildShapeByIndex(this._btShape, 0);
+	        }
+	        this._childColliderShapes.length = 0;
+	    }
+	    getChildShapeCount() {
+	        return this._childColliderShapes.length;
+	    }
+	    cloneTo(destObject) {
+	        var destCompoundColliderShape = destObject;
+	        destCompoundColliderShape.clearChildShape();
+	        for (var i = 0, n = this._childColliderShapes.length; i < n; i++)
+	            destCompoundColliderShape.addChildShape(this._childColliderShapes[i].clone());
+	    }
+	    clone() {
+	        var dest = new CompoundColliderShape();
+	        this.cloneTo(dest);
+	        return dest;
+	    }
+	    destroy() {
+	        super.destroy();
+	        for (var i = 0, n = this._childColliderShapes.length; i < n; i++) {
+	            var childShape = this._childColliderShapes[i];
+	            if (childShape._referenceCount === 0)
+	                childShape.destroy();
+	        }
+	    }
+	}
+
+	class ConeColliderShape extends ColliderShape {
+	    constructor(radius = 0.5, height = 1.0, orientation = ColliderShape.SHAPEORIENTATION_UPY) {
+	        super();
+	        this._radius = 1;
+	        this._height = 0.5;
+	        this._radius = radius;
+	        this._height = height;
+	        this._orientation = orientation;
+	        this._type = ColliderShape.SHAPETYPES_CYLINDER;
+	        var bt = Laya.ILaya3D.Physics3D._bullet;
+	        switch (orientation) {
+	            case ColliderShape.SHAPEORIENTATION_UPX:
+	                this._btShape = bt.btConeShapeX_create(radius, height);
+	                break;
+	            case ColliderShape.SHAPEORIENTATION_UPY:
+	                this._btShape = bt.btConeShape_create(radius, height);
+	                break;
+	            case ColliderShape.SHAPEORIENTATION_UPZ:
+	                this._btShape = bt.btConeShapeZ_create(radius, height);
+	                break;
+	            default:
+	                throw "ConeColliderShape:unknown orientation.";
+	        }
+	    }
+	    get radius() {
+	        return this._radius;
+	    }
+	    get height() {
+	        return this._height;
+	    }
+	    get orientation() {
+	        return this._orientation;
+	    }
+	    clone() {
+	        var dest = new ConeColliderShape(this._radius, this._height, this._orientation);
+	        this.cloneTo(dest);
+	        return dest;
+	    }
+	}
+
+	class CylinderColliderShape extends ColliderShape {
+	    constructor(radius = 0.5, height = 1.0, orientation = ColliderShape.SHAPEORIENTATION_UPY) {
+	        super();
+	        this._radius = 1;
+	        this._height = 0.5;
+	        this._radius = radius;
+	        this._height = height;
+	        this._orientation = orientation;
+	        this._type = ColliderShape.SHAPETYPES_CYLINDER;
+	        var bt = Laya.ILaya3D.Physics3D._bullet;
+	        switch (orientation) {
+	            case ColliderShape.SHAPEORIENTATION_UPX:
+	                bt.btVector3_setValue(CylinderColliderShape._btSize, height / 2, radius, radius);
+	                this._btShape = bt.btCylinderShapeX_create(CylinderColliderShape._btSize);
+	                break;
+	            case ColliderShape.SHAPEORIENTATION_UPY:
+	                bt.btVector3_setValue(CylinderColliderShape._btSize, radius, height / 2, radius);
+	                this._btShape = bt.btCylinderShape_create(CylinderColliderShape._btSize);
+	                break;
+	            case ColliderShape.SHAPEORIENTATION_UPZ:
+	                bt.btVector3_setValue(CylinderColliderShape._btSize, radius, radius, height / 2);
+	                this._btShape = bt.btCylinderShapeZ_create(CylinderColliderShape._btSize);
+	                break;
+	            default:
+	                throw "CapsuleColliderShape:unknown orientation.";
+	        }
+	    }
+	    static __init__() {
+	        CylinderColliderShape._btSize = Laya.ILaya3D.Physics3D._bullet.btVector3_create(0, 0, 0);
+	    }
+	    get radius() {
+	        return this._radius;
+	    }
+	    get height() {
+	        return this._height;
+	    }
+	    get orientation() {
+	        return this._orientation;
+	    }
+	    clone() {
+	        var dest = new CylinderColliderShape(this._radius, this._height, this._orientation);
+	        this.cloneTo(dest);
+	        return dest;
+	    }
+	}
+
+	class MeshColliderShape extends ColliderShape {
+	    constructor() {
+	        super();
+	        this._mesh = null;
+	        this._convex = false;
+	    }
+	    get mesh() {
+	        return this._mesh;
+	    }
+	    set mesh(value) {
+	        if (this._mesh !== value) {
+	            var bt = Laya.ILaya3D.Physics3D._bullet;
+	            if (this._mesh) {
+	                bt.btCollisionShape_destroy(this._btShape);
+	            }
+	            if (value) {
+	                this._btShape = bt.btGImpactMeshShape_create(value._getPhysicMesh());
+	                bt.btGImpactShapeInterface_updateBound(this._btShape);
+	            }
+	            this._mesh = value;
+	        }
+	    }
+	    get convex() {
+	        return this._convex;
+	    }
+	    set convex(value) {
+	        this._convex = value;
+	    }
+	    _setScale(value) {
+	        if (this._compoundParent) {
+	            this.updateLocalTransformations();
+	        }
+	        else {
+	            var bt = Laya.ILaya3D.Physics3D._bullet;
+	            bt.btVector3_setValue(ColliderShape._btScale, value.x, value.y, value.z);
+	            bt.btCollisionShape_setLocalScaling(this._btShape, ColliderShape._btScale);
+	            bt.btGImpactShapeInterface_updateBound(this._btShape);
+	        }
+	    }
+	    cloneTo(destObject) {
+	        var destMeshCollider = destObject;
+	        destMeshCollider.convex = this._convex;
+	        destMeshCollider.mesh = this._mesh;
+	        super.cloneTo(destObject);
+	    }
+	    clone() {
+	        var dest = new MeshColliderShape();
+	        this.cloneTo(dest);
+	        return dest;
+	    }
+	    destroy() {
+	        if (this._btShape) {
+	            Laya.ILaya3D.Physics3D._bullet.btCollisionShape_destroy(this._btShape);
+	            this._btShape = null;
+	        }
+	    }
+	}
+
+	class SphereColliderShape extends ColliderShape {
+	    constructor(radius = 0.5) {
+	        super();
+	        this._radius = radius;
+	        this._type = ColliderShape.SHAPETYPES_SPHERE;
+	        this._btShape = Laya.ILaya3D.Physics3D._bullet.btSphereShape_create(radius);
+	    }
+	    get radius() {
+	        return this._radius;
+	    }
+	    clone() {
+	        var dest = new SphereColliderShape(this._radius);
+	        this.cloneTo(dest);
+	        return dest;
+	    }
+	}
+
+	class PhysicsComponent extends Laya.Component {
+	    constructor(collisionGroup, canCollideWith) {
+	        super();
+	        this._restitution = 0.0;
+	        this._friction = 0.5;
+	        this._rollingFriction = 0.0;
+	        this._ccdMotionThreshold = 0.0;
+	        this._ccdSweptSphereRadius = 0.0;
+	        this._collisionGroup = Laya.Physics3DUtils.COLLISIONFILTERGROUP_DEFAULTFILTER;
+	        this._canCollideWith = Laya.Physics3DUtils.COLLISIONFILTERGROUP_ALLFILTER;
+	        this._colliderShape = null;
+	        this._transformFlag = 2147483647;
+	        this._controlBySimulation = false;
+	        this._enableProcessCollisions = true;
+	        this._inPhysicUpdateListIndex = -1;
+	        this.canScaleShape = true;
+	        this._collisionGroup = collisionGroup;
+	        this._canCollideWith = canCollideWith;
+	        PhysicsComponent._physicObjectsMap[this.id] = this;
+	    }
+	    static __init__() {
+	        var bt = Laya.ILaya3D.Physics3D._bullet;
+	        PhysicsComponent._btVector30 = bt.btVector3_create(0, 0, 0);
+	        PhysicsComponent._btQuaternion0 = bt.btQuaternion_create(0, 0, 0, 1);
+	    }
+	    static _createAffineTransformationArray(tranX, tranY, tranZ, rotX, rotY, rotZ, rotW, scale, outE) {
+	        var x2 = rotX + rotX, y2 = rotY + rotY, z2 = rotZ + rotZ;
+	        var xx = rotX * x2, xy = rotX * y2, xz = rotX * z2, yy = rotY * y2, yz = rotY * z2, zz = rotZ * z2;
+	        var wx = rotW * x2, wy = rotW * y2, wz = rotW * z2, sx = scale[0], sy = scale[1], sz = scale[2];
+	        outE[0] = (1 - (yy + zz)) * sx;
+	        outE[1] = (xy + wz) * sx;
+	        outE[2] = (xz - wy) * sx;
+	        outE[3] = 0;
+	        outE[4] = (xy - wz) * sy;
+	        outE[5] = (1 - (xx + zz)) * sy;
+	        outE[6] = (yz + wx) * sy;
+	        outE[7] = 0;
+	        outE[8] = (xz + wy) * sz;
+	        outE[9] = (yz - wx) * sz;
+	        outE[10] = (1 - (xx + yy)) * sz;
+	        outE[11] = 0;
+	        outE[12] = tranX;
+	        outE[13] = tranY;
+	        outE[14] = tranZ;
+	        outE[15] = 1;
+	    }
+	    static _creatShape(shapeData) {
+	        var colliderShape;
+	        switch (shapeData.type) {
+	            case "BoxColliderShape":
+	                var sizeData = shapeData.size;
+	                colliderShape = sizeData ? new BoxColliderShape(sizeData[0], sizeData[1], sizeData[2]) : new BoxColliderShape();
+	                break;
+	            case "SphereColliderShape":
+	                colliderShape = new SphereColliderShape(shapeData.radius);
+	                break;
+	            case "CapsuleColliderShape":
+	                colliderShape = new CapsuleColliderShape(shapeData.radius, shapeData.height, shapeData.orientation);
+	                break;
+	            case "MeshColliderShape":
+	                var meshCollider = new MeshColliderShape();
+	                shapeData.mesh && (meshCollider.mesh = Laya.Loader.getRes(shapeData.mesh));
+	                colliderShape = meshCollider;
+	                break;
+	            case "ConeColliderShape":
+	                colliderShape = new ConeColliderShape(shapeData.radius, shapeData.height, shapeData.orientation);
+	                break;
+	            case "CylinderColliderShape":
+	                colliderShape = new CylinderColliderShape(shapeData.radius, shapeData.height, shapeData.orientation);
+	                break;
+	            default:
+	                throw "unknown shape type.";
+	        }
+	        if (shapeData.center) {
+	            var localOffset = colliderShape.localOffset;
+	            localOffset.fromArray(shapeData.center);
+	            colliderShape.localOffset = localOffset;
+	        }
+	        return colliderShape;
+	    }
+	    static physicVector3TransformQuat(source, qx, qy, qz, qw, out) {
+	        var x = source.x, y = source.y, z = source.z, ix = qw * x + qy * z - qz * y, iy = qw * y + qz * x - qx * z, iz = qw * z + qx * y - qy * x, iw = -qx * x - qy * y - qz * z;
+	        out.x = ix * qw + iw * -qx + iy * -qz - iz * -qy;
+	        out.y = iy * qw + iw * -qy + iz * -qx - ix * -qz;
+	        out.z = iz * qw + iw * -qz + ix * -qy - iy * -qx;
+	    }
+	    static physicQuaternionMultiply(lx, ly, lz, lw, right, out) {
+	        var rx = right.x;
+	        var ry = right.y;
+	        var rz = right.z;
+	        var rw = right.w;
+	        var a = (ly * rz - lz * ry);
+	        var b = (lz * rx - lx * rz);
+	        var c = (lx * ry - ly * rx);
+	        var d = (lx * rx + ly * ry + lz * rz);
+	        out.x = (lx * rw + rx * lw) + a;
+	        out.y = (ly * rw + ry * lw) + b;
+	        out.z = (lz * rw + rz * lw) + c;
+	        out.w = lw * rw - d;
+	    }
+	    get restitution() {
+	        return this._restitution;
+	    }
+	    set restitution(value) {
+	        this._restitution = value;
+	        this._btColliderObject && Laya.ILaya3D.Physics3D._bullet.btCollisionObject_setRestitution(this._btColliderObject, value);
+	    }
+	    get friction() {
+	        return this._friction;
+	    }
+	    set friction(value) {
+	        this._friction = value;
+	        this._btColliderObject && Laya.ILaya3D.Physics3D._bullet.btCollisionObject_setFriction(this._btColliderObject, value);
+	    }
+	    get rollingFriction() {
+	        return this._rollingFriction;
+	    }
+	    set rollingFriction(value) {
+	        this._rollingFriction = value;
+	        this._btColliderObject && Laya.ILaya3D.Physics3D._bullet.btCollisionObject_setRollingFriction(this._btColliderObject, value);
+	    }
+	    get ccdMotionThreshold() {
+	        return this._ccdMotionThreshold;
+	    }
+	    set ccdMotionThreshold(value) {
+	        this._ccdMotionThreshold = value;
+	        this._btColliderObject && Laya.ILaya3D.Physics3D._bullet.btCollisionObject_setCcdMotionThreshold(this._btColliderObject, value);
+	    }
+	    get ccdSweptSphereRadius() {
+	        return this._ccdSweptSphereRadius;
+	    }
+	    set ccdSweptSphereRadius(value) {
+	        this._ccdSweptSphereRadius = value;
+	        this._btColliderObject && Laya.ILaya3D.Physics3D._bullet.btCollisionObject_setCcdSweptSphereRadius(this._btColliderObject, value);
+	    }
+	    get isActive() {
+	        return this._btColliderObject ? Laya.ILaya3D.Physics3D._bullet.btCollisionObject_isActive(this._btColliderObject) : false;
+	    }
+	    get colliderShape() {
+	        return this._colliderShape;
+	    }
+	    set colliderShape(value) {
+	        var lastColliderShape = this._colliderShape;
+	        if (lastColliderShape) {
+	            lastColliderShape._attatched = false;
+	            lastColliderShape._attatchedCollisionObject = null;
+	        }
+	        this._colliderShape = value;
+	        if (value) {
+	            if (value._attatched) {
+	                throw "PhysicsComponent: this shape has attatched to other entity.";
+	            }
+	            else {
+	                value._attatched = true;
+	                value._attatchedCollisionObject = this;
+	            }
+	            if (this._btColliderObject) {
+	                Laya.ILaya3D.Physics3D._bullet.btCollisionObject_setCollisionShape(this._btColliderObject, value._btShape);
+	                var canInSimulation = this._simulation && this._enabled;
+	                (canInSimulation && lastColliderShape) && (this._removeFromSimulation());
+	                this._onShapeChange(value);
+	                if (canInSimulation) {
+	                    this._derivePhysicsTransformation(true);
+	                    this._addToSimulation();
+	                }
+	            }
+	        }
+	        else {
+	            if (this._simulation && this._enabled)
+	                lastColliderShape && this._removeFromSimulation();
+	        }
+	    }
+	    get simulation() {
+	        return this._simulation;
+	    }
+	    get collisionGroup() {
+	        return this._collisionGroup;
+	    }
+	    set collisionGroup(value) {
+	        if (this._collisionGroup !== value) {
+	            this._collisionGroup = value;
+	            if (this._simulation && this._colliderShape && this._enabled) {
+	                this._removeFromSimulation();
+	                this._addToSimulation();
+	            }
+	        }
+	    }
+	    get canCollideWith() {
+	        return this._canCollideWith;
+	    }
+	    set canCollideWith(value) {
+	        if (this._canCollideWith !== value) {
+	            this._canCollideWith = value;
+	            if (this._simulation && this._colliderShape && this._enabled) {
+	                this._removeFromSimulation();
+	                this._addToSimulation();
+	            }
+	        }
+	    }
+	    _parseShape(shapesData) {
+	        var shapeCount = shapesData.length;
+	        if (shapeCount === 1) {
+	            var shape = PhysicsComponent._creatShape(shapesData[0]);
+	            this.colliderShape = shape;
+	        }
+	        else {
+	            var compoundShape = new CompoundColliderShape();
+	            for (var i = 0; i < shapeCount; i++) {
+	                shape = PhysicsComponent._creatShape(shapesData[i]);
+	                compoundShape.addChildShape(shape);
+	            }
+	            this.colliderShape = compoundShape;
+	        }
+	    }
+	    _onScaleChange(scale) {
+	        this._colliderShape._setScale(scale);
+	    }
+	    _onEnable() {
+	        this._simulation = this.owner._scene.physicsSimulation;
+	        Laya.ILaya3D.Physics3D._bullet.btCollisionObject_setContactProcessingThreshold(this._btColliderObject, 0);
+	        if (this._colliderShape) {
+	            this._derivePhysicsTransformation(true);
+	            this._addToSimulation();
+	        }
+	    }
+	    _onDisable() {
+	        if (this._colliderShape) {
+	            this._removeFromSimulation();
+	            (this._inPhysicUpdateListIndex !== -1) && (this._simulation._physicsUpdateList.remove(this));
+	        }
+	        this._simulation = null;
+	    }
+	    _onDestroy() {
+	        delete PhysicsComponent._physicObjectsMap[this.id];
+	        Laya.ILaya3D.Physics3D._bullet.btCollisionObject_destroy(this._btColliderObject);
+	        this._colliderShape.destroy();
+	        super._onDestroy();
+	        this._btColliderObject = null;
+	        this._colliderShape = null;
+	        this._simulation = null;
+	        this.owner.transform.off(Laya.Event.TRANSFORM_CHANGED, this, this._onTransformChanged);
+	    }
+	    _isValid() {
+	        return this._simulation && this._colliderShape && this._enabled;
+	    }
+	    _parse(data) {
+	        (data.collisionGroup != null) && (this.collisionGroup = data.collisionGroup);
+	        (data.canCollideWith != null) && (this.canCollideWith = data.canCollideWith);
+	        (data.ccdMotionThreshold != null) && (this.ccdMotionThreshold = data.ccdMotionThreshold);
+	        (data.ccdSweptSphereRadius != null) && (this.ccdSweptSphereRadius = data.ccdSweptSphereRadius);
+	    }
+	    _setTransformFlag(type, value) {
+	        if (value)
+	            this._transformFlag |= type;
+	        else
+	            this._transformFlag &= ~type;
+	    }
+	    _getTransformFlag(type) {
+	        return (this._transformFlag & type) != 0;
+	    }
+	    _addToSimulation() {
+	    }
+	    _removeFromSimulation() {
+	    }
+	    _derivePhysicsTransformation(force) {
+	        var bt = Laya.ILaya3D.Physics3D._bullet;
+	        var btColliderObject = this._btColliderObject;
+	        var btTransform = bt.btCollisionObject_getWorldTransform(btColliderObject);
+	        this._innerDerivePhysicsTransformation(btTransform, force);
+	        bt.btCollisionObject_setWorldTransform(btColliderObject, btTransform);
+	    }
+	    _innerDerivePhysicsTransformation(physicTransformOut, force) {
+	        var bt = Laya.ILaya3D.Physics3D._bullet;
+	        var transform = this.owner._transform;
+	        if (force || this._getTransformFlag(Laya.Transform3D.TRANSFORM_WORLDPOSITION)) {
+	            var shapeOffset = this._colliderShape.localOffset;
+	            var position = transform.position;
+	            var btPosition = PhysicsComponent._btVector30;
+	            if (shapeOffset.x !== 0 || shapeOffset.y !== 0 || shapeOffset.z !== 0) {
+	                var physicPosition = PhysicsComponent._tempVector30;
+	                var worldMat = transform.worldMatrix;
+	                Laya.Vector3.transformCoordinate(shapeOffset, worldMat, physicPosition);
+	                bt.btVector3_setValue(btPosition, -physicPosition.x, physicPosition.y, physicPosition.z);
+	            }
+	            else {
+	                bt.btVector3_setValue(btPosition, -position.x, position.y, position.z);
+	            }
+	            bt.btTransform_setOrigin(physicTransformOut, btPosition);
+	            this._setTransformFlag(Laya.Transform3D.TRANSFORM_WORLDPOSITION, false);
+	        }
+	        if (force || this._getTransformFlag(Laya.Transform3D.TRANSFORM_WORLDQUATERNION)) {
+	            var shapeRotation = this._colliderShape.localRotation;
+	            var btRotation = PhysicsComponent._btQuaternion0;
+	            var rotation = transform.rotation;
+	            if (shapeRotation.x !== 0 || shapeRotation.y !== 0 || shapeRotation.z !== 0 || shapeRotation.w !== 1) {
+	                var physicRotation = PhysicsComponent._tempQuaternion0;
+	                PhysicsComponent.physicQuaternionMultiply(rotation.x, rotation.y, rotation.z, rotation.w, shapeRotation, physicRotation);
+	                bt.btQuaternion_setValue(btRotation, -physicRotation.x, physicRotation.y, physicRotation.z, -physicRotation.w);
+	            }
+	            else {
+	                bt.btQuaternion_setValue(btRotation, -rotation.x, rotation.y, rotation.z, -rotation.w);
+	            }
+	            bt.btTransform_setRotation(physicTransformOut, btRotation);
+	            this._setTransformFlag(Laya.Transform3D.TRANSFORM_WORLDQUATERNION, false);
+	        }
+	        if (force || this._getTransformFlag(Laya.Transform3D.TRANSFORM_WORLDSCALE)) {
+	            this._onScaleChange(transform.getWorldLossyScale());
+	            this._setTransformFlag(Laya.Transform3D.TRANSFORM_WORLDSCALE, false);
+	        }
+	    }
+	    _updateTransformComponent(physicsTransform) {
+	        var bt = Laya.ILaya3D.Physics3D._bullet;
+	        var colliderShape = this._colliderShape;
+	        var localOffset = colliderShape.localOffset;
+	        var localRotation = colliderShape.localRotation;
+	        var transform = this.owner._transform;
+	        var position = transform.position;
+	        var rotation = transform.rotation;
+	        var btPosition = bt.btTransform_getOrigin(physicsTransform);
+	        var btRotation = bt.btTransform_getRotation(physicsTransform);
+	        var btRotX = -bt.btQuaternion_x(btRotation);
+	        var btRotY = bt.btQuaternion_y(btRotation);
+	        var btRotZ = bt.btQuaternion_z(btRotation);
+	        var btRotW = -bt.btQuaternion_w(btRotation);
+	        if (localRotation.x !== 0 || localRotation.y !== 0 || localRotation.z !== 0 || localRotation.w !== 1) {
+	            var invertShapeRotaion = PhysicsComponent._tempQuaternion0;
+	            localRotation.invert(invertShapeRotaion);
+	            PhysicsComponent.physicQuaternionMultiply(btRotX, btRotY, btRotZ, btRotW, invertShapeRotaion, rotation);
+	        }
+	        else {
+	            rotation.x = btRotX;
+	            rotation.y = btRotY;
+	            rotation.z = btRotZ;
+	            rotation.w = btRotW;
+	        }
+	        transform.rotation = rotation;
+	        if (localOffset.x !== 0 || localOffset.y !== 0 || localOffset.z !== 0) {
+	            var btScale = bt.btCollisionShape_getLocalScaling(colliderShape._btShape);
+	            var rotShapePosition = PhysicsComponent._tempVector30;
+	            rotShapePosition.x = localOffset.x * bt.btVector3_x(btScale);
+	            rotShapePosition.y = localOffset.y * bt.btVector3_y(btScale);
+	            rotShapePosition.z = localOffset.z * bt.btVector3_z(btScale);
+	            Laya.Vector3.transformQuat(rotShapePosition, rotation, rotShapePosition);
+	            position.x = -bt.btVector3_x(btPosition) - rotShapePosition.x;
+	            position.y = bt.btVector3_y(btPosition) - rotShapePosition.y;
+	            position.z = bt.btVector3_z(btPosition) - rotShapePosition.z;
+	        }
+	        else {
+	            position.x = -bt.btVector3_x(btPosition);
+	            position.y = bt.btVector3_y(btPosition);
+	            position.z = bt.btVector3_z(btPosition);
+	        }
+	        transform.position = position;
+	    }
+	    _onShapeChange(colShape) {
+	        var btColObj = this._btColliderObject;
+	        var bt = Laya.ILaya3D.Physics3D._bullet;
+	        var flags = bt.btCollisionObject_getCollisionFlags(btColObj);
+	        if (colShape.needsCustomCollisionCallback) {
+	            if ((flags & PhysicsComponent.COLLISIONFLAGS_CUSTOM_MATERIAL_CALLBACK) === 0)
+	                bt.btCollisionObject_setCollisionFlags(btColObj, flags | PhysicsComponent.COLLISIONFLAGS_CUSTOM_MATERIAL_CALLBACK);
+	        }
+	        else {
+	            if ((flags & PhysicsComponent.COLLISIONFLAGS_CUSTOM_MATERIAL_CALLBACK) > 0)
+	                bt.btCollisionObject_setCollisionFlags(btColObj, flags ^ PhysicsComponent.COLLISIONFLAGS_CUSTOM_MATERIAL_CALLBACK);
+	        }
+	    }
+	    _onAdded() {
+	        this.enabled = this._enabled;
+	        this.restitution = this._restitution;
+	        this.friction = this._friction;
+	        this.rollingFriction = this._rollingFriction;
+	        this.ccdMotionThreshold = this._ccdMotionThreshold;
+	        this.ccdSweptSphereRadius = this._ccdSweptSphereRadius;
+	        this.owner.transform.on(Laya.Event.TRANSFORM_CHANGED, this, this._onTransformChanged);
+	    }
+	    _onTransformChanged(flag) {
+	        if (PhysicsComponent._addUpdateList || !this._controlBySimulation) {
+	            flag &= Laya.Transform3D.TRANSFORM_WORLDPOSITION | Laya.Transform3D.TRANSFORM_WORLDQUATERNION | Laya.Transform3D.TRANSFORM_WORLDSCALE;
+	            if (flag) {
+	                this._transformFlag |= flag;
+	                if (this._isValid() && this._inPhysicUpdateListIndex === -1)
+	                    this._simulation._physicsUpdateList.add(this);
+	            }
+	        }
+	    }
+	    _cloneTo(dest) {
+	        var destPhysicsComponent = dest;
+	        destPhysicsComponent.restitution = this._restitution;
+	        destPhysicsComponent.friction = this._friction;
+	        destPhysicsComponent.rollingFriction = this._rollingFriction;
+	        destPhysicsComponent.ccdMotionThreshold = this._ccdMotionThreshold;
+	        destPhysicsComponent.ccdSweptSphereRadius = this._ccdSweptSphereRadius;
+	        destPhysicsComponent.collisionGroup = this._collisionGroup;
+	        destPhysicsComponent.canCollideWith = this._canCollideWith;
+	        destPhysicsComponent.canScaleShape = this.canScaleShape;
+	        (this._colliderShape) && (destPhysicsComponent.colliderShape = this._colliderShape.clone());
+	    }
+	}
+	PhysicsComponent.ACTIVATIONSTATE_ACTIVE_TAG = 1;
+	PhysicsComponent.ACTIVATIONSTATE_ISLAND_SLEEPING = 2;
+	PhysicsComponent.ACTIVATIONSTATE_WANTS_DEACTIVATION = 3;
+	PhysicsComponent.ACTIVATIONSTATE_DISABLE_DEACTIVATION = 4;
+	PhysicsComponent.ACTIVATIONSTATE_DISABLE_SIMULATION = 5;
+	PhysicsComponent.COLLISIONFLAGS_STATIC_OBJECT = 1;
+	PhysicsComponent.COLLISIONFLAGS_KINEMATIC_OBJECT = 2;
+	PhysicsComponent.COLLISIONFLAGS_NO_CONTACT_RESPONSE = 4;
+	PhysicsComponent.COLLISIONFLAGS_CUSTOM_MATERIAL_CALLBACK = 8;
+	PhysicsComponent.COLLISIONFLAGS_CHARACTER_OBJECT = 16;
+	PhysicsComponent.COLLISIONFLAGS_DISABLE_VISUALIZE_OBJECT = 32;
+	PhysicsComponent.COLLISIONFLAGS_DISABLE_SPU_COLLISION_PROCESSING = 64;
+	PhysicsComponent._tempVector30 = new Laya.Vector3();
+	PhysicsComponent._tempQuaternion0 = new Laya.Quaternion();
+	PhysicsComponent._tempQuaternion1 = new Laya.Quaternion();
+	PhysicsComponent._tempMatrix4x40 = new Laya.Matrix4x4();
+	PhysicsComponent._physicObjectsMap = {};
+	PhysicsComponent._addUpdateList = true;
+
+	class BulletInteractive {
+	}
+	BulletInteractive._interactive = {
+	    "getWorldTransform": (rigidBodyID, worldTransPointer) => {
+	    },
+	    "setWorldTransform": (rigidBodyID, worldTransPointer) => {
+	        var rigidBody = PhysicsComponent._physicObjectsMap[rigidBodyID];
+	        rigidBody._simulation._updatedRigidbodies++;
+	        rigidBody._updateTransformComponent(worldTransPointer);
+	    }
+	};
+
+	class CharacterController extends PhysicsComponent {
+	    constructor(stepheight = 0.1, upAxis = null, collisionGroup = Laya.Physics3DUtils.COLLISIONFILTERGROUP_DEFAULTFILTER, canCollideWith = Laya.Physics3DUtils.COLLISIONFILTERGROUP_ALLFILTER) {
+	        super(collisionGroup, canCollideWith);
+	        this._upAxis = new Laya.Vector3(0, 1, 0);
+	        this._maxSlope = 45.0;
+	        this._jumpSpeed = 10.0;
+	        this._fallSpeed = 55.0;
+	        this._gravity = new Laya.Vector3(0, -9.8 * 3, 0);
+	        this._btKinematicCharacter = null;
+	        this._stepHeight = stepheight;
+	        (upAxis) && (this._upAxis = upAxis);
+	        this._controlBySimulation = true;
+	    }
+	    static __init__() {
+	        CharacterController._btTempVector30 = Laya.ILaya3D.Physics3D._bullet.btVector3_create(0, 0, 0);
+	    }
+	    get fallSpeed() {
+	        return this._fallSpeed;
+	    }
+	    set fallSpeed(value) {
+	        this._fallSpeed = value;
+	        Laya.ILaya3D.Physics3D._bullet.btKinematicCharacterController_setFallSpeed(this._btKinematicCharacter, value);
+	    }
+	    get jumpSpeed() {
+	        return this._jumpSpeed;
+	    }
+	    set jumpSpeed(value) {
+	        this._jumpSpeed = value;
+	        Laya.ILaya3D.Physics3D._bullet.btKinematicCharacterController_setJumpSpeed(this._btKinematicCharacter, value);
+	    }
+	    get gravity() {
+	        return this._gravity;
+	    }
+	    set gravity(value) {
+	        this._gravity = value;
+	        var bt = Laya.ILaya3D.Physics3D._bullet;
+	        var btGravity = CharacterController._btTempVector30;
+	        bt.btVector3_setValue(btGravity, -value.x, value.y, value.z);
+	        bt.btKinematicCharacterController_setGravity(this._btKinematicCharacter, btGravity);
+	    }
+	    get maxSlope() {
+	        return this._maxSlope;
+	    }
+	    set maxSlope(value) {
+	        this._maxSlope = value;
+	        Laya.ILaya3D.Physics3D._bullet.btKinematicCharacterController_setMaxSlope(this._btKinematicCharacter, (value / 180) * Math.PI);
+	    }
+	    get isGrounded() {
+	        return Laya.ILaya3D.Physics3D._bullet.btKinematicCharacterController_onGround(this._btKinematicCharacter);
+	    }
+	    get stepHeight() {
+	        return this._stepHeight;
+	    }
+	    set stepHeight(value) {
+	        this._stepHeight = value;
+	        Laya.ILaya3D.Physics3D._bullet.btKinematicCharacterController_setStepHeight(this._btKinematicCharacter, value);
+	    }
+	    get upAxis() {
+	        return this._upAxis;
+	    }
+	    set upAxis(value) {
+	        this._upAxis = value;
+	        var btUpAxis = CharacterController._btTempVector30;
+	        Laya.Utils3D._convertToBulletVec3(value, btUpAxis, false);
+	        Laya.ILaya3D.Physics3D._bullet.btKinematicCharacterController_setUp(this._btKinematicCharacter, btUpAxis);
+	    }
+	    _constructCharacter() {
+	        var bt = Laya.ILaya3D.Physics3D._bullet;
+	        if (this._btKinematicCharacter)
+	            bt.btKinematicCharacterController_destroy(this._btKinematicCharacter);
+	        var btUpAxis = CharacterController._btTempVector30;
+	        bt.btVector3_setValue(btUpAxis, this._upAxis.x, this._upAxis.y, this._upAxis.z);
+	        this._btKinematicCharacter = bt.btKinematicCharacterController_create(this._btColliderObject, this._colliderShape._btShape, this._stepHeight, btUpAxis);
+	        this.fallSpeed = this._fallSpeed;
+	        this.maxSlope = this._maxSlope;
+	        this.jumpSpeed = this._jumpSpeed;
+	        this.gravity = this._gravity;
+	    }
+	    _onShapeChange(colShape) {
+	        super._onShapeChange(colShape);
+	        this._constructCharacter();
+	    }
+	    _onAdded() {
+	        var bt = Laya.ILaya3D.Physics3D._bullet;
+	        var ghostObject = bt.btPairCachingGhostObject_create();
+	        bt.btCollisionObject_setUserIndex(ghostObject, this.id);
+	        bt.btCollisionObject_setCollisionFlags(ghostObject, PhysicsComponent.COLLISIONFLAGS_CHARACTER_OBJECT);
+	        this._btColliderObject = ghostObject;
+	        (this._colliderShape) && (this._constructCharacter());
+	        super._onAdded();
+	    }
+	    _addToSimulation() {
+	        this._simulation._characters.push(this);
+	        this._simulation._addCharacter(this, this._collisionGroup, this._canCollideWith);
+	    }
+	    _removeFromSimulation() {
+	        this._simulation._removeCharacter(this);
+	        var characters = this._simulation._characters;
+	        characters.splice(characters.indexOf(this), 1);
+	    }
+	    _cloneTo(dest) {
+	        super._cloneTo(dest);
+	        var destCharacterController = dest;
+	        destCharacterController.stepHeight = this._stepHeight;
+	        destCharacterController.upAxis = this._upAxis;
+	        destCharacterController.maxSlope = this._maxSlope;
+	        destCharacterController.jumpSpeed = this._jumpSpeed;
+	        destCharacterController.fallSpeed = this._fallSpeed;
+	        destCharacterController.gravity = this._gravity;
+	    }
+	    _onDestroy() {
+	        Laya.ILaya3D.Physics3D._bullet.btKinematicCharacterController_destroy(this._btKinematicCharacter);
+	        super._onDestroy();
+	        this._btKinematicCharacter = null;
+	    }
+	    move(movement) {
+	        var btMovement = CharacterController._btVector30;
+	        var bt = Laya.ILaya3D.Physics3D._bullet;
+	        bt.btVector3_setValue(btMovement, -movement.x, movement.y, movement.z);
+	        bt.btKinematicCharacterController_setWalkDirection(this._btKinematicCharacter, btMovement);
+	    }
+	    jump(velocity = null) {
+	        var bt = Laya.ILaya3D.Physics3D._bullet;
+	        var btVelocity = CharacterController._btVector30;
+	        if (velocity) {
+	            Laya.Utils3D._convertToBulletVec3(velocity, btVelocity, true);
+	            bt.btKinematicCharacterController_jump(this._btKinematicCharacter, btVelocity);
+	        }
+	        else {
+	            bt.btVector3_setValue(btVelocity, 0, 0, 0);
+	            bt.btKinematicCharacterController_jump(this._btKinematicCharacter, btVelocity);
+	        }
+	    }
+	}
+	CharacterController.UPAXIS_X = 0;
+	CharacterController.UPAXIS_Y = 1;
+	CharacterController.UPAXIS_Z = 2;
+
+	class Collision {
+	    constructor() {
+	        this._lastUpdateFrame = -2147483648;
+	        this._updateFrame = -2147483648;
+	        this._isTrigger = false;
+	        this.contacts = [];
+	    }
+	    _setUpdateFrame(farme) {
+	        this._lastUpdateFrame = this._updateFrame;
+	        this._updateFrame = farme;
+	    }
+	}
+
+	class ContactPoint {
+	    constructor() {
+	        this._idCounter = 0;
+	        this.colliderA = null;
+	        this.colliderB = null;
+	        this.distance = 0;
+	        this.normal = new Laya.Vector3();
+	        this.positionOnA = new Laya.Vector3();
+	        this.positionOnB = new Laya.Vector3();
+	        this._id = ++this._idCounter;
+	    }
+	}
+
+	class HitResult {
+	    constructor() {
+	        this.succeeded = false;
+	        this.collider = null;
+	        this.point = new Laya.Vector3();
+	        this.normal = new Laya.Vector3();
+	        this.hitFraction = 0;
+	    }
+	}
+
+	class CollisionTool {
+	    constructor() {
+	        this._hitResultsPoolIndex = 0;
+	        this._hitResultsPool = [];
+	        this._contactPonintsPoolIndex = 0;
+	        this._contactPointsPool = [];
+	        this._collisionsPool = [];
+	        this._collisions = {};
+	    }
+	    getHitResult() {
+	        var hitResult = this._hitResultsPool[this._hitResultsPoolIndex++];
+	        if (!hitResult) {
+	            hitResult = new HitResult();
+	            this._hitResultsPool.push(hitResult);
+	        }
+	        return hitResult;
+	    }
+	    recoverAllHitResultsPool() {
+	        this._hitResultsPoolIndex = 0;
+	    }
+	    getContactPoints() {
+	        var contactPoint = this._contactPointsPool[this._contactPonintsPoolIndex++];
+	        if (!contactPoint) {
+	            contactPoint = new ContactPoint();
+	            this._contactPointsPool.push(contactPoint);
+	        }
+	        return contactPoint;
+	    }
+	    recoverAllContactPointsPool() {
+	        this._contactPonintsPoolIndex = 0;
+	    }
+	    getCollision(physicComponentA, physicComponentB) {
+	        var collision;
+	        var idA = physicComponentA.id;
+	        var idB = physicComponentB.id;
+	        var subCollisionFirst = this._collisions[idA];
+	        if (subCollisionFirst)
+	            collision = subCollisionFirst[idB];
+	        if (!collision) {
+	            if (!subCollisionFirst) {
+	                subCollisionFirst = {};
+	                this._collisions[idA] = subCollisionFirst;
+	            }
+	            collision = this._collisionsPool.length === 0 ? new Collision() : this._collisionsPool.pop();
+	            collision._colliderA = physicComponentA;
+	            collision._colliderB = physicComponentB;
+	            subCollisionFirst[idB] = collision;
+	        }
+	        return collision;
+	    }
+	    recoverCollision(collision) {
+	        var idA = collision._colliderA.id;
+	        var idB = collision._colliderB.id;
+	        this._collisions[idA][idB] = null;
+	        this._collisionsPool.push(collision);
+	    }
+	    garbageCollection() {
+	        this._hitResultsPoolIndex = 0;
+	        this._hitResultsPool.length = 0;
+	        this._contactPonintsPoolIndex = 0;
+	        this._contactPointsPool.length = 0;
+	        this._collisionsPool.length = 0;
+	        for (var subCollisionsKey in this._collisionsPool) {
+	            var subCollisions = this._collisionsPool[subCollisionsKey];
+	            var wholeDelete = true;
+	            for (var collisionKey in subCollisions) {
+	                if (subCollisions[collisionKey])
+	                    wholeDelete = false;
+	                else
+	                    delete subCollisions[collisionKey];
+	            }
+	            if (wholeDelete)
+	                delete this._collisionsPool[subCollisionsKey];
+	        }
+	    }
+	}
+
+	class Constraint3D {
+	    constructor() {
+	    }
+	}
+
+	class PhysicsTriggerComponent extends PhysicsComponent {
+	    constructor(collisionGroup, canCollideWith) {
+	        super(collisionGroup, canCollideWith);
+	        this._isTrigger = false;
+	    }
+	    get isTrigger() {
+	        return this._isTrigger;
+	    }
+	    set isTrigger(value) {
+	        this._isTrigger = value;
+	        var bt = Laya.ILaya3D.Physics3D._bullet;
+	        if (this._btColliderObject) {
+	            var flags = bt.btCollisionObject_getCollisionFlags(this._btColliderObject);
+	            if (value) {
+	                if ((flags & PhysicsComponent.COLLISIONFLAGS_NO_CONTACT_RESPONSE) === 0)
+	                    bt.btCollisionObject_setCollisionFlags(this._btColliderObject, flags | PhysicsComponent.COLLISIONFLAGS_NO_CONTACT_RESPONSE);
+	            }
+	            else {
+	                if ((flags & PhysicsComponent.COLLISIONFLAGS_NO_CONTACT_RESPONSE) !== 0)
+	                    bt.btCollisionObject_setCollisionFlags(this._btColliderObject, flags ^ PhysicsComponent.COLLISIONFLAGS_NO_CONTACT_RESPONSE);
+	            }
+	        }
+	    }
+	    _onAdded() {
+	        super._onAdded();
+	        this.isTrigger = this._isTrigger;
+	    }
+	    _cloneTo(dest) {
+	        super._cloneTo(dest);
+	        dest.isTrigger = this._isTrigger;
+	    }
+	}
+
+	class PhysicsCollider extends PhysicsTriggerComponent {
+	    constructor(collisionGroup = Laya.Physics3DUtils.COLLISIONFILTERGROUP_DEFAULTFILTER, canCollideWith = Laya.Physics3DUtils.COLLISIONFILTERGROUP_ALLFILTER) {
+	        super(collisionGroup, canCollideWith);
+	        this._enableProcessCollisions = false;
+	    }
+	    _addToSimulation() {
+	        this._simulation._addPhysicsCollider(this, this._collisionGroup, this._canCollideWith);
+	    }
+	    _removeFromSimulation() {
+	        this._simulation._removePhysicsCollider(this);
+	    }
+	    _parse(data) {
+	        (data.friction != null) && (this.friction = data.friction);
+	        (data.rollingFriction != null) && (this.rollingFriction = data.rollingFriction);
+	        (data.restitution != null) && (this.restitution = data.restitution);
+	        (data.isTrigger != null) && (this.isTrigger = data.isTrigger);
+	        super._parse(data);
+	        this._parseShape(data.shapes);
+	    }
+	    _onAdded() {
+	        var bt = Laya.Physics3D._bullet;
+	        var btColObj = bt.btCollisionObject_create();
+	        bt.btCollisionObject_setUserIndex(btColObj, this.id);
+	        bt.btCollisionObject_forceActivationState(btColObj, PhysicsComponent.ACTIVATIONSTATE_DISABLE_SIMULATION);
+	        var flags = bt.btCollisionObject_getCollisionFlags(btColObj);
+	        if (this.owner.isStatic) {
+	            if ((flags & PhysicsComponent.COLLISIONFLAGS_KINEMATIC_OBJECT) > 0)
+	                flags = flags ^ PhysicsComponent.COLLISIONFLAGS_KINEMATIC_OBJECT;
+	            flags = flags | PhysicsComponent.COLLISIONFLAGS_STATIC_OBJECT;
+	        }
+	        else {
+	            if ((flags & PhysicsComponent.COLLISIONFLAGS_STATIC_OBJECT) > 0)
+	                flags = flags ^ PhysicsComponent.COLLISIONFLAGS_STATIC_OBJECT;
+	            flags = flags | PhysicsComponent.COLLISIONFLAGS_KINEMATIC_OBJECT;
+	        }
+	        bt.btCollisionObject_setCollisionFlags(btColObj, flags);
+	        this._btColliderObject = btColObj;
+	        super._onAdded();
+	    }
+	}
+
+	class PhysicsSettings {
+	    constructor() {
+	        this.flags = 0;
+	        this.maxSubSteps = 1;
+	        this.fixedTimeStep = 1.0 / 60.0;
+	    }
+	}
+
+	class PhysicsUpdateList extends Laya.SingletonList {
+	    constructor() {
+	        super();
+	    }
+	    add(element) {
+	        var index = element._inPhysicUpdateListIndex;
+	        if (index !== -1)
+	            throw "PhysicsUpdateList:element has  in  PhysicsUpdateList.";
+	        this._add(element);
+	        element._inPhysicUpdateListIndex = this.length++;
+	    }
+	    remove(element) {
+	        var index = element._inPhysicUpdateListIndex;
+	        this.length--;
+	        if (index !== this.length) {
+	            var end = this.elements[this.length];
+	            this.elements[index] = end;
+	            end._inPhysicUpdateListIndex = index;
+	        }
+	        element._inPhysicUpdateListIndex = -1;
+	    }
+	}
+
+	class PhysicsSimulation {
+	    constructor(configuration) {
+	        this._gravity = new Laya.Vector3(0, -10, 0);
+	        this._btVector3Zero = Laya.ILaya3D.Physics3D._bullet.btVector3_create(0, 0, 0);
+	        this._btDefaultQuaternion = Laya.ILaya3D.Physics3D._bullet.btQuaternion_create(0, 0, 0, -1);
+	        this._collisionsUtils = new CollisionTool();
+	        this._previousFrameCollisions = [];
+	        this._currentFrameCollisions = [];
+	        this._currentConstraint = {};
+	        this._physicsUpdateList = new PhysicsUpdateList();
+	        this._characters = [];
+	        this._updatedRigidbodies = 0;
+	        this.maxSubSteps = 1;
+	        this.fixedTimeStep = 1.0 / 60.0;
+	        this.maxSubSteps = configuration.maxSubSteps;
+	        this.fixedTimeStep = configuration.fixedTimeStep;
+	        var bt = Laya.ILaya3D.Physics3D._bullet;
+	        this._btCollisionConfiguration = bt.btDefaultCollisionConfiguration_create();
+	        this._btDispatcher = bt.btCollisionDispatcher_create(this._btCollisionConfiguration);
+	        this._btBroadphase = bt.btDbvtBroadphase_create();
+	        bt.btOverlappingPairCache_setInternalGhostPairCallback(bt.btDbvtBroadphase_getOverlappingPairCache(this._btBroadphase), bt.btGhostPairCallback_create());
+	        var conFlags = configuration.flags;
+	        if (conFlags & PhysicsSimulation.PHYSICSENGINEFLAGS_COLLISIONSONLY) {
+	            this._btCollisionWorld = new bt.btCollisionWorld(this._btDispatcher, this._btBroadphase, this._btCollisionConfiguration);
+	        }
+	        else if (conFlags & PhysicsSimulation.PHYSICSENGINEFLAGS_SOFTBODYSUPPORT) {
+	            throw "PhysicsSimulation:SoftBody processing is not yet available";
+	        }
+	        else {
+	            var solver = bt.btSequentialImpulseConstraintSolver_create();
+	            this._btDiscreteDynamicsWorld = bt.btDiscreteDynamicsWorld_create(this._btDispatcher, this._btBroadphase, solver, this._btCollisionConfiguration);
+	            this._btCollisionWorld = this._btDiscreteDynamicsWorld;
+	        }
+	        if (this._btDiscreteDynamicsWorld) {
+	            this._btSolverInfo = bt.btDynamicsWorld_getSolverInfo(this._btDiscreteDynamicsWorld);
+	            this._btDispatchInfo = bt.btCollisionWorld_getDispatchInfo(this._btDiscreteDynamicsWorld);
+	        }
+	        this._btClosestRayResultCallback = bt.ClosestRayResultCallback_create(this._btVector3Zero, this._btVector3Zero);
+	        this._btAllHitsRayResultCallback = bt.AllHitsRayResultCallback_create(this._btVector3Zero, this._btVector3Zero);
+	        this._btClosestConvexResultCallback = bt.ClosestConvexResultCallback_create(this._btVector3Zero, this._btVector3Zero);
+	        this._btAllConvexResultCallback = bt.AllConvexResultCallback_create(this._btVector3Zero, this._btVector3Zero);
+	        this.setHitsRayResultCallbackFlag();
+	        bt.btGImpactCollisionAlgorithm_RegisterAlgorithm(this._btDispatcher);
+	    }
+	    static __init__() {
+	        var bt = Laya.ILaya3D.Physics3D._bullet;
+	        PhysicsSimulation._btTempVector30 = bt.btVector3_create(0, 0, 0);
+	        PhysicsSimulation._btTempVector31 = bt.btVector3_create(0, 0, 0);
+	        PhysicsSimulation._btTempQuaternion0 = bt.btQuaternion_create(0, 0, 0, 1);
+	        PhysicsSimulation._btTempQuaternion1 = bt.btQuaternion_create(0, 0, 0, 1);
+	        PhysicsSimulation._btTempTransform0 = bt.btTransform_create();
+	        PhysicsSimulation._btTempTransform1 = bt.btTransform_create();
+	    }
+	    static createConstraint() {
+	    }
+	    get continuousCollisionDetection() {
+	        return Laya.ILaya3D.Physics3D._bullet.btCollisionWorld_get_m_useContinuous(this._btDispatchInfo);
+	    }
+	    set continuousCollisionDetection(value) {
+	        Laya.ILaya3D.Physics3D._bullet.btCollisionWorld_set_m_useContinuous(this._btDispatchInfo, value);
+	    }
+	    get gravity() {
+	        if (!this._btDiscreteDynamicsWorld)
+	            throw "Simulation:Cannot perform this action when the physics engine is set to CollisionsOnly";
+	        return this._gravity;
+	    }
+	    set gravity(value) {
+	        if (!this._btDiscreteDynamicsWorld)
+	            throw "Simulation:Cannot perform this action when the physics engine is set to CollisionsOnly";
+	        this._gravity = value;
+	        var bt = Laya.ILaya3D.Physics3D._bullet;
+	        var btGravity = PhysicsSimulation._btTempVector30;
+	        bt.btVector3_setValue(btGravity, -value.x, value.y, value.z);
+	        bt.btDiscreteDynamicsWorld_setGravity(this._btDiscreteDynamicsWorld, btGravity);
+	    }
+	    get speculativeContactRestitution() {
+	        if (!this._btDiscreteDynamicsWorld)
+	            throw "Simulation:Cannot Cannot perform this action when the physics engine is set to CollisionsOnly";
+	        return Laya.ILaya3D.Physics3D._bullet.btDiscreteDynamicsWorld_getApplySpeculativeContactRestitution(this._btDiscreteDynamicsWorld);
+	    }
+	    set speculativeContactRestitution(value) {
+	        if (!this._btDiscreteDynamicsWorld)
+	            throw "Simulation:Cannot Cannot perform this action when the physics engine is set to CollisionsOnly";
+	        Laya.ILaya3D.Physics3D._bullet.btDiscreteDynamicsWorld_setApplySpeculativeContactRestitution(this._btDiscreteDynamicsWorld, value);
+	    }
+	    _simulate(deltaTime) {
+	        this._updatedRigidbodies = 0;
+	        var bt = Laya.ILaya3D.Physics3D._bullet;
+	        if (this._btDiscreteDynamicsWorld)
+	            bt.btDiscreteDynamicsWorld_stepSimulation(this._btDiscreteDynamicsWorld, deltaTime, this.maxSubSteps, this.fixedTimeStep);
+	        else
+	            bt.PerformDiscreteCollisionDetection(this._btCollisionWorld);
+	    }
+	    _destroy() {
+	        var bt = Laya.ILaya3D.Physics3D._bullet;
+	        if (this._btDiscreteDynamicsWorld) {
+	            bt.btCollisionWorld_destroy(this._btDiscreteDynamicsWorld);
+	            this._btDiscreteDynamicsWorld = null;
+	        }
+	        else {
+	            bt.btCollisionWorld_destroy(this._btCollisionWorld);
+	            this._btCollisionWorld = null;
+	        }
+	        bt.btDbvtBroadphase_destroy(this._btBroadphase);
+	        this._btBroadphase = null;
+	        bt.btCollisionDispatcher_destroy(this._btDispatcher);
+	        this._btDispatcher = null;
+	        bt.btDefaultCollisionConfiguration_destroy(this._btCollisionConfiguration);
+	        this._btCollisionConfiguration = null;
+	    }
+	    _addPhysicsCollider(component, group, mask) {
+	        Laya.ILaya3D.Physics3D._bullet.btCollisionWorld_addCollisionObject(this._btCollisionWorld, component._btColliderObject, group, mask);
+	    }
+	    _removePhysicsCollider(component) {
+	        Laya.ILaya3D.Physics3D._bullet.btCollisionWorld_removeCollisionObject(this._btCollisionWorld, component._btColliderObject);
+	    }
+	    _addRigidBody(rigidBody, group, mask) {
+	        if (!this._btDiscreteDynamicsWorld)
+	            throw "Simulation:Cannot perform this action when the physics engine is set to CollisionsOnly";
+	        Laya.ILaya3D.Physics3D._bullet.btDiscreteDynamicsWorld_addRigidBody(this._btCollisionWorld, rigidBody._btColliderObject, group, mask);
+	    }
+	    _removeRigidBody(rigidBody) {
+	        if (!this._btDiscreteDynamicsWorld)
+	            throw "Simulation:Cannot perform this action when the physics engine is set to CollisionsOnly";
+	        Laya.ILaya3D.Physics3D._bullet.btDiscreteDynamicsWorld_removeRigidBody(this._btCollisionWorld, rigidBody._btColliderObject);
+	    }
+	    _addCharacter(character, group, mask) {
+	        if (!this._btDiscreteDynamicsWorld)
+	            throw "Simulation:Cannot perform this action when the physics engine is set to CollisionsOnly";
+	        var bt = Laya.ILaya3D.Physics3D._bullet;
+	        bt.btCollisionWorld_addCollisionObject(this._btCollisionWorld, character._btColliderObject, group, mask);
+	        bt.btDynamicsWorld_addAction(this._btCollisionWorld, character._btKinematicCharacter);
+	    }
+	    _removeCharacter(character) {
+	        if (!this._btDiscreteDynamicsWorld)
+	            throw "Simulation:Cannot perform this action when the physics engine is set to CollisionsOnly";
+	        var bt = Laya.ILaya3D.Physics3D._bullet;
+	        bt.btCollisionWorld_removeCollisionObject(this._btCollisionWorld, character._btColliderObject);
+	        bt.btDynamicsWorld_removeAction(this._btCollisionWorld, character._btKinematicCharacter);
+	    }
+	    raycastFromTo(from, to, out = null, collisonGroup = Laya.Physics3DUtils.COLLISIONFILTERGROUP_ALLFILTER, collisionMask = Laya.Physics3DUtils.COLLISIONFILTERGROUP_ALLFILTER) {
+	        var bt = Laya.ILaya3D.Physics3D._bullet;
+	        var rayResultCall = this._btClosestRayResultCallback;
+	        var rayFrom = PhysicsSimulation._btTempVector30;
+	        var rayTo = PhysicsSimulation._btTempVector31;
+	        bt.btVector3_setValue(rayFrom, -from.x, from.y, from.z);
+	        bt.btVector3_setValue(rayTo, -to.x, to.y, to.z);
+	        bt.ClosestRayResultCallback_set_m_rayFromWorld(rayResultCall, rayFrom);
+	        bt.ClosestRayResultCallback_set_m_rayToWorld(rayResultCall, rayTo);
+	        bt.RayResultCallback_set_m_collisionFilterGroup(rayResultCall, collisonGroup);
+	        bt.RayResultCallback_set_m_collisionFilterMask(rayResultCall, collisionMask);
+	        bt.RayResultCallback_set_m_collisionObject(rayResultCall, null);
+	        bt.RayResultCallback_set_m_closestHitFraction(rayResultCall, 1);
+	        bt.btCollisionWorld_rayTest(this._btCollisionWorld, rayFrom, rayTo, rayResultCall);
+	        if (bt.RayResultCallback_hasHit(rayResultCall)) {
+	            if (out) {
+	                out.succeeded = true;
+	                out.collider = PhysicsComponent._physicObjectsMap[bt.btCollisionObject_getUserIndex(bt.RayResultCallback_get_m_collisionObject(rayResultCall))];
+	                out.hitFraction = bt.RayResultCallback_get_m_closestHitFraction(rayResultCall);
+	                var btPoint = bt.ClosestRayResultCallback_get_m_hitPointWorld(rayResultCall);
+	                var point = out.point;
+	                point.x = -bt.btVector3_x(btPoint);
+	                point.y = bt.btVector3_y(btPoint);
+	                point.z = bt.btVector3_z(btPoint);
+	                var btNormal = bt.ClosestRayResultCallback_get_m_hitNormalWorld(rayResultCall);
+	                var normal = out.normal;
+	                normal.x = -bt.btVector3_x(btNormal);
+	                normal.y = bt.btVector3_y(btNormal);
+	                normal.z = bt.btVector3_z(btNormal);
+	            }
+	            return true;
+	        }
+	        else {
+	            if (out)
+	                out.succeeded = false;
+	            return false;
+	        }
+	    }
+	    raycastAllFromTo(from, to, out, collisonGroup = Laya.Physics3DUtils.COLLISIONFILTERGROUP_ALLFILTER, collisionMask = Laya.Physics3DUtils.COLLISIONFILTERGROUP_ALLFILTER) {
+	        var bt = Laya.ILaya3D.Physics3D._bullet;
+	        var rayResultCall = this._btAllHitsRayResultCallback;
+	        var rayFrom = PhysicsSimulation._btTempVector30;
+	        var rayTo = PhysicsSimulation._btTempVector31;
+	        out.length = 0;
+	        bt.btVector3_setValue(rayFrom, -from.x, from.y, from.z);
+	        bt.btVector3_setValue(rayTo, -to.x, to.y, to.z);
+	        bt.AllHitsRayResultCallback_set_m_rayFromWorld(rayResultCall, rayFrom);
+	        bt.AllHitsRayResultCallback_set_m_rayToWorld(rayResultCall, rayTo);
+	        bt.RayResultCallback_set_m_collisionFilterGroup(rayResultCall, collisonGroup);
+	        bt.RayResultCallback_set_m_collisionFilterMask(rayResultCall, collisionMask);
+	        var collisionObjects = bt.AllHitsRayResultCallback_get_m_collisionObjects(rayResultCall);
+	        var btPoints = bt.AllHitsRayResultCallback_get_m_hitPointWorld(rayResultCall);
+	        var btNormals = bt.AllHitsRayResultCallback_get_m_hitNormalWorld(rayResultCall);
+	        var btFractions = bt.AllHitsRayResultCallback_get_m_hitFractions(rayResultCall);
+	        bt.tBtCollisionObjectArray_clear(collisionObjects);
+	        bt.tVector3Array_clear(btPoints);
+	        bt.tVector3Array_clear(btNormals);
+	        bt.tScalarArray_clear(btFractions);
+	        bt.btCollisionWorld_rayTest(this._btCollisionWorld, rayFrom, rayTo, rayResultCall);
+	        var count = bt.tBtCollisionObjectArray_size(collisionObjects);
+	        if (count > 0) {
+	            this._collisionsUtils.recoverAllHitResultsPool();
+	            for (var i = 0; i < count; i++) {
+	                var hitResult = this._collisionsUtils.getHitResult();
+	                out.push(hitResult);
+	                hitResult.succeeded = true;
+	                hitResult.collider = PhysicsComponent._physicObjectsMap[bt.btCollisionObject_getUserIndex(bt.tBtCollisionObjectArray_at(collisionObjects, i))];
+	                hitResult.hitFraction = bt.tScalarArray_at(btFractions, i);
+	                var btPoint = bt.tVector3Array_at(btPoints, i);
+	                var pointE = hitResult.point;
+	                pointE.x = -bt.btVector3_x(btPoint);
+	                pointE.y = bt.btVector3_y(btPoint);
+	                pointE.z = bt.btVector3_z(btPoint);
+	                var btNormal = bt.tVector3Array_at(btNormals, i);
+	                var normal = hitResult.normal;
+	                normal.x = -bt.btVector3_x(btNormal);
+	                normal.y = bt.btVector3_y(btNormal);
+	                normal.z = bt.btVector3_z(btNormal);
+	            }
+	            return true;
+	        }
+	        else {
+	            return false;
+	        }
+	    }
+	    rayCast(ray, outHitResult = null, distance = 2147483647, collisonGroup = Laya.Physics3DUtils.COLLISIONFILTERGROUP_ALLFILTER, collisionMask = Laya.Physics3DUtils.COLLISIONFILTERGROUP_ALLFILTER) {
+	        var from = ray.origin;
+	        var to = PhysicsSimulation._tempVector30;
+	        Laya.Vector3.normalize(ray.direction, to);
+	        Laya.Vector3.scale(to, distance, to);
+	        Laya.Vector3.add(from, to, to);
+	        return this.raycastFromTo(from, to, outHitResult, collisonGroup, collisionMask);
+	    }
+	    rayCastAll(ray, out, distance = 2147483647, collisonGroup = Laya.Physics3DUtils.COLLISIONFILTERGROUP_ALLFILTER, collisionMask = Laya.Physics3DUtils.COLLISIONFILTERGROUP_ALLFILTER) {
+	        var from = ray.origin;
+	        var to = PhysicsSimulation._tempVector30;
+	        Laya.Vector3.normalize(ray.direction, to);
+	        Laya.Vector3.scale(to, distance, to);
+	        Laya.Vector3.add(from, to, to);
+	        return this.raycastAllFromTo(from, to, out, collisonGroup, collisionMask);
+	    }
+	    shapeCast(shape, fromPosition, toPosition, out = null, fromRotation = null, toRotation = null, collisonGroup = Laya.Physics3DUtils.COLLISIONFILTERGROUP_ALLFILTER, collisionMask = Laya.Physics3DUtils.COLLISIONFILTERGROUP_ALLFILTER, allowedCcdPenetration = 0.0) {
+	        var bt = Laya.ILaya3D.Physics3D._bullet;
+	        var convexResultCall = this._btClosestConvexResultCallback;
+	        var convexPosFrom = PhysicsSimulation._btTempVector30;
+	        var convexPosTo = PhysicsSimulation._btTempVector31;
+	        var convexRotFrom = PhysicsSimulation._btTempQuaternion0;
+	        var convexRotTo = PhysicsSimulation._btTempQuaternion1;
+	        var convexTransform = PhysicsSimulation._btTempTransform0;
+	        var convexTransTo = PhysicsSimulation._btTempTransform1;
+	        var sweepShape = shape._btShape;
+	        bt.btVector3_setValue(convexPosFrom, -fromPosition.x, fromPosition.y, fromPosition.z);
+	        bt.btVector3_setValue(convexPosTo, -toPosition.x, toPosition.y, toPosition.z);
+	        bt.ConvexResultCallback_set_m_collisionFilterGroup(convexResultCall, collisonGroup);
+	        bt.ConvexResultCallback_set_m_collisionFilterMask(convexResultCall, collisionMask);
+	        bt.btTransform_setOrigin(convexTransform, convexPosFrom);
+	        bt.btTransform_setOrigin(convexTransTo, convexPosTo);
+	        if (fromRotation) {
+	            bt.btQuaternion_setValue(convexRotFrom, -fromRotation.x, fromRotation.y, fromRotation.z, -fromRotation.w);
+	            bt.btTransform_setRotation(convexTransform, convexRotFrom);
+	        }
+	        else {
+	            bt.btTransform_setRotation(convexTransform, this._btDefaultQuaternion);
+	        }
+	        if (toRotation) {
+	            bt.btQuaternion_setValue(convexRotTo, -toRotation.x, toRotation.y, toRotation.z, -toRotation.w);
+	            bt.btTransform_setRotation(convexTransTo, convexRotTo);
+	        }
+	        else {
+	            bt.btTransform_setRotation(convexTransTo, this._btDefaultQuaternion);
+	        }
+	        bt.ClosestConvexResultCallback_set_m_hitCollisionObject(convexResultCall, null);
+	        bt.ConvexResultCallback_set_m_closestHitFraction(convexResultCall, 1);
+	        bt.btCollisionWorld_convexSweepTest(this._btCollisionWorld, sweepShape, convexTransform, convexTransTo, convexResultCall, allowedCcdPenetration);
+	        if (bt.ConvexResultCallback_hasHit(convexResultCall)) {
+	            if (out) {
+	                out.succeeded = true;
+	                out.collider = PhysicsComponent._physicObjectsMap[bt.btCollisionObject_getUserIndex(bt.ClosestConvexResultCallback_get_m_hitCollisionObject(convexResultCall))];
+	                out.hitFraction = bt.ConvexResultCallback_get_m_closestHitFraction(convexResultCall);
+	                var btPoint = bt.ClosestConvexResultCallback_get_m_hitPointWorld(convexResultCall);
+	                var btNormal = bt.ClosestConvexResultCallback_get_m_hitNormalWorld(convexResultCall);
+	                var point = out.point;
+	                var normal = out.normal;
+	                point.x = -bt.btVector3_x(btPoint);
+	                point.y = bt.btVector3_y(btPoint);
+	                point.z = bt.btVector3_z(btPoint);
+	                normal.x = -bt.btVector3_x(btNormal);
+	                normal.y = bt.btVector3_y(btNormal);
+	                normal.z = bt.btVector3_z(btNormal);
+	            }
+	            return true;
+	        }
+	        else {
+	            if (out)
+	                out.succeeded = false;
+	            return false;
+	        }
+	    }
+	    shapeCastAll(shape, fromPosition, toPosition, out, fromRotation = null, toRotation = null, collisonGroup = Laya.Physics3DUtils.COLLISIONFILTERGROUP_ALLFILTER, collisionMask = Laya.Physics3DUtils.COLLISIONFILTERGROUP_ALLFILTER, allowedCcdPenetration = 0.0) {
+	        var bt = Laya.ILaya3D.Physics3D._bullet;
+	        var convexResultCall = this._btAllConvexResultCallback;
+	        var convexPosFrom = PhysicsSimulation._btTempVector30;
+	        var convexPosTo = PhysicsSimulation._btTempVector31;
+	        var convexRotFrom = PhysicsSimulation._btTempQuaternion0;
+	        var convexRotTo = PhysicsSimulation._btTempQuaternion1;
+	        var convexTransform = PhysicsSimulation._btTempTransform0;
+	        var convexTransTo = PhysicsSimulation._btTempTransform1;
+	        var sweepShape = shape._btShape;
+	        out.length = 0;
+	        bt.btVector3_setValue(convexPosFrom, -fromPosition.x, fromPosition.y, fromPosition.z);
+	        bt.btVector3_setValue(convexPosTo, -toPosition.x, toPosition.y, toPosition.z);
+	        bt.ConvexResultCallback_set_m_collisionFilterGroup(convexResultCall, collisonGroup);
+	        bt.ConvexResultCallback_set_m_collisionFilterMask(convexResultCall, collisionMask);
+	        bt.btTransform_setOrigin(convexTransform, convexPosFrom);
+	        bt.btTransform_setOrigin(convexTransTo, convexPosTo);
+	        if (fromRotation) {
+	            bt.btQuaternion_setValue(convexRotFrom, -fromRotation.x, fromRotation.y, fromRotation.z, -fromRotation.w);
+	            bt.btTransform_setRotation(convexTransform, convexRotFrom);
+	        }
+	        else {
+	            bt.btTransform_setRotation(convexTransform, this._btDefaultQuaternion);
+	        }
+	        if (toRotation) {
+	            bt.btQuaternion_setValue(convexRotTo, -toRotation.x, toRotation.y, toRotation.z, -toRotation.w);
+	            bt.btTransform_setRotation(convexTransTo, convexRotTo);
+	        }
+	        else {
+	            bt.btTransform_setRotation(convexTransTo, this._btDefaultQuaternion);
+	        }
+	        var collisionObjects = bt.AllConvexResultCallback_get_m_collisionObjects(convexResultCall);
+	        var btPoints = bt.AllConvexResultCallback_get_m_hitPointWorld(convexResultCall);
+	        var btNormals = bt.AllConvexResultCallback_get_m_hitNormalWorld(convexResultCall);
+	        var btFractions = bt.AllConvexResultCallback_get_m_hitFractions(convexResultCall);
+	        bt.tVector3Array_clear(btPoints);
+	        bt.tVector3Array_clear(btNormals);
+	        bt.tScalarArray_clear(btFractions);
+	        bt.tBtCollisionObjectArray_clear(collisionObjects);
+	        bt.btCollisionWorld_convexSweepTest(this._btCollisionWorld, sweepShape, convexTransform, convexTransTo, convexResultCall, allowedCcdPenetration);
+	        var count = bt.tBtCollisionObjectArray_size(collisionObjects);
+	        if (count > 0) {
+	            this._collisionsUtils.recoverAllHitResultsPool();
+	            for (var i = 0; i < count; i++) {
+	                var hitResult = this._collisionsUtils.getHitResult();
+	                out.push(hitResult);
+	                hitResult.succeeded = true;
+	                hitResult.collider = PhysicsComponent._physicObjectsMap[bt.btCollisionObject_getUserIndex(bt.tBtCollisionObjectArray_at(collisionObjects, i))];
+	                hitResult.hitFraction = bt.tScalarArray_at(btFractions, i);
+	                var btPoint = bt.tVector3Array_at(btPoints, i);
+	                var point = hitResult.point;
+	                point.x = -bt.btVector3_x(btPoint);
+	                point.y = bt.btVector3_y(btPoint);
+	                point.z = bt.btVector3_z(btPoint);
+	                var btNormal = bt.tVector3Array_at(btNormals, i);
+	                var normal = hitResult.normal;
+	                normal.x = -bt.btVector3_x(btNormal);
+	                normal.y = bt.btVector3_y(btNormal);
+	                normal.z = bt.btVector3_z(btNormal);
+	            }
+	            return true;
+	        }
+	        else {
+	            return false;
+	        }
+	    }
+	    addConstraint(constraint, disableCollisionsBetweenLinkedBodies = false) {
+	        if (!this._btDiscreteDynamicsWorld)
+	            throw "Cannot perform this action when the physics engine is set to CollisionsOnly";
+	        Laya.ILaya3D.Physics3D._bullet.btCollisionWorld_addConstraint(this._btDiscreteDynamicsWorld, constraint._btConstraint, disableCollisionsBetweenLinkedBodies);
+	        this._currentConstraint[constraint.id] = constraint;
+	    }
+	    removeConstraint(constraint) {
+	        if (!this._btDiscreteDynamicsWorld)
+	            throw "Cannot perform this action when the physics engine is set to CollisionsOnly";
+	        Laya.ILaya3D.Physics3D._bullet.btCollisionWorld_removeConstraint(this._btDiscreteDynamicsWorld, constraint._btConstraint);
+	        delete this._currentConstraint[constraint.id];
+	    }
+	    setHitsRayResultCallbackFlag(flag = 1) {
+	        var bt = Laya.ILaya3D.Physics3D._bullet;
+	        bt.RayResultCallback_set_m_flags(this._btAllHitsRayResultCallback, flag);
+	        bt.RayResultCallback_set_m_flags(this._btClosestRayResultCallback, flag);
+	    }
+	    _updatePhysicsTransformFromRender() {
+	        var elements = this._physicsUpdateList.elements;
+	        for (var i = 0, n = this._physicsUpdateList.length; i < n; i++) {
+	            var physicCollider = elements[i];
+	            physicCollider._derivePhysicsTransformation(false);
+	            physicCollider._inPhysicUpdateListIndex = -1;
+	        }
+	        this._physicsUpdateList.length = 0;
+	    }
+	    _updateCharacters() {
+	        for (var i = 0, n = this._characters.length; i < n; i++) {
+	            var character = this._characters[i];
+	            character._updateTransformComponent(Laya.ILaya3D.Physics3D._bullet.btCollisionObject_getWorldTransform(character._btColliderObject));
+	        }
+	    }
+	    _updateCollisions() {
+	        this._collisionsUtils.recoverAllContactPointsPool();
+	        var previous = this._currentFrameCollisions;
+	        this._currentFrameCollisions = this._previousFrameCollisions;
+	        this._currentFrameCollisions.length = 0;
+	        this._previousFrameCollisions = previous;
+	        var loopCount = Laya.Stat.loopCount;
+	        var bt = Laya.ILaya3D.Physics3D._bullet;
+	        var numManifolds = bt.btDispatcher_getNumManifolds(this._btDispatcher);
+	        for (var i = 0; i < numManifolds; i++) {
+	            var contactManifold = bt.btDispatcher_getManifoldByIndexInternal(this._btDispatcher, i);
+	            var componentA = PhysicsComponent._physicObjectsMap[bt.btCollisionObject_getUserIndex(bt.btPersistentManifold_getBody0(contactManifold))];
+	            var componentB = PhysicsComponent._physicObjectsMap[bt.btCollisionObject_getUserIndex(bt.btPersistentManifold_getBody1(contactManifold))];
+	            var collision = null;
+	            var isFirstCollision;
+	            var contacts = null;
+	            var isTrigger = componentA.isTrigger || componentB.isTrigger;
+	            if (isTrigger && (componentA.owner._needProcessTriggers || componentB.owner._needProcessTriggers)) {
+	                var numContacts = bt.btPersistentManifold_getNumContacts(contactManifold);
+	                for (var j = 0; j < numContacts; j++) {
+	                    var pt = bt.btPersistentManifold_getContactPoint(contactManifold, j);
+	                    var distance = bt.btManifoldPoint_getDistance(pt);
+	                    if (distance <= 0) {
+	                        collision = this._collisionsUtils.getCollision(componentA, componentB);
+	                        contacts = collision.contacts;
+	                        isFirstCollision = collision._updateFrame !== loopCount;
+	                        if (isFirstCollision) {
+	                            collision._isTrigger = true;
+	                            contacts.length = 0;
+	                        }
+	                        break;
+	                    }
+	                }
+	            }
+	            else if (componentA.owner._needProcessCollisions || componentB.owner._needProcessCollisions) {
+	                if (componentA._enableProcessCollisions || componentB._enableProcessCollisions) {
+	                    numContacts = bt.btPersistentManifold_getNumContacts(contactManifold);
+	                    for (j = 0; j < numContacts; j++) {
+	                        pt = bt.btPersistentManifold_getContactPoint(contactManifold, j);
+	                        distance = bt.btManifoldPoint_getDistance(pt);
+	                        if (distance <= 0) {
+	                            var contactPoint = this._collisionsUtils.getContactPoints();
+	                            contactPoint.colliderA = componentA;
+	                            contactPoint.colliderB = componentB;
+	                            contactPoint.distance = distance;
+	                            var btNormal = bt.btManifoldPoint_get_m_normalWorldOnB(pt);
+	                            var normal = contactPoint.normal;
+	                            normal.x = -bt.btVector3_x(btNormal);
+	                            normal.y = bt.btVector3_y(btNormal);
+	                            normal.z = bt.btVector3_z(btNormal);
+	                            var btPostionA = bt.btManifoldPoint_get_m_positionWorldOnA(pt);
+	                            var positionOnA = contactPoint.positionOnA;
+	                            positionOnA.x = -bt.btVector3_x(btPostionA);
+	                            positionOnA.y = bt.btVector3_y(btPostionA);
+	                            positionOnA.z = bt.btVector3_z(btPostionA);
+	                            var btPostionB = bt.btManifoldPoint_get_m_positionWorldOnB(pt);
+	                            var positionOnB = contactPoint.positionOnB;
+	                            positionOnB.x = -bt.btVector3_x(btPostionB);
+	                            positionOnB.y = bt.btVector3_y(btPostionB);
+	                            positionOnB.z = bt.btVector3_z(btPostionB);
+	                            if (!collision) {
+	                                collision = this._collisionsUtils.getCollision(componentA, componentB);
+	                                contacts = collision.contacts;
+	                                isFirstCollision = collision._updateFrame !== loopCount;
+	                                if (isFirstCollision) {
+	                                    collision._isTrigger = false;
+	                                    contacts.length = 0;
+	                                }
+	                            }
+	                            contacts.push(contactPoint);
+	                        }
+	                    }
+	                }
+	            }
+	            if (collision && isFirstCollision) {
+	                this._currentFrameCollisions.push(collision);
+	                collision._setUpdateFrame(loopCount);
+	            }
+	        }
+	    }
+	    _eventScripts() {
+	        var loopCount = Laya.Stat.loopCount;
+	        for (var i = 0, n = this._currentFrameCollisions.length; i < n; i++) {
+	            var curFrameCol = this._currentFrameCollisions[i];
+	            var colliderA = curFrameCol._colliderA;
+	            var colliderB = curFrameCol._colliderB;
+	            if (colliderA.destroyed || colliderB.destroyed)
+	                continue;
+	            if (loopCount - curFrameCol._lastUpdateFrame === 1) {
+	                var ownerA = colliderA.owner;
+	                var scriptsA = ownerA._scripts;
+	                if (scriptsA) {
+	                    if (curFrameCol._isTrigger) {
+	                        if (ownerA._needProcessTriggers) {
+	                            for (var j = 0, m = scriptsA.length; j < m; j++)
+	                                scriptsA[j].onTriggerStay(colliderB);
+	                        }
+	                    }
+	                    else {
+	                        if (ownerA._needProcessCollisions) {
+	                            for (j = 0, m = scriptsA.length; j < m; j++) {
+	                                curFrameCol.other = colliderB;
+	                                scriptsA[j].onCollisionStay(curFrameCol);
+	                            }
+	                        }
+	                    }
+	                }
+	                var ownerB = colliderB.owner;
+	                var scriptsB = ownerB._scripts;
+	                if (scriptsB) {
+	                    if (curFrameCol._isTrigger) {
+	                        if (ownerB._needProcessTriggers) {
+	                            for (j = 0, m = scriptsB.length; j < m; j++)
+	                                scriptsB[j].onTriggerStay(colliderA);
+	                        }
+	                    }
+	                    else {
+	                        if (ownerB._needProcessCollisions) {
+	                            for (j = 0, m = scriptsB.length; j < m; j++) {
+	                                curFrameCol.other = colliderA;
+	                                scriptsB[j].onCollisionStay(curFrameCol);
+	                            }
+	                        }
+	                    }
+	                }
+	            }
+	            else {
+	                ownerA = colliderA.owner;
+	                scriptsA = ownerA._scripts;
+	                if (scriptsA) {
+	                    if (curFrameCol._isTrigger) {
+	                        if (ownerA._needProcessTriggers) {
+	                            for (j = 0, m = scriptsA.length; j < m; j++)
+	                                scriptsA[j].onTriggerEnter(colliderB);
+	                        }
+	                    }
+	                    else {
+	                        if (ownerA._needProcessCollisions) {
+	                            for (j = 0, m = scriptsA.length; j < m; j++) {
+	                                curFrameCol.other = colliderB;
+	                                scriptsA[j].onCollisionEnter(curFrameCol);
+	                            }
+	                        }
+	                    }
+	                }
+	                ownerB = colliderB.owner;
+	                scriptsB = ownerB._scripts;
+	                if (scriptsB) {
+	                    if (curFrameCol._isTrigger) {
+	                        if (ownerB._needProcessTriggers) {
+	                            for (j = 0, m = scriptsB.length; j < m; j++)
+	                                scriptsB[j].onTriggerEnter(colliderA);
+	                        }
+	                    }
+	                    else {
+	                        if (ownerB._needProcessCollisions) {
+	                            for (j = 0, m = scriptsB.length; j < m; j++) {
+	                                curFrameCol.other = colliderA;
+	                                scriptsB[j].onCollisionEnter(curFrameCol);
+	                            }
+	                        }
+	                    }
+	                }
+	            }
+	        }
+	        for (i = 0, n = this._previousFrameCollisions.length; i < n; i++) {
+	            var preFrameCol = this._previousFrameCollisions[i];
+	            var preColliderA = preFrameCol._colliderA;
+	            var preColliderB = preFrameCol._colliderB;
+	            if (preColliderA.destroyed || preColliderB.destroyed)
+	                continue;
+	            if (loopCount - preFrameCol._updateFrame === 1) {
+	                this._collisionsUtils.recoverCollision(preFrameCol);
+	                ownerA = preColliderA.owner;
+	                scriptsA = ownerA._scripts;
+	                if (scriptsA) {
+	                    if (preFrameCol._isTrigger) {
+	                        if (ownerA._needProcessTriggers) {
+	                            for (j = 0, m = scriptsA.length; j < m; j++)
+	                                scriptsA[j].onTriggerExit(preColliderB);
+	                        }
+	                    }
+	                    else {
+	                        if (ownerA._needProcessCollisions) {
+	                            for (j = 0, m = scriptsA.length; j < m; j++) {
+	                                preFrameCol.other = preColliderB;
+	                                scriptsA[j].onCollisionExit(preFrameCol);
+	                            }
+	                        }
+	                    }
+	                }
+	                ownerB = preColliderB.owner;
+	                scriptsB = ownerB._scripts;
+	                if (scriptsB) {
+	                    if (preFrameCol._isTrigger) {
+	                        if (ownerB._needProcessTriggers) {
+	                            for (j = 0, m = scriptsB.length; j < m; j++)
+	                                scriptsB[j].onTriggerExit(preColliderA);
+	                        }
+	                    }
+	                    else {
+	                        if (ownerB._needProcessCollisions) {
+	                            for (j = 0, m = scriptsB.length; j < m; j++) {
+	                                preFrameCol.other = preColliderA;
+	                                scriptsB[j].onCollisionExit(preFrameCol);
+	                            }
+	                        }
+	                    }
+	                }
+	            }
+	        }
+	        for (var id in this._currentConstraint) {
+	            var constraintObj = this._currentConstraint[id];
+	            var scripts = constraintObj.owner._scripts;
+	            if (constraintObj.enabled && constraintObj._isBreakConstrained() && (!!scripts)) {
+	                if (scripts.length != 0) {
+	                    for (i = 0, n = scripts.length; i < n; i++) {
+	                        scripts[i].onJointBreak();
+	                    }
+	                }
+	            }
+	        }
+	    }
+	    clearForces() {
+	        if (!this._btDiscreteDynamicsWorld)
+	            throw "Cannot perform this action when the physics engine is set to CollisionsOnly";
+	        Laya.ILaya3D.Physics3D._bullet.btDiscreteDynamicsWorld_clearForces(this._btDiscreteDynamicsWorld);
+	    }
+	}
+	PhysicsSimulation.PHYSICSENGINEFLAGS_NONE = 0x0;
+	PhysicsSimulation.PHYSICSENGINEFLAGS_COLLISIONSONLY = 0x1;
+	PhysicsSimulation.PHYSICSENGINEFLAGS_SOFTBODYSUPPORT = 0x2;
+	PhysicsSimulation.PHYSICSENGINEFLAGS_MULTITHREADED = 0x4;
+	PhysicsSimulation.PHYSICSENGINEFLAGS_USEHARDWAREWHENPOSSIBLE = 0x8;
+	PhysicsSimulation.SOLVERMODE_RANDMIZE_ORDER = 1;
+	PhysicsSimulation.SOLVERMODE_FRICTION_SEPARATE = 2;
+	PhysicsSimulation.SOLVERMODE_USE_WARMSTARTING = 4;
+	PhysicsSimulation.SOLVERMODE_USE_2_FRICTION_DIRECTIONS = 16;
+	PhysicsSimulation.SOLVERMODE_ENABLE_FRICTION_DIRECTION_CACHING = 32;
+	PhysicsSimulation.SOLVERMODE_DISABLE_VELOCITY_DEPENDENT_FRICTION_DIRECTION = 64;
+	PhysicsSimulation.SOLVERMODE_CACHE_FRIENDLY = 128;
+	PhysicsSimulation.SOLVERMODE_SIMD = 256;
+	PhysicsSimulation.SOLVERMODE_INTERLEAVE_CONTACT_AND_FRICTION_CONSTRAINTS = 512;
+	PhysicsSimulation.SOLVERMODE_ALLOW_ZERO_LENGTH_FRICTION_DIRECTIONS = 1024;
+	PhysicsSimulation.HITSRAYRESULTCALLBACK_FLAG_NONE = 0;
+	PhysicsSimulation.HITSRAYRESULTCALLBACK_FLAG_FILTERBACKFACESS = 1;
+	PhysicsSimulation.HITSRAYRESULTCALLBACK_FLAG_KEEPUNFILIPPEDNORMAL = 2;
+	PhysicsSimulation.HITSRAYRESULTCALLBACK_FLAG_USESUBSIMPLEXCONVEXCASTRAYTEST = 4;
+	PhysicsSimulation.HITSRAYRESULTCALLBACK_FLAG_USEGJKCONVEXCASTRAYTEST = 8;
+	PhysicsSimulation.HITSRAYRESULTCALLBACK_FLAG_TERMINATOR = 0xffffffff;
+	PhysicsSimulation._tempVector30 = new Laya.Vector3();
+	PhysicsSimulation.disableSimulation = false;
+
+	class Rigidbody3D extends PhysicsTriggerComponent {
+	    constructor(collisionGroup = Laya.Physics3DUtils.COLLISIONFILTERGROUP_DEFAULTFILTER, canCollideWith = Laya.Physics3DUtils.COLLISIONFILTERGROUP_ALLFILTER) {
+	        super(collisionGroup, canCollideWith);
+	        this._isKinematic = false;
+	        this._mass = 1.0;
+	        this._gravity = new Laya.Vector3(0, -10, 0);
+	        this._angularDamping = 0.0;
+	        this._linearDamping = 0.0;
+	        this._overrideGravity = false;
+	        this._totalTorque = new Laya.Vector3(0, 0, 0);
+	        this._totalForce = new Laya.Vector3(0, 0, 0);
+	        this._linearVelocity = new Laya.Vector3();
+	        this._angularVelocity = new Laya.Vector3();
+	        this._linearFactor = new Laya.Vector3(1, 1, 1);
+	        this._angularFactor = new Laya.Vector3(1, 1, 1);
+	        this._detectCollisions = true;
+	        this._controlBySimulation = true;
+	    }
+	    static __init__() {
+	        var bt = Laya.ILaya3D.Physics3D._bullet;
+	        Rigidbody3D._btTempVector30 = bt.btVector3_create(0, 0, 0);
+	        Rigidbody3D._btTempVector31 = bt.btVector3_create(0, 0, 0);
+	        Rigidbody3D._btVector3Zero = bt.btVector3_create(0, 0, 0);
+	        Rigidbody3D._btInertia = bt.btVector3_create(0, 0, 0);
+	        Rigidbody3D._btImpulse = bt.btVector3_create(0, 0, 0);
+	        Rigidbody3D._btImpulseOffset = bt.btVector3_create(0, 0, 0);
+	        Rigidbody3D._btGravity = bt.btVector3_create(0, 0, 0);
+	        Rigidbody3D._btTransform0 = bt.btTransform_create();
+	    }
+	    get mass() {
+	        return this._mass;
+	    }
+	    set mass(value) {
+	        value = Math.max(value, 1e-07);
+	        this._mass = value;
+	        (this._isKinematic) || (this._updateMass(value));
+	    }
+	    get isKinematic() {
+	        return this._isKinematic;
+	    }
+	    set isKinematic(value) {
+	        this._isKinematic = value;
+	        this._controlBySimulation = !value;
+	        var bt = Laya.ILaya3D.Physics3D._bullet;
+	        var canInSimulation = !!(this._simulation && this._enabled && this._colliderShape);
+	        canInSimulation && this._removeFromSimulation();
+	        var natColObj = this._btColliderObject;
+	        var flags = bt.btCollisionObject_getCollisionFlags(natColObj);
+	        if (value) {
+	            flags = flags | PhysicsComponent.COLLISIONFLAGS_KINEMATIC_OBJECT;
+	            bt.btCollisionObject_setCollisionFlags(natColObj, flags);
+	            bt.btCollisionObject_forceActivationState(this._btColliderObject, PhysicsComponent.ACTIVATIONSTATE_DISABLE_DEACTIVATION);
+	            this._enableProcessCollisions = false;
+	            this._updateMass(0);
+	        }
+	        else {
+	            if ((flags & PhysicsComponent.COLLISIONFLAGS_KINEMATIC_OBJECT) > 0)
+	                flags = flags ^ PhysicsComponent.COLLISIONFLAGS_KINEMATIC_OBJECT;
+	            bt.btCollisionObject_setCollisionFlags(natColObj, flags);
+	            bt.btCollisionObject_setActivationState(this._btColliderObject, PhysicsComponent.ACTIVATIONSTATE_ACTIVE_TAG);
+	            this._enableProcessCollisions = true;
+	            this._updateMass(this._mass);
+	        }
+	        var btZero = Rigidbody3D._btVector3Zero;
+	        bt.btCollisionObject_setInterpolationLinearVelocity(natColObj, btZero);
+	        bt.btRigidBody_setLinearVelocity(natColObj, btZero);
+	        bt.btCollisionObject_setInterpolationAngularVelocity(natColObj, btZero);
+	        bt.btRigidBody_setAngularVelocity(natColObj, btZero);
+	        canInSimulation && this._addToSimulation();
+	    }
+	    get linearDamping() {
+	        return this._linearDamping;
+	    }
+	    set linearDamping(value) {
+	        this._linearDamping = value;
+	        if (this._btColliderObject)
+	            Laya.ILaya3D.Physics3D._bullet.btRigidBody_setDamping(this._btColliderObject, value, this._angularDamping);
+	    }
+	    get angularDamping() {
+	        return this._angularDamping;
+	    }
+	    set angularDamping(value) {
+	        this._angularDamping = value;
+	        if (this._btColliderObject)
+	            Laya.ILaya3D.Physics3D._bullet.btRigidBody_setDamping(this._btColliderObject, this._linearDamping, value);
+	    }
+	    get overrideGravity() {
+	        return this._overrideGravity;
+	    }
+	    set overrideGravity(value) {
+	        this._overrideGravity = value;
+	        var bt = Laya.ILaya3D.Physics3D._bullet;
+	        if (this._btColliderObject) {
+	            var flag = bt.btRigidBody_getFlags(this._btColliderObject);
+	            if (value) {
+	                if ((flag & Rigidbody3D._BT_DISABLE_WORLD_GRAVITY) === 0)
+	                    bt.btRigidBody_setFlags(this._btColliderObject, flag | Rigidbody3D._BT_DISABLE_WORLD_GRAVITY);
+	            }
+	            else {
+	                if ((flag & Rigidbody3D._BT_DISABLE_WORLD_GRAVITY) > 0)
+	                    bt.btRigidBody_setFlags(this._btColliderObject, flag ^ Rigidbody3D._BT_DISABLE_WORLD_GRAVITY);
+	            }
+	        }
+	    }
+	    get gravity() {
+	        var bt = Laya.ILaya3D.Physics3D._bullet;
+	        Rigidbody3D._btGravity = bt.btRigidBody_getGravity(this._btColliderObject);
+	        Laya.Utils3D._convertToLayaVec3(Rigidbody3D._btGravity, this._gravity, true);
+	        return this._gravity;
+	    }
+	    set gravity(value) {
+	        this._gravity = value;
+	        var bt = Laya.ILaya3D.Physics3D._bullet;
+	        bt.btVector3_setValue(Rigidbody3D._btGravity, -value.x, value.y, value.z);
+	        bt.btRigidBody_setGravity(this._btColliderObject, Rigidbody3D._btGravity);
+	    }
+	    get totalForce() {
+	        if (this._btColliderObject) {
+	            var btTotalForce = Laya.ILaya3D.Physics3D._bullet.btRigidBody_getTotalForce(this._btColliderObject);
+	            Laya.Utils3D._convertToLayaVec3(btTotalForce, this._totalForce, true);
+	            return this._totalForce;
+	        }
+	        return null;
+	    }
+	    get linearFactor() {
+	        return this._linearFactor;
+	    }
+	    set linearFactor(value) {
+	        this._linearFactor = value;
+	        var btValue = Rigidbody3D._btTempVector30;
+	        Laya.Utils3D._convertToBulletVec3(value, btValue, false);
+	        Laya.ILaya3D.Physics3D._bullet.btRigidBody_setLinearFactor(this._btColliderObject, btValue);
+	    }
+	    get linearVelocity() {
+	        if (this._btColliderObject)
+	            Laya.Utils3D._convertToLayaVec3(Laya.ILaya3D.Physics3D._bullet.btRigidBody_getLinearVelocity(this._btColliderObject), this._linearVelocity, true);
+	        return this._linearVelocity;
+	    }
+	    set linearVelocity(value) {
+	        this._linearVelocity = value;
+	        if (this._btColliderObject) {
+	            var btValue = Rigidbody3D._btTempVector30;
+	            Laya.Utils3D._convertToBulletVec3(value, btValue, true);
+	            (this.isSleeping) && (this.wakeUp());
+	            Laya.ILaya3D.Physics3D._bullet.btRigidBody_setLinearVelocity(this._btColliderObject, btValue);
+	        }
+	    }
+	    get angularFactor() {
+	        return this._angularFactor;
+	    }
+	    set angularFactor(value) {
+	        this._angularFactor = value;
+	        var btValue = Rigidbody3D._btTempVector30;
+	        Laya.Utils3D._convertToBulletVec3(value, btValue, false);
+	        Laya.ILaya3D.Physics3D._bullet.btRigidBody_setAngularFactor(this._btColliderObject, btValue);
+	    }
+	    get angularVelocity() {
+	        if (this._btColliderObject)
+	            Laya.Utils3D._convertToLayaVec3(Laya.ILaya3D.Physics3D._bullet.btRigidBody_getAngularVelocity(this._btColliderObject), this._angularVelocity, true);
+	        return this._angularVelocity;
+	    }
+	    set angularVelocity(value) {
+	        this._angularVelocity = value;
+	        if (this._btColliderObject) {
+	            var btValue = Rigidbody3D._btTempVector30;
+	            Laya.Utils3D._convertToBulletVec3(value, btValue, true);
+	            (this.isSleeping) && (this.wakeUp());
+	            Laya.ILaya3D.Physics3D._bullet.btRigidBody_setAngularVelocity(this._btColliderObject, btValue);
+	        }
+	    }
+	    get totalTorque() {
+	        if (this._btColliderObject) {
+	            var btTotalTorque = Laya.ILaya3D.Physics3D._bullet.btRigidBody_getTotalTorque(this._btColliderObject);
+	            Laya.Utils3D._convertToLayaVec3(btTotalTorque, this._totalTorque, true);
+	            return this._totalTorque;
+	        }
+	        return null;
+	    }
+	    get detectCollisions() {
+	        return this._detectCollisions;
+	    }
+	    set detectCollisions(value) {
+	        if (this._detectCollisions !== value) {
+	            this._detectCollisions = value;
+	            if (this._colliderShape && this._enabled && this._simulation) {
+	                this._simulation._removeRigidBody(this);
+	                this._simulation._addRigidBody(this, this._collisionGroup, value ? this._canCollideWith : 0);
+	            }
+	        }
+	    }
+	    get isSleeping() {
+	        if (this._btColliderObject)
+	            return Laya.ILaya3D.Physics3D._bullet.btCollisionObject_getActivationState(this._btColliderObject) === PhysicsComponent.ACTIVATIONSTATE_ISLAND_SLEEPING;
+	        return false;
+	    }
+	    get sleepLinearVelocity() {
+	        return Laya.ILaya3D.Physics3D._bullet.btRigidBody_getLinearSleepingThreshold(this._btColliderObject);
+	    }
+	    set sleepLinearVelocity(value) {
+	        var bt = Laya.ILaya3D.Physics3D._bullet;
+	        bt.btRigidBody_setSleepingThresholds(this._btColliderObject, value, bt.btRigidBody_getAngularSleepingThreshold(this._btColliderObject));
+	    }
+	    get sleepAngularVelocity() {
+	        return Laya.ILaya3D.Physics3D._bullet.btRigidBody_getAngularSleepingThreshold(this._btColliderObject);
+	    }
+	    set sleepAngularVelocity(value) {
+	        var bt = Laya.ILaya3D.Physics3D._bullet;
+	        bt.btRigidBody_setSleepingThresholds(this._btColliderObject, bt.btRigidBody_getLinearSleepingThreshold(this._btColliderObject), value);
+	    }
+	    get btColliderObject() {
+	        return this._btColliderObject;
+	    }
+	    set constaintRigidbodyA(value) {
+	        this._constaintRigidbodyA = value;
+	    }
+	    get constaintRigidbodyA() {
+	        return this._constaintRigidbodyA;
+	    }
+	    set constaintRigidbodyB(value) {
+	        this._constaintRigidbodyB = value;
+	    }
+	    get constaintRigidbodyB() {
+	        return this._constaintRigidbodyB;
+	    }
+	    _updateMass(mass) {
+	        if (this._btColliderObject && this._colliderShape) {
+	            var bt = Laya.ILaya3D.Physics3D._bullet;
+	            bt.btCollisionShape_calculateLocalInertia(this._colliderShape._btShape, mass, Rigidbody3D._btInertia);
+	            bt.btRigidBody_setMassProps(this._btColliderObject, mass, Rigidbody3D._btInertia);
+	            bt.btRigidBody_updateInertiaTensor(this._btColliderObject);
+	        }
+	    }
+	    _onScaleChange(scale) {
+	        super._onScaleChange(scale);
+	        this._updateMass(this._isKinematic ? 0 : this._mass);
+	    }
+	    _derivePhysicsTransformation(force) {
+	        var bt = Laya.ILaya3D.Physics3D._bullet;
+	        var btColliderObject = this._btColliderObject;
+	        var oriTransform = bt.btCollisionObject_getWorldTransform(btColliderObject);
+	        var transform = Rigidbody3D._btTransform0;
+	        bt.btTransform_equal(transform, oriTransform);
+	        this._innerDerivePhysicsTransformation(transform, force);
+	        bt.btRigidBody_setCenterOfMassTransform(btColliderObject, transform);
+	    }
+	    _onAdded() {
+	        var bt = Laya.ILaya3D.Physics3D._bullet;
+	        var motionState = bt.layaMotionState_create();
+	        bt.layaMotionState_set_rigidBodyID(motionState, this._id);
+	        this._btLayaMotionState = motionState;
+	        var constructInfo = bt.btRigidBodyConstructionInfo_create(0.0, motionState, null, Rigidbody3D._btVector3Zero);
+	        var btRigid = bt.btRigidBody_create(constructInfo);
+	        bt.btCollisionObject_setUserIndex(btRigid, this.id);
+	        this._btColliderObject = btRigid;
+	        super._onAdded();
+	        this.mass = this._mass;
+	        this.linearFactor = this._linearFactor;
+	        this.angularFactor = this._angularFactor;
+	        this.linearDamping = this._linearDamping;
+	        this.angularDamping = this._angularDamping;
+	        this.overrideGravity = this._overrideGravity;
+	        this.gravity = this._gravity;
+	        this.isKinematic = this._isKinematic;
+	        bt.btRigidBodyConstructionInfo_destroy(constructInfo);
+	    }
+	    _onEnable() {
+	        super._onEnable();
+	        if (this._constaintRigidbodyA) {
+	            if (this._constaintRigidbodyA.connectedBody._simulation) {
+	                this._constaintRigidbodyA._createConstraint();
+	                this._constaintRigidbodyA._onEnable();
+	            }
+	        }
+	        if (this._constaintRigidbodyB) {
+	            if (this._constaintRigidbodyB.ownBody._simulation) {
+	                this._constaintRigidbodyB._createConstraint();
+	                this._constaintRigidbodyB._onEnable();
+	            }
+	        }
+	    }
+	    _onShapeChange(colShape) {
+	        super._onShapeChange(colShape);
+	        if (this._isKinematic) {
+	            this._updateMass(0);
+	        }
+	        else {
+	            var bt = Laya.ILaya3D.Physics3D._bullet;
+	            bt.btRigidBody_setCenterOfMassTransform(this._btColliderObject, bt.btCollisionObject_getWorldTransform(this._btColliderObject));
+	            this._updateMass(this._mass);
+	        }
+	    }
+	    _parse(data) {
+	        (data.friction != null) && (this.friction = data.friction);
+	        (data.rollingFriction != null) && (this.rollingFriction = data.rollingFriction);
+	        (data.restitution != null) && (this.restitution = data.restitution);
+	        (data.isTrigger != null) && (this.isTrigger = data.isTrigger);
+	        (data.mass != null) && (this.mass = data.mass);
+	        (data.linearDamping != null) && (this.linearDamping = data.linearDamping);
+	        (data.angularDamping != null) && (this.angularDamping = data.angularDamping);
+	        (data.overrideGravity != null) && (this.overrideGravity = data.overrideGravity);
+	        if (data.linearFactor != null) {
+	            var linFac = this.linearFactor;
+	            linFac.fromArray(data.linearFactor);
+	            this.linearFactor = linFac;
+	        }
+	        if (data.angularFactor != null) {
+	            var angFac = this.angularFactor;
+	            angFac.fromArray(data.angularFactor);
+	            this.angularFactor = angFac;
+	        }
+	        if (data.gravity) {
+	            var gravity = this.gravity;
+	            gravity.fromArray(data.gravity);
+	            this.gravity = gravity;
+	        }
+	        super._parse(data);
+	        this._parseShape(data.shapes);
+	        (data.isKinematic != null) && (this.isKinematic = data.isKinematic);
+	    }
+	    _onDestroy() {
+	        Laya.ILaya3D.Physics3D._bullet.btMotionState_destroy(this._btLayaMotionState);
+	        super._onDestroy();
+	        this._btLayaMotionState = null;
+	        this._gravity = null;
+	        this._totalTorque = null;
+	        this._linearVelocity = null;
+	        this._angularVelocity = null;
+	        this._linearFactor = null;
+	        this._angularFactor = null;
+	        if (this.constaintRigidbodyA)
+	            this.constaintRigidbodyA._breakConstrained();
+	        if (this.constaintRigidbodyB) {
+	            this.constaintRigidbodyB.connectedBody = null;
+	            this.constaintRigidbodyB._onDisable();
+	        }
+	    }
+	    _addToSimulation() {
+	        this._simulation._addRigidBody(this, this._collisionGroup, this._detectCollisions ? this._canCollideWith : 0);
+	    }
+	    _removeFromSimulation() {
+	        this._simulation._removeRigidBody(this);
+	    }
+	    _cloneTo(dest) {
+	        super._cloneTo(dest);
+	        var destRigidbody3D = dest;
+	        destRigidbody3D.isKinematic = this._isKinematic;
+	        destRigidbody3D.mass = this._mass;
+	        destRigidbody3D.gravity = this._gravity;
+	        destRigidbody3D.angularDamping = this._angularDamping;
+	        destRigidbody3D.linearDamping = this._linearDamping;
+	        destRigidbody3D.overrideGravity = this._overrideGravity;
+	        destRigidbody3D.linearVelocity = this._linearVelocity;
+	        destRigidbody3D.angularVelocity = this._angularVelocity;
+	        destRigidbody3D.linearFactor = this._linearFactor;
+	        destRigidbody3D.angularFactor = this._angularFactor;
+	        destRigidbody3D.detectCollisions = this._detectCollisions;
+	    }
+	    applyForce(force, localOffset = null) {
+	        if (this._btColliderObject == null)
+	            throw "Attempted to call a Physics function that is avaliable only when the Entity has been already added to the Scene.";
+	        var bt = Laya.ILaya3D.Physics3D._bullet;
+	        var btForce = Rigidbody3D._btTempVector30;
+	        bt.btVector3_setValue(btForce, -force.x, force.y, force.z);
+	        if (localOffset) {
+	            var btOffset = Rigidbody3D._btTempVector31;
+	            bt.btVector3_setValue(btOffset, -localOffset.x, localOffset.y, localOffset.z);
+	            bt.btRigidBody_applyForce(this._btColliderObject, btForce, btOffset);
+	        }
+	        else {
+	            bt.btRigidBody_applyCentralForce(this._btColliderObject, btForce);
+	        }
+	    }
+	    applyTorque(torque) {
+	        if (this._btColliderObject == null)
+	            throw "Attempted to call a Physics function that is avaliable only when the Entity has been already added to the Scene.";
+	        var bullet = Laya.ILaya3D.Physics3D._bullet;
+	        var btTorque = Rigidbody3D._btTempVector30;
+	        bullet.btVector3_setValue(btTorque, -torque.x, torque.y, torque.z);
+	        bullet.btRigidBody_applyTorque(this._btColliderObject, btTorque);
+	    }
+	    applyImpulse(impulse, localOffset = null) {
+	        if (this._btColliderObject == null)
+	            throw "Attempted to call a Physics function that is avaliable only when the Entity has been already added to the Scene.";
+	        var bt = Laya.ILaya3D.Physics3D._bullet;
+	        bt.btVector3_setValue(Rigidbody3D._btImpulse, -impulse.x, impulse.y, impulse.z);
+	        if (localOffset) {
+	            bt.btVector3_setValue(Rigidbody3D._btImpulseOffset, -localOffset.x, localOffset.y, localOffset.z);
+	            bt.btRigidBody_applyImpulse(this._btColliderObject, Rigidbody3D._btImpulse, Rigidbody3D._btImpulseOffset);
+	        }
+	        else {
+	            bt.btRigidBody_applyCentralImpulse(this._btColliderObject, Rigidbody3D._btImpulse);
+	        }
+	    }
+	    applyTorqueImpulse(torqueImpulse) {
+	        if (this._btColliderObject == null)
+	            throw "Attempted to call a Physics function that is avaliable only when the Entity has been already added to the Scene.";
+	        var bt = Laya.ILaya3D.Physics3D._bullet;
+	        var btTorqueImpulse = Rigidbody3D._btTempVector30;
+	        bt.btVector3_setValue(btTorqueImpulse, -torqueImpulse.x, torqueImpulse.y, torqueImpulse.z);
+	        bt.btRigidBody_applyTorqueImpulse(this._btColliderObject, btTorqueImpulse);
+	    }
+	    wakeUp() {
+	        this._btColliderObject && (Laya.ILaya3D.Physics3D._bullet.btCollisionObject_activate(this._btColliderObject, false));
+	    }
+	    clearForces() {
+	        var rigidBody = this._btColliderObject;
+	        if (rigidBody == null)
+	            throw "Attempted to call a Physics function that is avaliable only when the Entity has been already added to the Scene.";
+	        var bt = Laya.ILaya3D.Physics3D._bullet;
+	        bt.btRigidBody_clearForces(rigidBody);
+	        var btZero = Rigidbody3D._btVector3Zero;
+	        bt.btCollisionObject_setInterpolationLinearVelocity(rigidBody, btZero);
+	        bt.btRigidBody_setLinearVelocity(rigidBody, btZero);
+	        bt.btCollisionObject_setInterpolationAngularVelocity(rigidBody, btZero);
+	        bt.btRigidBody_setAngularVelocity(rigidBody, btZero);
+	    }
+	}
+	Rigidbody3D.TYPE_STATIC = 0;
+	Rigidbody3D.TYPE_DYNAMIC = 1;
+	Rigidbody3D.TYPE_KINEMATIC = 2;
+	Rigidbody3D._BT_DISABLE_WORLD_GRAVITY = 1;
+	Rigidbody3D._BT_ENABLE_GYROPSCOPIC_FORCE = 2;
+
+	class ConstraintComponent extends Laya.Component {
+	    constructor(constraintType) {
+	        super();
+	        this._anchor = new Laya.Vector3();
+	        this._connectAnchor = new Laya.Vector3();
+	        this._feedbackEnabled = false;
+	        this._getJointFeedBack = false;
+	        this._currentForce = new Laya.Vector3();
+	        this._currentTorque = new Laya.Vector3();
+	        this._constraintType = constraintType;
+	        var bt = Laya.Physics3D._bullet;
+	        this._btframATrans = bt.btTransform_create();
+	        this._btframBTrans = bt.btTransform_create();
+	        bt.btTransform_setIdentity(this._btframATrans);
+	        bt.btTransform_setIdentity(this._btframBTrans);
+	        this._btframAPos = bt.btVector3_create(0, 0, 0);
+	        this._btframBPos = bt.btVector3_create(0, 0, 0);
+	        bt.btTransform_setOrigin(this._btframATrans, this._btframAPos);
+	        bt.btTransform_setOrigin(this._btframBTrans, this._btframBPos);
+	        this._breakForce = -1;
+	        this._breakTorque = -1;
+	    }
+	    get enabled() {
+	        return super.enabled;
+	    }
+	    set enabled(value) {
+	        super.enabled = value;
+	    }
+	    get appliedImpulse() {
+	        if (!this._feedbackEnabled) {
+	            this._btConstraint.EnableFeedback(true);
+	            this._feedbackEnabled = true;
+	        }
+	        return this._btConstraint.AppliedImpulse;
+	    }
+	    set connectedBody(value) {
+	        this._connectedBody = value;
+	        value && (value.constaintRigidbodyB = this);
+	    }
+	    get connectedBody() {
+	        return this._connectedBody;
+	    }
+	    get ownBody() {
+	        return this._ownBody;
+	    }
+	    set ownBody(value) {
+	        this._ownBody = value;
+	        value.constaintRigidbodyA = this;
+	    }
+	    get currentForce() {
+	        if (!this._getJointFeedBack)
+	            this._getFeedBackInfo();
+	        return this._currentForce;
+	    }
+	    get currentTorque() {
+	        if (!this._getJointFeedBack)
+	            this._getFeedBackInfo();
+	        return this._currentTorque;
+	    }
+	    get breakForce() {
+	        return this._breakForce;
+	    }
+	    set breakForce(value) {
+	        this._breakForce = value;
+	    }
+	    get breakTorque() {
+	        return this._breakTorque;
+	    }
+	    set breakTorque(value) {
+	        this._breakTorque = value;
+	    }
+	    set anchor(value) {
+	        value.cloneTo(this._anchor);
+	        this.setFrames();
+	    }
+	    get anchor() {
+	        return this._anchor;
+	    }
+	    set connectAnchor(value) {
+	        value.cloneTo(this._connectAnchor);
+	        this.setFrames();
+	    }
+	    get connectAnchor() {
+	        return this._connectAnchor;
+	    }
+	    setOverrideNumSolverIterations(overideNumIterations) {
+	        var bt = Laya.Physics3D._bullet;
+	        bt.btTypedConstraint_setOverrideNumSolverIterations(this._btConstraint, overideNumIterations);
+	    }
+	    setConstraintEnabled(enable) {
+	        var bt = Laya.Physics3D._bullet;
+	        bt.btTypedConstraint_setEnabled(this._btConstraint, enable);
+	    }
+	    _onEnable() {
+	        super._onEnable();
+	        this.enabled = true;
+	    }
+	    _onDisable() {
+	        super._onDisable();
+	        this.enabled = false;
+	    }
+	    setFrames() {
+	        var bt = Laya.Physics3D._bullet;
+	        bt.btVector3_setValue(this._btframAPos, -this._anchor.x, this.anchor.y, this.anchor.z);
+	        bt.btVector3_setValue(this._btframBPos, -this._connectAnchor.x, this._connectAnchor.y, this._connectAnchor.z);
+	        bt.btTransform_setOrigin(this._btframATrans, this._btframAPos);
+	        bt.btTransform_setOrigin(this._btframBTrans, this._btframBPos);
+	    }
+	    _addToSimulation() {
+	    }
+	    _removeFromSimulation() {
+	    }
+	    _createConstraint() {
+	    }
+	    setConnectRigidBody(ownerRigid, connectRigidBody) {
+	        var ownerCanInSimulation = (ownerRigid) && (!!(ownerRigid._simulation && ownerRigid._enabled && ownerRigid.colliderShape));
+	        var connectCanInSimulation = (connectRigidBody) && (!!(connectRigidBody._simulation && connectRigidBody._enabled && connectRigidBody.colliderShape));
+	        if (!(ownerCanInSimulation && connectCanInSimulation))
+	            throw "ownerRigid or connectRigidBody is not in Simulation";
+	        if (ownerRigid != this._ownBody || connectRigidBody != this._connectedBody) {
+	            var canInSimulation = !!(this.enabled && this._simulation);
+	            canInSimulation && this._removeFromSimulation();
+	            this._ownBody = ownerRigid;
+	            this._connectedBody = connectRigidBody;
+	            this._ownBody.constaintRigidbodyA = this;
+	            this._connectedBody.constaintRigidbodyB = this;
+	            this._createConstraint();
+	        }
+	    }
+	    getcurrentForce(out) {
+	        if (!this._btJointFeedBackObj)
+	            throw "this Constraint is not simulation";
+	        var bt = Laya.Physics3D._bullet;
+	        var applyForce = bt.btJointFeedback_getAppliedForceBodyA(this._btJointFeedBackObj);
+	        out.setValue(bt.btVector3_x(applyForce), bt.btVector3_y(applyForce), bt.btVector3_z(applyForce));
+	        return;
+	    }
+	    getcurrentTorque(out) {
+	        if (!this._btJointFeedBackObj)
+	            throw "this Constraint is not simulation";
+	        var bt = Laya.Physics3D._bullet;
+	        var applyTorque = bt.btJointFeedback_getAppliedTorqueBodyA(this._btJointFeedBackObj);
+	        out.setValue(bt.btVector3_x(applyTorque), bt.btVector3_y(applyTorque), bt.btVector3_z(applyTorque));
+	        return;
+	    }
+	    _onDestroy() {
+	        var physics3D = Laya.Physics3D._bullet;
+	        this._simulation && this._removeFromSimulation();
+	        if (this._btConstraint && this._btJointFeedBackObj && this._simulation) {
+	            physics3D.btTypedConstraint_destroy(this._btConstraint);
+	            physics3D.btJointFeedback_destroy(this._btJointFeedBackObj);
+	            this._btJointFeedBackObj = null;
+	            this._btConstraint = null;
+	        }
+	        super._onDisable();
+	    }
+	    _isBreakConstrained() {
+	        this._getJointFeedBack = false;
+	        if (this.breakForce == -1 && this.breakTorque == -1)
+	            return false;
+	        this._getFeedBackInfo();
+	        var isBreakForce = this._breakForce != -1 && (Laya.Vector3.scalarLength(this._currentForce) > this._breakForce);
+	        var isBreakTorque = this._breakTorque != -1 && (Laya.Vector3.scalarLength(this._currentTorque) > this._breakTorque);
+	        if (isBreakForce || isBreakTorque) {
+	            this._breakConstrained();
+	            return true;
+	        }
+	        return false;
+	    }
+	    _parse(data) {
+	        this._anchor.fromArray(data.anchor);
+	        this._connectAnchor.fromArray(data.connectAnchor);
+	        this.setFrames();
+	    }
+	    _getFeedBackInfo() {
+	        var bt = Laya.Physics3D._bullet;
+	        var applyForce = bt.btJointFeedback_getAppliedForceBodyA(this._btJointFeedBackObj);
+	        var applyTorque = bt.btJointFeedback_getAppliedTorqueBodyA(this._btJointFeedBackObj);
+	        this._currentTorque.setValue(bt.btVector3_x(applyTorque), bt.btVector3_y(applyTorque), bt.btVector3_z(applyTorque));
+	        this._currentForce.setValue(bt.btVector3_x(applyForce), bt.btVector3_y(applyForce), bt.btVector3_z(applyForce));
+	        this._getJointFeedBack = true;
+	    }
+	    _breakConstrained() {
+	        this.ownBody.constaintRigidbodyA = null;
+	        this.connectedBody && (this.connectedBody.constaintRigidbodyB = null);
+	        this.destroy();
+	    }
+	}
+	ConstraintComponent.CONSTRAINT_POINT2POINT_CONSTRAINT_TYPE = 3;
+	ConstraintComponent.CONSTRAINT_HINGE_CONSTRAINT_TYPE = 4;
+	ConstraintComponent.CONSTRAINT_CONETWIST_CONSTRAINT_TYPE = 5;
+	ConstraintComponent.CONSTRAINT_D6_CONSTRAINT_TYPE = 6;
+	ConstraintComponent.CONSTRAINT_SLIDER_CONSTRAINT_TYPE = 7;
+	ConstraintComponent.CONSTRAINT_CONTACT_CONSTRAINT_TYPE = 8;
+	ConstraintComponent.CONSTRAINT_D6_SPRING_CONSTRAINT_TYPE = 9;
+	ConstraintComponent.CONSTRAINT_GEAR_CONSTRAINT_TYPE = 10;
+	ConstraintComponent.CONSTRAINT_FIXED_CONSTRAINT_TYPE = 11;
+	ConstraintComponent.CONSTRAINT_MAX_CONSTRAINT_TYPE = 12;
+	ConstraintComponent.CONSTRAINT_CONSTRAINT_ERP = 1;
+	ConstraintComponent.CONSTRAINT_CONSTRAINT_STOP_ERP = 2;
+	ConstraintComponent.CONSTRAINT_CONSTRAINT_CFM = 3;
+	ConstraintComponent.CONSTRAINT_CONSTRAINT_STOP_CFM = 4;
+	ConstraintComponent.tempForceV3 = new Laya.Vector3();
+
+	class ConfigurableConstraint extends ConstraintComponent {
+	    constructor() {
+	        super(ConstraintComponent.CONSTRAINT_D6_SPRING_CONSTRAINT_TYPE);
+	        this._axis = new Laya.Vector3();
+	        this._secondaryAxis = new Laya.Vector3();
+	        this._minLinearLimit = new Laya.Vector3();
+	        this._maxLinearLimit = new Laya.Vector3();
+	        this._minAngularLimit = new Laya.Vector3();
+	        this._maxAngularLimit = new Laya.Vector3();
+	        this._linearLimitSpring = new Laya.Vector3();
+	        this._angularLimitSpring = new Laya.Vector3();
+	        this._linearBounce = new Laya.Vector3();
+	        this._angularBounce = new Laya.Vector3();
+	        this._linearDamp = new Laya.Vector3();
+	        this._angularDamp = new Laya.Vector3();
+	        this._xMotion = 0;
+	        this._yMotion = 0;
+	        this._zMotion = 0;
+	        this._angularXMotion = 0;
+	        this._angularYMotion = 0;
+	        this._angularZMotion = 0;
+	        var bt = Laya.Physics3D._bullet;
+	        this._btAxis = bt.btVector3_create(-1.0, 0.0, 0.0);
+	        this._btSecondaryAxis = bt.btVector3_create(0.0, 1.0, 0.0);
+	    }
+	    get axis() {
+	        return this._axis;
+	    }
+	    get secondaryAxis() {
+	        return this._secondaryAxis;
+	    }
+	    set maxAngularLimit(value) {
+	        value.cloneTo(this._maxAngularLimit);
+	    }
+	    set minAngularLimit(value) {
+	        value.cloneTo(this._minAngularLimit);
+	    }
+	    get maxAngularLimit() {
+	        return this._maxAngularLimit;
+	    }
+	    get minAngularLimit() {
+	        return this._minAngularLimit;
+	    }
+	    set maxLinearLimit(value) {
+	        value.cloneTo(this._maxLinearLimit);
+	    }
+	    set minLinearLimit(value) {
+	        value.cloneTo(this._minLinearLimit);
+	    }
+	    get maxLinearLimit() {
+	        return this._maxLinearLimit;
+	    }
+	    get minLinearLimit() {
+	        return this._minLinearLimit;
+	    }
+	    set XMotion(value) {
+	        if (this._xMotion != value) {
+	            this._xMotion = value;
+	            this.setLimit(ConfigurableConstraint.MOTION_LINEAR_INDEX_X, value, -this._maxLinearLimit.x, -this._minLinearLimit.x);
+	        }
+	    }
+	    get XMotion() {
+	        return this._xMotion;
+	    }
+	    set YMotion(value) {
+	        if (this._yMotion != value) {
+	            this._yMotion = value;
+	            this.setLimit(ConfigurableConstraint.MOTION_LINEAR_INDEX_Y, value, this._minLinearLimit.y, this._maxLinearLimit.y);
+	        }
+	    }
+	    get YMotion() {
+	        return this._yMotion;
+	    }
+	    set ZMotion(value) {
+	        if (this._zMotion != value) {
+	            this._zMotion = value;
+	            this.setLimit(ConfigurableConstraint.MOTION_LINEAR_INDEX_Z, value, this._minLinearLimit.z, this._maxLinearLimit.z);
+	        }
+	    }
+	    get ZMotion() {
+	        return this._zMotion;
+	    }
+	    set angularXMotion(value) {
+	        if (this._angularXMotion != value) {
+	            this._angularXMotion = value;
+	            this.setLimit(ConfigurableConstraint.MOTION_ANGULAR_INDEX_X, value, -this._maxAngularLimit.x, -this._minAngularLimit.x);
+	        }
+	    }
+	    get angularXMotion() {
+	        return this._angularXMotion;
+	    }
+	    set angularYMotion(value) {
+	        if (this._angularYMotion != value) {
+	            this._angularYMotion = value;
+	            this.setLimit(ConfigurableConstraint.MOTION_ANGULAR_INDEX_Y, value, this._minAngularLimit.y, this._maxAngularLimit.y);
+	        }
+	    }
+	    get angularYMotion() {
+	        return this._angularYMotion;
+	    }
+	    set angularZMotion(value) {
+	        if (this._angularZMotion != value) {
+	            this._angularZMotion = value;
+	            this.setLimit(ConfigurableConstraint.MOTION_ANGULAR_INDEX_Z, value, this._minAngularLimit.z, this._maxAngularLimit.z);
+	        }
+	    }
+	    get angularZMotion() {
+	        return this._angularZMotion;
+	    }
+	    set linearLimitSpring(value) {
+	        if (!Laya.Vector3.equals(this._linearLimitSpring, value)) {
+	            value.cloneTo(this._linearLimitSpring);
+	            this.setSpring(ConfigurableConstraint.MOTION_LINEAR_INDEX_X, value.x);
+	            this.setSpring(ConfigurableConstraint.MOTION_LINEAR_INDEX_Y, value.y);
+	            this.setSpring(ConfigurableConstraint.MOTION_LINEAR_INDEX_Z, value.z);
+	        }
+	    }
+	    get linearLimitSpring() {
+	        return this._linearLimitSpring;
+	    }
+	    set angularLimitSpring(value) {
+	        if (!Laya.Vector3.equals(this._angularLimitSpring, value)) {
+	            value.cloneTo(this._angularLimitSpring);
+	            this.setSpring(ConfigurableConstraint.MOTION_ANGULAR_INDEX_X, value.x);
+	            this.setSpring(ConfigurableConstraint.MOTION_ANGULAR_INDEX_Y, value.y);
+	            this.setSpring(ConfigurableConstraint.MOTION_ANGULAR_INDEX_Z, value.z);
+	        }
+	    }
+	    get angularLimitSpring() {
+	        return this._angularLimitSpring;
+	    }
+	    set linearBounce(value) {
+	        if (!Laya.Vector3.equals(this._linearBounce, value)) {
+	            value.cloneTo(this._linearBounce);
+	            this.setBounce(ConfigurableConstraint.MOTION_LINEAR_INDEX_X, value.x);
+	            this.setBounce(ConfigurableConstraint.MOTION_LINEAR_INDEX_Y, value.y);
+	            this.setBounce(ConfigurableConstraint.MOTION_LINEAR_INDEX_Z, value.z);
+	        }
+	    }
+	    get linearBounce() {
+	        return this._linearBounce;
+	    }
+	    set angularBounce(value) {
+	        if (!Laya.Vector3.equals(this._angularBounce, value)) {
+	            value.cloneTo(this._angularBounce);
+	            this.setBounce(ConfigurableConstraint.MOTION_ANGULAR_INDEX_X, value.x);
+	            this.setBounce(ConfigurableConstraint.MOTION_ANGULAR_INDEX_Y, value.y);
+	            this.setBounce(ConfigurableConstraint.MOTION_ANGULAR_INDEX_Z, value.z);
+	        }
+	    }
+	    get angularBounce() {
+	        return this._angularBounce;
+	    }
+	    set linearDamp(value) {
+	        if (!Laya.Vector3.equals(this._linearDamp, value)) {
+	            value.cloneTo(this._linearDamp);
+	            this.setDamping(ConfigurableConstraint.MOTION_LINEAR_INDEX_X, value.x);
+	            this.setDamping(ConfigurableConstraint.MOTION_LINEAR_INDEX_Y, value.y);
+	            this.setDamping(ConfigurableConstraint.MOTION_LINEAR_INDEX_Z, value.z);
+	        }
+	    }
+	    get linearDamp() {
+	        return this._linearDamp;
+	    }
+	    set angularDamp(value) {
+	        if (!Laya.Vector3.equals(this._angularDamp, value)) {
+	            value.cloneTo(this._angularDamp);
+	            this.setDamping(ConfigurableConstraint.MOTION_ANGULAR_INDEX_X, value.x);
+	            this.setDamping(ConfigurableConstraint.MOTION_ANGULAR_INDEX_Y, value.y);
+	            this.setDamping(ConfigurableConstraint.MOTION_ANGULAR_INDEX_Z, value.z);
+	        }
+	    }
+	    get angularDamp() {
+	        return this._angularDamp;
+	    }
+	    set anchor(value) {
+	        value.cloneTo(this._anchor);
+	        this.setFrames();
+	    }
+	    get anchor() {
+	        return this._anchor;
+	    }
+	    set connectAnchor(value) {
+	        value.cloneTo(this._connectAnchor);
+	        this.setFrames();
+	    }
+	    get connectAnchor() {
+	        return this._connectAnchor;
+	    }
+	    setAxis(axis, secondaryAxis) {
+	        if (!this._btConstraint)
+	            return;
+	        var bt = Laya.Physics3D._bullet;
+	        this._axis.setValue(axis.x, axis.y, axis.y);
+	        this._secondaryAxis.setValue(secondaryAxis.x, secondaryAxis.y, secondaryAxis.z);
+	        this._btAxis = bt.btVector3_setValue(-axis.x, axis.y, axis.z);
+	        this._btSecondaryAxis = bt.btVector3_setValue(-secondaryAxis.x, secondaryAxis.y, secondaryAxis.z);
+	        bt.btGeneric6DofSpring2Constraint_setAxis(this._btConstraint, this._btAxis, this._btSecondaryAxis);
+	    }
+	    setLimit(axis, motionType, low, high) {
+	        if (!this._btConstraint)
+	            return;
+	        var bt = Laya.Physics3D._bullet;
+	        switch (motionType) {
+	            case ConfigurableConstraint.CONFIG_MOTION_TYPE_LOCKED:
+	                bt.btGeneric6DofSpring2Constraint_setLimit(this._btConstraint, axis, 0, 0);
+	                break;
+	            case ConfigurableConstraint.CONFIG_MOTION_TYPE_LIMITED:
+	                if (low < high)
+	                    bt.btGeneric6DofSpring2Constraint_setLimit(this._btConstraint, axis, low, high);
+	                break;
+	            case ConfigurableConstraint.CONFIG_MOTION_TYPE_FREE:
+	                bt.btGeneric6DofSpring2Constraint_setLimit(this._btConstraint, axis, 1, 0);
+	                break;
+	            default:
+	                throw "No Type of Axis Motion";
+	        }
+	    }
+	    setSpring(axis, springValue, limitIfNeeded = true) {
+	        if (!this._btConstraint)
+	            return;
+	        var bt = Laya.Physics3D._bullet;
+	        var enableSpring = springValue > 0;
+	        bt.btGeneric6DofSpring2Constraint_enableSpring(this._btConstraint, axis, enableSpring);
+	        if (enableSpring)
+	            bt.btGeneric6DofSpring2Constraint_setStiffness(this._btConstraint, axis, springValue, limitIfNeeded);
+	    }
+	    setBounce(axis, bounce) {
+	        if (!this._btConstraint)
+	            return;
+	        var bt = Laya.Physics3D._bullet;
+	        bounce = bounce <= 0 ? 0 : bounce;
+	        bt.btGeneric6DofSpring2Constraint_setBounce(this._btConstraint, axis, bounce);
+	    }
+	    setDamping(axis, damp, limitIfNeeded = true) {
+	        if (!this._btConstraint)
+	            return;
+	        var bt = Laya.Physics3D._bullet;
+	        damp = damp <= 0 ? 0 : damp;
+	        bt.btGeneric6DofSpring2Constraint_setDamping(this._btConstraint, axis, damp, limitIfNeeded);
+	    }
+	    setEquilibriumPoint(axis, equilibriumPoint) {
+	        var bt = Laya.Physics3D._bullet;
+	        bt.btGeneric6DofSpring2Constraint_setEquilibriumPoint(this._btConstraint, axis, equilibriumPoint);
+	    }
+	    enableMotor(axis, isEnableMotor) {
+	        var bt = Laya.Physics3D._bullet;
+	        bt.btGeneric6DofSpring2Constraint_enableMotor(this._btConstraint, axis, isEnableMotor);
+	    }
+	    setServo(axis, onOff) {
+	        var bt = Laya.Physics3D._bullet;
+	        bt.btGeneric6DofSpring2Constraint_setServo(this._btConstraint, axis, onOff);
+	    }
+	    setTargetVelocity(axis, velocity) {
+	        var bt = Laya.Physics3D._bullet;
+	        bt.btGeneric6DofSpring2Constraint_setTargetVelocity(this._btConstraint, axis, velocity);
+	    }
+	    setTargetPosition(axis, target) {
+	        var bt = Laya.Physics3D._bullet;
+	        bt.btGeneric6DofSpring2Constraint_setServoTarget(this._btConstraint, axis, target);
+	    }
+	    setMaxMotorForce(axis, force) {
+	        var bt = Laya.Physics3D._bullet;
+	        bt.btGeneric6DofSpring2Constraint_setMaxMotorForce(this._btConstraint, axis, force);
+	    }
+	    setParam(axis, constraintParams, value) {
+	        var bt = Laya.Physics3D._bullet;
+	        bt.btTypedConstraint_setParam(this._btConstraint, axis, constraintParams, value);
+	    }
+	    setFrames() {
+	        super.setFrames();
+	        var bt = Laya.Physics3D._bullet;
+	        if (!this._btConstraint)
+	            return;
+	        bt.btGeneric6DofSpring2Constraint_setFrames(this._btConstraint, this._btframATrans, this._btframBTrans);
+	    }
+	    _addToSimulation() {
+	        this._simulation && this._simulation.addConstraint(this, this.enabled);
+	    }
+	    _removeFromSimulation() {
+	        this._simulation.removeConstraint(this);
+	        this._simulation = null;
+	    }
+	    _createConstraint() {
+	        var bt = Laya.Physics3D._bullet;
+	        this._btConstraint = bt.btGeneric6DofSpring2Constraint_create(this.ownBody.btColliderObject, this._btframAPos, this.connectedBody.btColliderObject, this._btframBPos, ConfigurableConstraint.RO_XYZ);
+	        this._btJointFeedBackObj = bt.btJointFeedback_create(this._btConstraint);
+	        bt.btTypedConstraint_setJointFeedback(this._btConstraint, this._btJointFeedBackObj);
+	        this._simulation = this.owner._scene.physicsSimulation;
+	        this._initAllConstraintInfo();
+	        this._addToSimulation();
+	        Laya.Physics3D._bullet.btTypedConstraint_setEnabled(this._btConstraint, true);
+	    }
+	    _initAllConstraintInfo() {
+	        this.setLimit(ConfigurableConstraint.MOTION_LINEAR_INDEX_X, this._xMotion, -this._maxLinearLimit.x, -this._minLinearLimit.x);
+	        this.setLimit(ConfigurableConstraint.MOTION_LINEAR_INDEX_Y, this._yMotion, this._minLinearLimit.y, this._maxLinearLimit.y);
+	        this.setLimit(ConfigurableConstraint.MOTION_LINEAR_INDEX_Z, this._zMotion, this._minLinearLimit.z, this._maxLinearLimit.z);
+	        this.setLimit(ConfigurableConstraint.MOTION_ANGULAR_INDEX_X, this._angularXMotion, -this._maxAngularLimit.x, -this._minAngularLimit.x);
+	        this.setLimit(ConfigurableConstraint.MOTION_ANGULAR_INDEX_Y, this._angularYMotion, this._minAngularLimit.y, this._maxAngularLimit.y);
+	        this.setLimit(ConfigurableConstraint.MOTION_ANGULAR_INDEX_Z, this._angularZMotion, this._minAngularLimit.z, this._maxAngularLimit.z);
+	        this.setSpring(ConfigurableConstraint.MOTION_LINEAR_INDEX_X, this._linearLimitSpring.x);
+	        this.setSpring(ConfigurableConstraint.MOTION_LINEAR_INDEX_Y, this._linearLimitSpring.y);
+	        this.setSpring(ConfigurableConstraint.MOTION_LINEAR_INDEX_Z, this._linearLimitSpring.z);
+	        this.setSpring(ConfigurableConstraint.MOTION_ANGULAR_INDEX_X, this._angularLimitSpring.x);
+	        this.setSpring(ConfigurableConstraint.MOTION_ANGULAR_INDEX_Y, this._angularLimitSpring.y);
+	        this.setSpring(ConfigurableConstraint.MOTION_ANGULAR_INDEX_Z, this._angularLimitSpring.z);
+	        this.setBounce(ConfigurableConstraint.MOTION_LINEAR_INDEX_X, this._linearBounce.x);
+	        this.setBounce(ConfigurableConstraint.MOTION_LINEAR_INDEX_Y, this._linearBounce.y);
+	        this.setBounce(ConfigurableConstraint.MOTION_LINEAR_INDEX_Z, this._linearBounce.z);
+	        this.setBounce(ConfigurableConstraint.MOTION_ANGULAR_INDEX_X, this._angularBounce.x);
+	        this.setBounce(ConfigurableConstraint.MOTION_ANGULAR_INDEX_Y, this._angularBounce.y);
+	        this.setBounce(ConfigurableConstraint.MOTION_ANGULAR_INDEX_Z, this._angularBounce.z);
+	        this.setDamping(ConfigurableConstraint.MOTION_LINEAR_INDEX_X, this._linearDamp.x);
+	        this.setDamping(ConfigurableConstraint.MOTION_LINEAR_INDEX_Y, this._linearDamp.y);
+	        this.setDamping(ConfigurableConstraint.MOTION_LINEAR_INDEX_Z, this._linearDamp.z);
+	        this.setDamping(ConfigurableConstraint.MOTION_ANGULAR_INDEX_X, this._angularDamp.x);
+	        this.setDamping(ConfigurableConstraint.MOTION_ANGULAR_INDEX_Y, this._angularDamp.y);
+	        this.setDamping(ConfigurableConstraint.MOTION_ANGULAR_INDEX_Z, this._angularDamp.z);
+	        this.setFrames();
+	        this.setEquilibriumPoint(0, 0);
+	    }
+	    _onAdded() {
+	        super._onAdded();
+	    }
+	    _onEnable() {
+	        if (!this._btConstraint)
+	            return;
+	        super._onEnable();
+	        if (this._btConstraint)
+	            Laya.Physics3D._bullet.btTypedConstraint_setEnabled(this._btConstraint, true);
+	    }
+	    _onDisable() {
+	        super._onDisable();
+	        if (!this.connectedBody && this._simulation)
+	            this._removeFromSimulation();
+	        if (this._btConstraint)
+	            Laya.Physics3D._bullet.btTypedConstraint_setEnabled(this._btConstraint, false);
+	    }
+	    _parse(data, interactMap = null) {
+	        super._parse(data);
+	        this._axis.fromArray(data.axis);
+	        this._secondaryAxis.fromArray(data.secondaryAxis);
+	        var limitlimit = data.linearLimit;
+	        this._minLinearLimit.setValue(-limitlimit, -limitlimit, -limitlimit);
+	        this._maxLinearLimit.setValue(limitlimit, limitlimit, limitlimit);
+	        var limitSpring = data.linearLimitSpring;
+	        this._linearLimitSpring.setValue(limitSpring, limitSpring, limitSpring);
+	        var limitDamp = data.linearLimitDamper;
+	        this._linearDamp.setValue(limitDamp, limitDamp, limitDamp);
+	        var limitBounciness = data.linearLimitBounciness;
+	        this._linearBounce.setValue(limitBounciness, limitBounciness, limitBounciness);
+	        var xlowAngularLimit = data.lowAngularXLimit;
+	        var xhighAngularLimit = data.highAngularXLimit;
+	        var yAngularLimit = data.angularYLimit;
+	        var zAngularLimit = data.angularZLimit;
+	        this._minAngularLimit.setValue(xlowAngularLimit, -yAngularLimit, -zAngularLimit);
+	        this._maxAngularLimit.setValue(xhighAngularLimit, yAngularLimit, zAngularLimit);
+	        var xhighAngularBounciness = data.highAngularXLimitBounciness;
+	        var ybounciness = data.angularYLimitBounciness;
+	        var zbounciness = data.angularZLimitBounciness;
+	        this._angularBounce.setValue(xhighAngularBounciness, ybounciness, zbounciness);
+	        var xAngularSpring = data.angularXLimitSpring;
+	        var yzAngularSpriny = data.angularYZLimitSpring;
+	        this._angularLimitSpring.setValue(xAngularSpring, yzAngularSpriny, yzAngularSpriny);
+	        var xAngularDamper = data.angularXLimitDamper;
+	        var yzAngularDamper = data.angularYZLimitDamper;
+	        this._angularDamp.setValue(xAngularDamper, yzAngularDamper, yzAngularDamper);
+	        this.XMotion = data.xMotion;
+	        this.YMotion = data.yMotion;
+	        this.ZMotion = data.zMotion;
+	        this.angularXMotion = data.angularXMotion;
+	        this.angularYMotion = data.angularYMotion;
+	        this.angularZMotion = data.angularZMotion;
+	        if (data.rigidbodyID != -1 && data.connectRigidbodyID != -1) {
+	            interactMap.component.push(this);
+	            interactMap.data.push(data);
+	        }
+	        (data.breakForce != undefined) && (this.breakForce = data.breakForce);
+	        (data.breakTorque != undefined) && (this.breakTorque = data.breakTorque);
+	    }
+	    _parseInteractive(data = null, spriteMap = null) {
+	        var rigidBodySprite = spriteMap[data.rigidbodyID];
+	        var rigidBody = rigidBodySprite.getComponent(Rigidbody3D);
+	        var connectSprite = spriteMap[data.connectRigidbodyID];
+	        var connectRigidbody = connectSprite.getComponent(Rigidbody3D);
+	        this.ownBody = rigidBody;
+	        this.connectedBody = connectRigidbody;
+	    }
+	    _onDestroy() {
+	        super._onDestroy();
+	    }
+	}
+	ConfigurableConstraint.CONFIG_MOTION_TYPE_LOCKED = 0;
+	ConfigurableConstraint.CONFIG_MOTION_TYPE_LIMITED = 1;
+	ConfigurableConstraint.CONFIG_MOTION_TYPE_FREE = 2;
+	ConfigurableConstraint.MOTION_LINEAR_INDEX_X = 0;
+	ConfigurableConstraint.MOTION_LINEAR_INDEX_Y = 1;
+	ConfigurableConstraint.MOTION_LINEAR_INDEX_Z = 2;
+	ConfigurableConstraint.MOTION_ANGULAR_INDEX_X = 3;
+	ConfigurableConstraint.MOTION_ANGULAR_INDEX_Y = 4;
+	ConfigurableConstraint.MOTION_ANGULAR_INDEX_Z = 5;
+	ConfigurableConstraint.RO_XYZ = 0;
+	ConfigurableConstraint.RO_XZY = 1;
+	ConfigurableConstraint.RO_YXZ = 2;
+	ConfigurableConstraint.RO_YZX = 3;
+	ConfigurableConstraint.RO_ZXY = 4;
+	ConfigurableConstraint.RO_ZYX = 5;
+
+	class FixedConstraint extends ConstraintComponent {
+	    constructor() {
+	        super(ConstraintComponent.CONSTRAINT_FIXED_CONSTRAINT_TYPE);
+	        this.breakForce = -1;
+	        this.breakTorque = -1;
+	    }
+	    _addToSimulation() {
+	        this._simulation && this._simulation.addConstraint(this, this.enabled);
+	    }
+	    _removeFromSimulation() {
+	        this._simulation.removeConstraint(this);
+	        this._simulation = null;
+	    }
+	    _createConstraint() {
+	        if (this.ownBody && this.ownBody._simulation && this.connectedBody && this.connectedBody._simulation) {
+	            var bt = Laya.Physics3D._bullet;
+	            this._btConstraint = bt.btFixedConstraint_create(this.ownBody.btColliderObject, this._btframATrans, this.connectedBody.btColliderObject, this._btframBTrans);
+	            this._btJointFeedBackObj = bt.btJointFeedback_create(this._btConstraint);
+	            bt.btTypedConstraint_setJointFeedback(this._btConstraint, this._btJointFeedBackObj);
+	            this._simulation = this.owner._scene.physicsSimulation;
+	            this._addToSimulation();
+	            Laya.Physics3D._bullet.btTypedConstraint_setEnabled(this._btConstraint, true);
+	        }
+	    }
+	    _onAdded() {
+	        super._onAdded();
+	    }
+	    _onEnable() {
+	        if (!this._btConstraint)
+	            return;
+	        super._onEnable();
+	        if (this._btConstraint)
+	            Laya.Physics3D._bullet.btTypedConstraint_setEnabled(this._btConstraint, true);
+	    }
+	    _onDisable() {
+	        super._onDisable();
+	        if (!this.connectedBody)
+	            this._removeFromSimulation();
+	        if (this._btConstraint)
+	            Laya.Physics3D._bullet.btTypedConstraint_setEnabled(this._btConstraint, false);
+	    }
+	    _onDestroy() {
+	        super._onDestroy();
+	    }
+	    _parse(data, interactMap = null) {
+	        super._parse(data);
+	        if (data.rigidbodyID != -1 && data.connectRigidbodyID != -1) {
+	            interactMap.component.push(this);
+	            interactMap.data.push(data);
+	        }
+	        (data.breakForce != undefined) && (this.breakForce = data.breakForce);
+	        (data.breakTorque != undefined) && (this.breakTorque = data.breakTorque);
+	    }
+	    _parseInteractive(data = null, spriteMap = null) {
+	        var rigidBodySprite = spriteMap[data.rigidbodyID];
+	        var rigidBody = rigidBodySprite.getComponent(Rigidbody3D);
+	        var connectSprite = spriteMap[data.connectRigidbodyID];
+	        var connectRigidbody = connectSprite.getComponent(Rigidbody3D);
+	        this.ownBody = rigidBody;
+	        this.connectedBody = connectRigidbody;
+	    }
+	}
+
+	class StaticPlaneColliderShape extends ColliderShape {
+	    constructor(normal, offset) {
+	        super();
+	        this._normal = normal;
+	        this._offset = offset;
+	        this._type = ColliderShape.SHAPETYPES_STATICPLANE;
+	        var bt = Laya.ILaya3D.Physics3D._bullet;
+	        bt.btVector3_setValue(StaticPlaneColliderShape._btNormal, -normal.x, normal.y, normal.z);
+	        this._btShape = bt.btStaticPlaneShape_create(StaticPlaneColliderShape._btNormal, offset);
+	    }
+	    static __init__() {
+	        StaticPlaneColliderShape._btNormal = Laya.ILaya3D.Physics3D._bullet.btVector3_create(0, 0, 0);
+	    }
+	    clone() {
+	        var dest = new StaticPlaneColliderShape(this._normal, this._offset);
+	        this.cloneTo(dest);
+	        return dest;
+	    }
+	}
+
+	exports.BoxColliderShape = BoxColliderShape;
+	exports.BulletInteractive = BulletInteractive;
+	exports.CapsuleColliderShape = CapsuleColliderShape;
+	exports.CharacterController = CharacterController;
+	exports.ColliderShape = ColliderShape;
+	exports.Collision = Collision;
+	exports.CollisionTool = CollisionTool;
+	exports.CompoundColliderShape = CompoundColliderShape;
+	exports.ConeColliderShape = ConeColliderShape;
+	exports.ConfigurableConstraint = ConfigurableConstraint;
+	exports.Constraint3D = Constraint3D;
+	exports.ConstraintComponent = ConstraintComponent;
+	exports.ContactPoint = ContactPoint;
+	exports.CylinderColliderShape = CylinderColliderShape;
+	exports.FixedConstraint = FixedConstraint;
+	exports.HitResult = HitResult;
+	exports.MeshColliderShape = MeshColliderShape;
+	exports.PhysicsCollider = PhysicsCollider;
+	exports.PhysicsComponent = PhysicsComponent;
+	exports.PhysicsSettings = PhysicsSettings;
+	exports.PhysicsSimulation = PhysicsSimulation;
+	exports.PhysicsTriggerComponent = PhysicsTriggerComponent;
+	exports.PhysicsUpdateList = PhysicsUpdateList;
+	exports.Rigidbody3D = Rigidbody3D;
+	exports.SphereColliderShape = SphereColliderShape;
+	exports.StaticPlaneColliderShape = StaticPlaneColliderShape;
+
+}(window.Laya = window.Laya || {}, Laya));

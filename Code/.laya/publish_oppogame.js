@@ -1,4 +1,4 @@
-// v1.8.2
+// v1.9.8
 const ideModuleDir = global.ideModuleDir;
 const workSpaceDir = global.workSpaceDir;
 
@@ -10,7 +10,10 @@ const childProcess = require("child_process");
 const del = require(ideModuleDir + "del");
 const revCollector = require(ideModuleDir + 'gulp-rev-collector');
 const iconv =  require(ideModuleDir + "iconv-lite");
+const request = require(ideModuleDir + "request");
+const { getEngineVersion, canUsePluginEngine } = require("./pub_utils");
 
+let fullRemoteEngineList = ["laya.core.js", "laya.webgl.js", "laya.filter.js", "laya.ani.js", "laya.d3.js", "laya.html.js", "laya.particle.js", "laya.ui.js", "laya.d3Plugin.js", "bytebuffer.js", "laya.device.js", "laya.physics.js", "laya.physics3D.js", "laya.tiledmap.js", "worker.js", "workerloader.js"];
 let copyLibsTask = ["copyPlatformLibsJsFile"];
 let versiontask = ["version2"];
 
@@ -36,7 +39,13 @@ gulp.task("preCreate_OPPO", copyLibsTask, function() {
 	layarepublicPath = global.layarepublicPath;
 	tempReleaseDir = global.tempReleaseDir;
 
-    toolkitPath = path.join(layarepublicPath, "oppo", "quickgame-toolkit");
+	toolkitPath = path.join(layarepublicPath, "oppo", "quickgame-toolkit");
+	
+	if (config.useMinJsLibs) {
+		fullRemoteEngineList = fullRemoteEngineList.map((item, index) => {
+			return item.replace(".js", ".min.js");
+		})
+	}
 });
 
 gulp.task("copyPlatformFile_OPPO", ["preCreate_OPPO"], function() {
@@ -221,6 +230,9 @@ gulp.task("modifyFile_OPPO", ["deleteSignFile_OPPO"], function() {
 	manifestJson.package = config.oppoInfo.package;
 	manifestJson.name = config.oppoInfo.name;
 	manifestJson.orientation = config.oppoInfo.orientation;
+	if(null == manifestJson.config){
+		manifestJson.config = {};
+	}
 	manifestJson.config.logLevel = config.oppoInfo.logLevel || "off";
 	manifestJson.versionName = config.oppoInfo.versionName;
 	manifestJson.versionCode = config.oppoInfo.versionCode;
@@ -228,6 +240,30 @@ gulp.task("modifyFile_OPPO", ["deleteSignFile_OPPO"], function() {
 	manifestJson.icon = `./${path.basename(config.oppoInfo.icon)}`;
 	if (config.oppoInfo.subpack) {
 		manifestJson.subpackages = config.oppoSubpack;
+		// 检测分包目录是否有入口文件
+		console.log('检查分包文件...');
+		 
+		if (manifestJson.subpackages) { 
+			for(let i = 0; i < manifestJson.subpackages.length; i ++) {
+				let conf = manifestJson.subpackages[i];
+				if (conf.root) {
+					let rootPath = path.join(projDir, conf.root);
+					if (!fs.existsSync(rootPath)) {
+
+						throw new Error(`分包文件/目录 ${rootPath} 不存在！`);
+					}
+					let jsIndex = rootPath.lastIndexOf('.js');
+					let jsPath = rootPath;
+					if (jsIndex < 0 || jsIndex !=  rootPath.length - 3) {
+						jsPath =  path.join(rootPath, 'main.js'); 
+					}
+					if (!fs.existsSync(jsPath)) {
+
+						throw new Error(`分包文件/目录 ${jsPath} 不存在！`);
+					}
+				}
+			}
+		}		
 	} else {
 		delete manifestJson.subpackages;
 	}
@@ -241,11 +277,16 @@ gulp.task("modifyFile_OPPO", ["deleteSignFile_OPPO"], function() {
 	let indexJsStr = (versionCon && versionCon["index.js"]) ? versionCon["index.js"] :  "index.js";
 	// OPPO项目，修改main.js
 	let filePath = path.join(projDir, "main.js");
+	let fileContent;
 	if (!fs.existsSync(filePath)) {
-		let fileContent = `window.navigator.userAgent = 'Mozilla/5.0 (Linux; Android 5.1.1; Nexus 6 Build/LYZ28E) AppleWebKit/603.1.30 (KHTML, like Gecko) Mobile/14E8301 OPPO MiniGame NetType/WIFI Language/zh_CN';
+		fileContent = `window.navigator.userAgent = 'Mozilla/5.0 (Linux; Android 5.1.1; Nexus 6 Build/LYZ28E) AppleWebKit/603.1.30 (KHTML, like Gecko) Mobile/14E8301 OPPO MiniGame NetType/WIFI Language/zh_CN';
 require("./libs/laya.quickgamemini.js");\nrequire("index.js");`;
-		fs.writeFileSync(filePath, fileContent, "utf8");
+	} else {
+		// 额外的，如果有引擎插件相关代码，需要删掉
+		fileContent = fs.readFileSync(filePath, "utf8");
+		fileContent = fileContent.replace(/if\s\(window\.requirePlugin\)\s{\n[\w\"\.\-\/\(\);\s\n]*\n}\selse\s{\n[\w\"\.\-\/\(\);\s\n]*\n}\n/gm, "");
 	}
+	fs.writeFileSync(filePath, fileContent, "utf8");
 
 	// OPPO项目，修改index.js
 	let indexFilePath = path.join(projDir, indexJsStr);
@@ -286,8 +327,327 @@ gulp.task("version_OPPO", ["modifyMinJs_OPPO"], function () {
 	}
 });
 
+// 处理引擎插件
+// 我们会将所有的libs下的文件放到engine里，但不能认定libs下全是我们的引擎，所以还是要加判断
+gulp.task("pluginEngin_OPPO", ["version_OPPO"], function(cb) {
+	let manifestJsonPath = path.join(projDir, "manifest.json");
+	let manifestJsonContent = fs.readFileSync(manifestJsonPath, "utf8");
+	let conJson = JSON.parse(manifestJsonContent);
+	let copyBinPath;
+
+	if (!config.uesEnginePlugin) { // 没有使用引擎插件，还是像以前一样发布
+		delete conJson.plugins;
+		manifestJsonContent = JSON.stringify(conJson, null, 4);
+		fs.writeFileSync(manifestJsonPath, manifestJsonContent, "utf8");
+		return cb();
+	}
+	// 引擎源码项目
+	// 将所有的min拷贝进来
+	if (config.useMinJsLibs) {
+		copyBinPath = path.join(workSpaceDir, "bin", "libs", "min");
+	} else { // 如果不是min
+		copyBinPath = path.join(workSpaceDir, "bin", "libs");
+	}
+	// 针对min引擎文件，很多配置文件也需要该，同时改
+	if (config.version) {
+		let versionPath = projDir + "/version.json";
+		versionCon = fs.readFileSync(versionPath, "utf8");
+		versionCon = JSON.parse(versionCon);
+	}
+	let indexJsStr = (versionCon && versionCon["index.js"]) ? versionCon["index.js"] :  "index.js";
+	
+	// 获取version等信息
+	let coreLibPath = path.join(workSpaceDir, "bin", "libs", "laya.core.js");
+	let isHasCoreLib = fs.existsSync(coreLibPath);
+	let isOldAsProj = fs.existsSync(`${workSpaceDir}/asconfig.json`) && !isHasCoreLib;
+	let isNewTsProj = fs.existsSync(`${workSpaceDir}/src/tsconfig.json`) && !isHasCoreLib;
+	let EngineVersion = getEngineVersion();
+	if (isOldAsProj || isNewTsProj) {
+		// 下载对应版本js引擎，按照普通项目走
+		console.log(`ts源码项目(${isNewTsProj})或as源码项目(${isOldAsProj})，开始处理引擎`);
+		let engineNum = EngineVersion.split("beta")[0];
+		let suffix = EngineVersion.includes("beta") ? `_beta${EngineVersion.split("beta")[1]}` : "";
+		let engineURL;
+		if (canUsePluginEngine(EngineVersion, "2.7.2")) { // 2.7.2 开始，下载地址更新为 cos 服务器
+			engineURL = `https://ldc-1251285021.cos.ap-shanghai.myqcloud.com/download/Libs/LayaAirJS_${engineNum}${suffix}.zip`;
+		} else {
+			engineURL = `http://ldc.layabox.com/download/LayaAirJS_${engineNum}${suffix}.zip`;
+		}
+		let engineDownPath = path.join(releaseDir, `LayaAirJS_${engineNum}${suffix}.zip`);
+		let engineExtractPath = path.join(releaseDir, `LayaAirJS_${engineNum}${suffix}`);
+		if (config.useMinJsLibs) {
+			copyBinPath = path.join(engineExtractPath, "js", "libs", "min");
+		} else { // 如果不是min
+			copyBinPath = path.join(engineExtractPath, "js", "libs");
+		}
+		// 情况1) 如果已经下载过引擎了，直接开始处理引擎插件
+		if (fs.existsSync(copyBinPath)) {
+			console.log("情况1) 如果已经下载过引擎了，直接开始处理引擎插件");
+			return dealPluginEngine().then(() => {
+				// return cb();
+			}).catch((err) => {
+				console.error("ts源码项目及as源码项目，下载或处理oppo引擎插件项目失败(code 1)!");
+				throw err;
+			});
+		}
+		// 情况2) 下载并解压引擎，然后开始处理引擎插件
+		console.log("情况2) 下载并解压引擎，然后开始处理引擎插件");
+		return downFileToDir(engineURL, engineDownPath).then(() => {
+			console.log("下载引擎库成功，开始解压");
+			return extractZipFile(engineDownPath, engineExtractPath);
+		}).then(() => {
+			console.log("解压成功，开始处理引擎插件");
+			return dealPluginEngine();
+		}).then(() => {
+			// return cb();
+		}).catch((err) => {
+			console.error("ts源码项目及as源码项目，下载或处理oppo引擎插件项目失败(code 2)!");
+			throw err;
+		})
+	}
+	// 情况3) 非源码项目，开始处理引擎插件
+	console.log("情况3) 非源码项目，开始处理引擎插件");
+	return dealPluginEngine().then(() => {
+		// return cb();
+	}).catch((err) => {
+		throw err;
+	});
+
+	function dealPluginEngine() {
+		// 使用引擎插件
+		let localUseEngineList = [];
+		let copyEnginePathList;
+		return new Promise(function(resolve, reject) {
+			console.log(`修改main.js和manifest.json`);
+			// 1) 修改main.js和manifest.json
+			// 修改main.js
+			let gameJsPath = path.join(projDir, "main.js");
+			let gameJscontent = fs.readFileSync(gameJsPath, "utf8");
+			gameJscontent = gameJscontent.replace(`require("${indexJsStr}");`, `requirePlugin('layaPlugin');\nrequire("${indexJsStr}");`);
+			fs.writeFileSync(gameJsPath, gameJscontent, "utf8");
+			
+			// 修改manifest.json，使其支持引擎插件
+			conJson.plugins = {
+				"laya-library": {
+					"version": EngineVersion,
+					"provider": "",
+					"path": "laya-library"
+				}
+			}
+			manifestJsonContent = JSON.stringify(conJson, null, 4);
+			fs.writeFileSync(manifestJsonPath, manifestJsonContent, "utf8");
+			resolve();
+		}).then(function() {
+			return new Promise(function(resolve, reject) {
+				console.log(`确定用到的插件引擎`);
+				// 2) 确定用到了那些插件引擎，并将插件引擎从index.js的引用中去掉
+				let indexJsPath = path.join(projDir, indexJsStr);
+				let indexJsCon = fs.readFileSync(indexJsPath, "utf8");
+				let item, fullRequireItem;
+				for (let i = 0, len = fullRemoteEngineList.length; i < len; i++) {
+					item = fullRemoteEngineList[i];
+					fullRequireItem = config.useMinJsLibs ? `require("./libs/min/${item}")` : `require("./libs/${item}")`;
+					if (indexJsCon.includes(fullRequireItem)) {
+						localUseEngineList.push(item);
+						indexJsCon = indexJsCon.replace(fullRequireItem + ";", "").replace(fullRequireItem + ",", "").replace(fullRequireItem, "");
+					}
+				}
+				// 源码项目需要特殊处理
+				if (isNewTsProj || isOldAsProj) {
+					indexJsCon = indexJsCon.replace(`require("./laya.js");`, "").replace(`require("./laya.js"),`, "").replace(`require("./laya.js")`, "");
+					let item, libPath/*, oppoConfigList = []*/;
+					for (let i = 0, len = fullRemoteEngineList.length; i < len; i++) {
+						item = fullRemoteEngineList[i];
+						libPath = path.join(copyBinPath, item);
+						if (fs.existsSync(libPath) && !["bytebuffer", "laya.physics3D", "worker", "workerloader"].includes(item.replace(".min.js", "").replace(".js", ""))) {
+							localUseEngineList.push(item);
+							// config.useMinJsLibs ?  oppoConfigList.push(`libs/min/${item}`) : oppoConfigList.push(`libs/${item}`);
+						}
+					}
+					// let bundleJsStr = (versionCon && versionCon["js/bundle.js"]) ? versionCon["js/bundle.js"] :  "js/bundle.js";
+					// oppoConfigList.push(bundleJsStr);
+					// configoppoConfigFile(oppoConfigList, true);
+				}
+				fs.writeFileSync(indexJsPath, indexJsCon, "utf8");
+				// 再次修改game.js，仅引用使用到的类库
+				let pluginCon = "", normalCon = "";
+				localUseEngineList.forEach(function(item) {
+					pluginCon += `\trequirePlugin("laya-library/${item}");\n`;
+					normalCon += `\trequire("laya-library/${item}");\n`;
+				});
+				let finalyPluginCon = `if (window.requirePlugin) {\n${pluginCon}\n} else {\n${normalCon}\n}`;
+				let gameJsPath = path.join(projDir, "main.js");
+				let gameJsCon = fs.readFileSync(gameJsPath, "utf8");
+				gameJsCon = gameJsCon.replace(`requirePlugin('layaPlugin');`, finalyPluginCon);
+				fs.writeFileSync(gameJsPath, gameJsCon, "utf8");
+				resolve();
+			});
+		}).then(function() {
+			return new Promise(function(resolve, reject) {
+				console.log(`将本地的引擎插件移动到laya-libs中`);
+				// 3) 将本地的引擎插件移动到laya-libs中
+				copyEnginePathList = [`${copyBinPath}/{${fullRemoteEngineList.join(",")}}`];
+				gulp.src(copyEnginePathList).pipe(gulp.dest(`${projDir}/laya-library`));
+				setTimeout(resolve, 500);
+			});
+		}).then(function() {
+			return new Promise(function(resolve, reject) {
+				console.log(`将libs中的本地引擎插件删掉`);
+				// 4) 将libs中的本地引擎插件删掉
+				let deleteList = [`${projDir}/libs/{${localUseEngineList.join(",")}}`, `${projDir}/libs/min/{${localUseEngineList.join(",")}}`];
+				del(deleteList, { force: true }).then(resolve);
+			});
+		}).then(function() {
+			return new Promise(async function(resolve, reject) {
+				console.log(`完善引擎插件目录`);
+				// 5) 引擎插件目录laya-libs中还需要新建几个文件，使该目录能够使用
+				let 
+					layalibsPath = path.join(projDir, "laya-library"),
+					engineIndex = path.join(layalibsPath, "index.js"),
+					engineplugin = path.join(layalibsPath, "plugin.json");
+					// enginesignature = path.join(layalibsPath, "signature.json");
+				// index.js
+				if (!fs.existsSync(layalibsPath)) {
+					throw new Error("引擎插件目录创建失败，请与服务提供商联系!");
+				}
+				let layaLibraryList = fs.readdirSync(layalibsPath);
+				let indexCon = "";
+				layaLibraryList.forEach(function(item) {
+					indexCon += `require("./${item}");\n`;
+				});
+				fs.writeFileSync(engineIndex, indexCon, "utf8");
+				// plugin.json
+				let pluginCon = {"main": "index.js"};
+				fs.writeFileSync(engineplugin, JSON.stringify(pluginCon, null, 4), "utf8");
+				// signature.json
+				// let signatureCon = {
+				// 	"provider": provider,
+				// 	"signature": []
+				// };
+				// localUseEngineList.unshift("index.js");
+				// let fileName, md5Str;
+				// for (let i = 0, len = localUseEngineList.length; i < len; i++) {
+				// 	fileName = localUseEngineList[i];
+				// 	let md5Str = await getFileMd5(path.join(projDir, "laya-library", fileName));
+				// 	signatureCon.signature.push({
+				// 		"path": fileName,
+				// 		"md5": md5Str
+				// 	});
+				// }
+				// fs.writeFileSync(enginesignature, JSON.stringify(signatureCon, null, 4), "utf8");
+				resolve();
+			});
+		}).catch(function(e) {
+			throw e;
+		})
+	}
+});
+
+function downFileToDir(uri, dest){
+	return new Promise((resolve, reject) => {
+		if (!uri || !dest) {
+			reject(new Error(`downFileToDir 参数不全: ${uri}/${dest}`));
+			return;
+		}
+
+		let 
+			totalLen = 9999,
+			progress = 0,
+			layaresponse;
+		var stream = fs.createWriteStream(dest);
+		request(uri).on('error', function(err) {
+			console.log("tool down err:" + err);
+			reject(err);
+		}).on("data", function(data) {
+			progress += data.length;
+			let downPercent = (progress / totalLen * 100).toFixed(3);
+			// console.log(`down: ${downPercent}%`);
+		}).on("response", function(response) {
+			layaresponse = response;
+			totalLen = response.caseless.dict['content-length'];
+		}).pipe(stream).on('close', function() {
+			if (layaresponse.statusCode == 200) {
+				console.log("下载成功!");
+				resolve();
+			} else {
+				reject(new Error(`下载失败，连接关闭 -> ${uri}`));
+			}
+		});
+	});
+}
+
+function extractZipFile(zipPath, extractDir) {
+	return new Promise((resolve, reject) => {
+		if (!zipPath || !extractDir) {
+			reject(new Error(`extractZipFile 参数不全: ${zipPath}/${extractDir}`));
+			return false;
+		}
+
+		zipPath = `"${zipPath}"`;
+		let unzipexepath = path.join(ideModuleDir, "../", "out", "codeextension", "updateversion", "tools", "unzip.exe");
+		unzipexepath = `"${unzipexepath}"`;
+		let cmd;
+        if (process.platform === 'darwin') {
+            cmd = "unzip -o " + zipPath + " -d " + "\"" + extractDir + "\"";
+        } else {
+            cmd = unzipexepath + " -o " + zipPath + " -d " + "\"" + extractDir + "\"";
+		}
+		childProcess.exec(cmd, (error, stdout, stderr) => {
+			if (error || stderr) {
+				reject(error || stderr);
+				return;
+			}
+			resolve();
+		});
+	});
+}
+
+
+//mac下首先先检测和关闭9999端口号,防止端口被占用导致二维码无法显示的问题
+gulp.task("closePoint",["pluginEngin_OPPO"],function(){
+	return closePoint(9999);
+})
+function closePoint(point){
+	if (process.platform === "darwin") {
+		return new Promise((resolve, reject) => {
+			var cmd = 'lsof -i tcp:'+point;
+			childProcess.exec(cmd, (err, stdout, stderr) => {
+				if (null != stdout) {
+					var str = String(stdout);
+					var arr = str.split(" ");
+					var num = arr.indexOf('layabox');
+					if (0 < num) {
+						var pid = arr[num - 1];
+						try{
+							childProcess.execSync("kill -9 " + pid);
+						}catch(err){}
+					}
+				}
+				resolve();
+			});
+		});
+	} else {
+		return new Promise((resolve, reject) => {
+			var cmd = 'netstat -aon|findstr "'+point+'"';
+			childProcess.exec(cmd, (err, stdout, stderr) => {
+				if (null != stdout) {
+					var str = String(stdout);
+					var arr = str.split(" ");
+					var pid = Number(arr[arr.length - 1]);
+					if (!isNaN(pid) && 0 != pid) {
+						try{
+							childProcess.execSync("taskkill /f /pid " + pid);
+						}catch(err){}
+					}
+				}
+				resolve();
+			});
+		});
+	}
+}
+
 // 打包rpk
-gulp.task("buildRPK_OPPO", ["version_OPPO"], function() {
+gulp.task("buildRPK_OPPO", ["closePoint"], function() {
 	// 在OPPO轻游戏项目目录中执行:
     // quickgame pack || quickgame pack release
     // quickgame subpack --no-build-js || quickgame subpack release --no-build-js
@@ -303,15 +663,19 @@ gulp.task("buildRPK_OPPO", ["version_OPPO"], function() {
     }
 	return new Promise((resolve, reject) => {
 		let cmd = path.join(toolkitPath, "lib", "bin", `quickgame${commandSuffix}`);
-		let args = [packStr, cmdStr, nobuildjs];
+		let args = [packStr, cmdStr, nobuildjs, "-q"];
 		let opts = {
 			cwd: projDir,
 			shell: true
-		};
+		}; 
 		let cp = childProcess.spawn(`"${cmd}"`, args, opts);
 		// let cp = childProcess.spawn('npx.cmd', ['-v']);
 		cp.stdout.on('data', (data) => {
-			console.log(`stdout: ${data}`);
+			console.log(`${data}`);
+			if (`${data}`.includes("▄") || `${data}`.includes("█")) {
+				resolve();
+			}
+			console.log('oo_qrcode_pid:' + cp.pid);
 		});
 
 		cp.stderr.on('data', (data) => {
@@ -339,11 +703,15 @@ gulp.task("pushRPK_OPPO", ["buildRPK_OPPO"], function() {
 	// 在OPPO轻游戏项目目录中执行:
     // adb push dist/game.rpk sdcard/games
 	// adb push layarepublicPath/oppo/instant_app_settings.properties
+	// adb shell am force-stop com.nearme.instant.platform
 	// adb shell am start -n com.nearme.instant.platform/com.oppo.autotest.main.InstantAppActivity
 	return new Promise((resolve, reject) => {
+		if (!config.oppoInfo.subpack) {
+			return resolve();
+		}
+		
 		let cmd = `${adbPath}`;
-		let sdGamesPath = config.oppoInfo.subpack ? "sdcard/subPkg" : "sdcard/games";
-		let args = ["push", `dist/${config.oppoInfo.package}${config.oppoInfo.useReleaseSign ? ".signed" : ""}.rpk`, sdGamesPath];
+		let args = ["shell", "mkdir", `sdcard/subPkg`];
 		let opts = {
 			cwd: projDir,
 			shell: true
@@ -360,17 +728,63 @@ gulp.task("pushRPK_OPPO", ["buildRPK_OPPO"], function() {
 		});
 
 		cp.on('close', (code) => {
-			console.log(`1) push_RPK 子进程退出码：${code}`);
+			console.log(`pre) push_RPK 子进程退出码：${code}`);
 			resolve();
 		});
+	}).then(() => {
+
+
+		return new Promise((resolve, reject) => {
+			if (!config.uesEnginePlugin) {
+				resolve();
+				return;
+			}else {
+				// 如果使用引擎插件，解压完整包
+				let distRpkPath = path.join(projDir, "dist", `${config.oppoInfo.package}${config.oppoInfo.useReleaseSign ? ".signed" : ""}.rpk`);
+				console.log("解压完整包",distRpkPath); 
+				let tmpDir = path.join(projDir, "dist", `tmp`);
+				if (!fs.existsSync(tmpDir)) {
+					fs.mkdirSync(tmpDir);
+				}
+				extractZipFile(distRpkPath, tmpDir).then(() => {
+					console.log('解压完整包完成');
+					resolve();
+				});
+			}
+		})
+	}).then(() => {
+		return new Promise((resolve, reject) => {
+			let cmd = `${adbPath}`;
+			let sdGamesPath = config.oppoInfo.subpack ? "sdcard/subPkg" : "sdcard/games";
+			let args = ["push", `dist${config.uesEnginePlugin ?"/tmp" : "" }/${config.oppoInfo.package}${config.oppoInfo.useReleaseSign ? ".signed" : ""}.rpk`, sdGamesPath];
+			let opts = {
+				cwd: projDir,
+				shell: true
+			}; 
+			let cp = childProcess.spawn(cmd, args, opts);
+			// let cp = childProcess.spawn('npx.cmd', ['-v']);
+			cp.stdout.on('data', (data) => {
+				console.log(`stdout: ${data}`);
+			});
+	
+			cp.stderr.on('data', (data) => {
+				console.log(`stderr: ${data}`);
+				// reject();
+			});
+	
+			cp.on('close', (code) => {
+				console.log(`1) push_RPK 子进程退出码：${code}`);
+				resolve();
+			});
+		})
 	}).then(() => {
 		return new Promise((resolve, reject) => {
 			// 如果是分包，需要修改里面的内容
 			let oppoPropPath = path.join(layarepublicPath, "oppo", "instant_app_settings.properties");
 			if (config.oppoInfo.subpack) {
-				fs.writeFileSync(oppoPropPath, "default_tab_index=4", "utf8");
+				fs.writeFileSync(oppoPropPath, "default_tab=game_split", "utf8");
 			} else {
-				fs.writeFileSync(oppoPropPath, "default_tab_index=2", "utf8");
+				fs.writeFileSync(oppoPropPath, "default_tab=game", "utf8");
 			}
 			let cmd = `${adbPath}`;
 			let args = ["push", oppoPropPath, "sdcard/"];
@@ -397,7 +811,7 @@ gulp.task("pushRPK_OPPO", ["buildRPK_OPPO"], function() {
 	}).then(() => {
 		return new Promise((resolve, reject) => {
 			let cmd = `${adbPath}`;
-			let args = ["shell", "am", "start", "-n", "com.nearme.instant.platform/com.oppo.autotest.main.InstantAppActivity"];
+			let args = ["shell", "am", "force-stop", "com.nearme.instant.platform"];
 			let opts = {
 				cwd: projDir,
 				shell: true
@@ -415,6 +829,30 @@ gulp.task("pushRPK_OPPO", ["buildRPK_OPPO"], function() {
 	
 			cp.on('close', (code) => {
 				console.log(`3) push_RPK 子进程退出码：${code}`);
+				resolve();
+			});
+		});
+	}).then(() => {
+		return new Promise((resolve, reject) => {
+			let cmd = `${adbPath}`;
+			let args = ["shell", "am", "start", "-n", "com.nearme.instant.platform/com.oppo.autotest.main.InstantAppActivity"];
+			let opts = {
+				cwd: projDir,
+				shell: true
+			};
+			let cp = childProcess.spawn(cmd, args, opts);
+			// let cp = childProcess.spawn('npx.cmd', ['-v']);
+			cp.stdout.on('data', (data) => {
+				console.log(`stdout: ${data}`);
+			});
+	
+			cp.stderr.on('data', (data) => {
+				console.log(`stderr: ${data}`);
+				// reject();
+			});
+	
+			cp.on('close', (code) => {
+				console.log(`4) push_RPK 子进程退出码：${code}`);
 				resolve();
 			});
 		});

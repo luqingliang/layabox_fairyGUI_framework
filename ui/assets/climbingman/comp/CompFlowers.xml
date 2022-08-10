@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="175,105">
+  <displayList>
+    <image id="n5_cq0p" name="n5" src="cq0p1v" fileName="img/taijiedizhuangshi6.png" xy="0,18"/>
+    <movieclip id="n6_cq0p" name="ani" src="fkdm1e" fileName="img/butterfly/MovieClipButterfly.jta" xy="32,0"/>
+  </displayList>
+</component>

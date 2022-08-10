@@ -1,0 +1,45 @@
+syntax = "proto3";
+
+option java_package = "com.onesports.web.gms.protobuf.bol";
+option java_outer_classname = "ArenasRaceRecords";
+
+package gameProto;
+
+import "proto/arenas_base.proto";
+
+
+message ArenasRaceRecordsReq {
+  Page page = 1;
+}
+
+
+message ArenasRaceRecordsRsp {
+  int32               code    = 1;
+  string              msg     = 2;
+  // 总记录数
+  int32 total = 3;
+  // 竞技玩家成绩(每个玩家的单项成绩)
+  repeated RaceRecords records = 4;
+}
+
+message  RaceRecords{
+  // 专场信息
+  Project project = 1;
+  // 名次(例:1/2/3/4)
+  int32                rank         = 2;
+  // 竞技单项排名列表
+  repeated ActionScore scoreList    = 3;
+  // 计算数值(毫秒/个数)
+  string               createTime = 4;
+  // 对局用户匹配玩家ID(用于跳转到竞技比赛结束页ID)
+  int64                matchId      = 5;
+
+}
+
+// 玩家各项成绩列表
+message ActionScore {
+  // 动作信息
+  ProjectAction action = 1;
+  // 玩家排名(例:1/2/3/4)
+  int32  rank = 2;
+}

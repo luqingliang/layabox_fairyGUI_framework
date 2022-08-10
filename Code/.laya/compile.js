@@ -1,4 +1,4 @@
-// v1.2.6
+// v1.2.7
 //是否使用IDE自带的node环境和插件，设置false后，则使用自己环境(使用命令行方式执行)
 const useIDENode = process.argv[0].indexOf("LayaAir") > -1 ? true : false;
 const useCMDNode = process.argv[1].indexOf("layaair2-cmd") > -1 ? true : false;
@@ -67,7 +67,7 @@ gulp.task("compile", prevTasks, function () {
 			file: workSpaceDir + '/bin/js/bundle.js',
 			format: 'iife',
 			name: 'laya',
-			sourcemap: false
+			sourcemap: true
 		});
 	}).catch(err=>{
 		console.log(err);

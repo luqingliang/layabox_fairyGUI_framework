@@ -1,0 +1,20 @@
+
+bubbles.png
+size: 64,32
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+baiquan
+  rotate: false
+  xy: 23, 2
+  size: 17, 25
+  orig: 17, 25
+  offset: 0, 0
+  index: -1
+lvquanquan
+  rotate: false
+  xy: 2, 3
+  size: 19, 24
+  orig: 19, 24
+  offset: 0, 0
+  index: -1

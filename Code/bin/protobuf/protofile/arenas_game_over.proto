@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+option java_package = "com.onesports.web.gms.protobuf.bol";
+option java_outer_classname = "ArenasGameOver";
+
+package gameProto;
+
+import "proto/arenas_base.proto";
+
+message ArenasGameOverReq {
+    // 对局用户匹配玩家ID
+    int64   matchId = 1;
+}
+
+message ArenasGameOverRsp {
+  int32                  code        = 1;
+  string                 msg         = 2;
+  // 竞技总成绩排名列表
+  repeated PlayerFinalRank rankList = 3;
+  // 游戏专场信息
+  Project project = 4;
+  // 个人数据
+  repeated PersonScore personScore = 7;
+}
+
+// 竞技总成绩
+message PlayerFinalRank {
+  // 玩家信息
+  Player player = 1;
+  // 玩家成绩
+  Score score = 2;
+}
+
+
+// 竞技玩家数据
+message PersonScore {
+  // 动作成绩
+  Score score = 1;
+  // 玩家总排名(例:1/2/3/4)
+  int32  rank = 2;
+  // 最佳项目ID
+  int32  bestActionId = 3;
+
+}
+
+

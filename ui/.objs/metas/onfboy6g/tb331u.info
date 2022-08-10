@@ -1,0 +1,16 @@
+{
+  "objectStatus": {
+    "n13_tkmt": {
+      "collapsed": true
+    },
+    "n7_we1p": {
+      "locked": true
+    },
+    "n8_we1p": {
+      "locked": true
+    }
+  },
+  "designImages": [
+    "ui://onfboy6gkd064d"
+  ]
+}

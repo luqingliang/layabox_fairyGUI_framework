@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+option java_package = "com.onesports.web.gms.protobuf.bol";
+option java_outer_classname = "ArenasEnterBattle";
+
+package gameProto;
+
+import "proto/arenas_base.proto";
+
+
+
+message ArenasEnterBattleReq {
+  // 游戏专场ID
+  int64 projectId = 1;
+}
+
+message ArenasEnterBattleRsp{
+  int32               code      = 1;
+  string              msg       = 2;
+  // 游戏专场ID
+  int64               projectId = 3;
+  // 竞技专场项目列表
+  repeated ProjectAction actionList  = 4;
+
+}
+
+
+
+
+

@@ -1,4 +1,4 @@
-// v1.1.0
+// v1.1.7
 const ideModuleDir = global.ideModuleDir;
 const workSpaceDir = global.workSpaceDir;
 
@@ -19,6 +19,8 @@ let
 let versionCon; // 版本管理version.json
 let commandSuffix,
 	layarepublicPath;
+
+let subList = [];
 
 gulp.task("preCreate_TBMini", copyLibsTask, function() {
 	releaseDir = global.releaseDir;
@@ -71,6 +73,53 @@ gulp.task("modifyFile_TBMini", ["delFiles_TBMini"], function() {
 		versionCon = fs.readFileSync(versionPath, "utf-8");
 		versionCon = JSON.parse(versionCon);
 	}
+
+	// 修改 app.json mini.project.json 文件
+	let miniProJJsonPath = path.join(releaseDir, "mini.project.json");
+	let minicontent = fs.readFileSync(miniProJJsonPath, "utf8");
+	let miniConJson = JSON.parse(minicontent);
+	let appJsonPath = path.join(releaseDir, "app.json");
+	let content = fs.readFileSync(appJsonPath, "utf8");
+	let conJson = JSON.parse(content);
+	// 先删掉之前的记录
+	delete conJson.subPackages;
+	delete conJson.subPackageBuildType;
+	delete miniConJson.enableEnhancedBuild;
+	let index = 0, value;
+	while(miniConJson.include.length > index) {
+		value = miniConJson.include[index];
+		if (value.match(/[\w]+\/\*\*/mg)) {
+            miniConJson.include.splice(index, 1);
+			continue;
+        }
+		index++;
+	}
+	if (config.taobaoInfo.subpack) { // 分包
+		let subpack = config.taobaoSubpack;
+		let subitem, obj;
+		conJson.subPackages = [];
+		for (let i = 0, len = subpack.length; i < len; i++) {
+			subitem = subpack[i];
+			obj = {
+				"root": subitem.name
+			};
+			if (config.taobaoInfo.ispagesub) { // 页面分包
+				if (!subitem.root) continue;
+				obj.pages = subitem.root.split(",")
+			} else { // 资源分包
+				conJson.subPackageBuildType = "shared";
+				miniConJson.enableEnhancedBuild = true;
+				if (!miniConJson.include) miniConJson.include = [];
+				miniConJson.include.push(`${subitem.name}/**`);
+			}
+			conJson.subPackages.push(obj);
+		}
+	}
+	content = JSON.stringify(conJson, null, 4);
+	fs.writeFileSync(appJsonPath, content, "utf8");
+	minicontent = JSON.stringify(miniConJson, null, 4);
+	fs.writeFileSync(miniProJJsonPath, minicontent, "utf8");
+
 	// 修改index.js
 	let indexJsStr = (versionCon && versionCon["index.js"]) ? versionCon["index.js"] :  "index.js";
 	let indexFilePath = path.join(releaseDir, "pages", "index", indexJsStr);
@@ -81,13 +130,44 @@ gulp.task("modifyFile_TBMini", ["delFiles_TBMini"], function() {
 	indexFileContent = indexFileContent.replace(/(window.screenOrientation\s*=\s*"\w+"[,;]?)/gm, "/**$1*/");
 	indexFileContent = indexFileContent.replace(/loadLib(\(['"]libs\/)/gm, `require("layaengine/libs/`);
 	indexFileContent = indexFileContent.replace(/loadLib(\(['"])/gm, "require$1./");
-	indexFileContent = indexFileContent.replace(`require("./laya.js")`, `require("layaengine/laya.js")`);
+	indexFileContent = indexFileContent.replace(/require\(\"\.\/laya([-\w]*)\.js\"\)/gm, `require("layaengine/laya$1.js")`);
 	// 特殊的，增加清除缓存
 	indexFileContent = indexFileContent.replace(/(require(\(['"][\w\/\.]+['"]\));?)/gm, "delete require.cache[require.resolve$2];\n$1");
 	fs.writeFileSync(indexFilePath, indexFileContent, "utf-8");
 })
 
-gulp.task("modifyMinJs_TBMini", ["modifyFile_TBMini"], function() {
+gulp.task("movesubpack_TBMini", ["modifyFile_TBMini"], function() {
+	if (!config.taobaoInfo.subpack) { // 分包
+		return;
+	}
+	let subpack = config.taobaoSubpack;
+	let subitem, obj;
+	// conJson.subPackages = [];
+	for (let i = 0, len = subpack.length; i < len; i++) {
+		subitem = subpack[i];
+		subList.push(`${subitem.name}/**`);
+	}
+	let source = `${path.join(releaseDir, "pages", "index")}/${subList.length > 1 ? `{${subList.join(",")}}` : `${subList[0]}`}`;
+	return gulp.src(source, { base: path.join(releaseDir, "pages", "index") }).pipe(gulp.dest(releaseDir));
+})
+
+gulp.task("rmsubpack_TBMini", ["movesubpack_TBMini"], function(cb) {
+	if (!config.taobaoInfo.subpack || subList.length == 0) { // 分包
+		return cb();
+	}
+	let delList = [];
+	for (let i = 0, len = subList.length; i < len; i++) {
+		delList.push(`${releaseDir}/pages/index/${subList[i]}`);
+	}
+	console.log(delList);
+	del(delList, { force: true }).then(paths => {
+		cb();
+	}).catch((err) => {
+		throw err;
+	})
+});
+
+gulp.task("modifyMinJs_TBMini", ["rmsubpack_TBMini"], function() {
 	// 如果保留了平台文件，如果同时取消使用min类库，就会出现文件引用不正确的问题
 	if (config.keepPlatformFile) {
 		let fileJsPath = path.join(releaseDir, "pages", "index", "game.js");
@@ -105,7 +185,7 @@ gulp.task("modifyMinJs_TBMini", ["modifyFile_TBMini"], function() {
 });
 
 gulp.task("modifyLibsJs_TBMini", ["modifyMinJs_TBMini"], function() {
-	const NONCORESTR = "var window = $global.window;\nvar document = window.document;\nvar XMLHttpRequest = window.XMLHttpRequest;\nvar Laya = window.Laya;\nvar Laya3D = window.Laya3D;\n";
+	const NONCORESTR = "var window = $global.window;\nvar document = window.document;\nvar XMLHttpRequest = window.XMLHttpRequest;\nvar Laya = window.Laya;\nvar Config = window.Config;\nvar Config3D = window.Config3D;\nvar Laya3D = window.Laya3D;\nvar performance = window.performance;\nvar CANNON = window.CANNON;\nvar spine = window.spine;\n";
 	const CORESTR = "var window = $global.window;\nvar document = window.document;\nvar XMLHttpRequest = window.XMLHttpRequest;\n";
 	// libs
 	let libsPath = path.join(releaseDir, "node_modules", "layaengine", "libs", config.useMinJsLibs ? "min" : "");
@@ -118,7 +198,14 @@ gulp.task("modifyLibsJs_TBMini", ["modifyMinJs_TBMini"], function() {
 			con = CORESTR + con;
 		} else {
 			con = NONCORESTR + con;
-		}
+		} 
+
+		if (/domparserinone\./.test(libName)) {
+			con = con.replace(/htmlEntity = {};/, 'var htmlEntity = {};' );
+			con = con.replace(/SaxO = {};/, 'var SaxO = {};' ); 
+			con = con.replace(/,htmlEntity={},/, ';var htmlEntity={};' );
+			con = con.replace(/}SaxO={},/, '}var SaxO={};' );
+		} 
 		fs.writeFileSync(fullPath, con, "utf8");
 	}
 	// bundle.js

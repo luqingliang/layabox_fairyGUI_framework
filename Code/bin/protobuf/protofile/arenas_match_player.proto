@@ -1,0 +1,45 @@
+syntax = "proto3";
+
+import "proto/arenas_base.proto";
+
+option java_package = "com.onesports.web.gms.protobuf.bol";
+option java_outer_classname = "ArenasMatchPlayer";
+
+package gameProto;
+
+message ArenasMatchPlayerReq {
+  // 游戏专场ID
+  int64 projectId = 1;
+}
+
+message ArenasMatchPlayerRsp {
+  int32               code = 1;
+  string              msg = 2;
+  // 玩家信息 默认第一个为当前玩家
+  repeated MatchInfo matchInfo = 3;
+  // 对局用户匹配玩家ID
+  int64  matchId = 4;
+
+}
+
+// 玩家匹配信息
+message MatchInfo {
+  // 玩家信息
+  Player player = 1;
+  // 玩家等级
+  Medal medal = 2;
+  // 动作片段列表
+  repeated Action actionList = 3;
+
+}
+
+// 动作运动项目片段
+message Action {
+  // 动作
+  ProjectAction action = 1;
+  // 动作对应的时间片段JSON文件地址
+  string processUrl = 2;
+}
+
+
+

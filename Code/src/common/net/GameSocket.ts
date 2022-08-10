@@ -1,85 +1,142 @@
-export default class GameSocket extends Laya.Socket {
-    private _byte:Laya.Byte;
-    private _host:string;
-    private _port:number;
+
+/**
+ * WebSocket
+ * @author luqingliang
+ */
+export default class GameSocket {
+
+    /**socket对象 */
+    private _socket: Laya.Socket;
+    /**用来接受二进制数据流 */
+    private _receiveByte: Laya.Byte;
+
+    /**收到消息的回调 */
+    private _receiveHandler: Laya.Handler;
+
+    /**连接建立的回调 */
+    private _connectedHandler: Laya.Handler;
+
+    /**链接关闭的回调 */
+    private _closedHandler: Laya.Handler;
+
+    /**请求超时时间 */
+    private _timeOut: number = 3000;
 
     constructor() {
-        super();
-        this._byte = new Laya.Byte();
-        this._byte.endian = Laya.Byte.LITTLE_ENDIAN;
-        this.endian = Laya.Byte.LITTLE_ENDIAN;
+        this._socket = new Laya.Socket();
+        this._socket.endian = Laya.Byte.BIG_ENDIAN;
+
+        this._receiveByte = new Laya.Byte();
+        this._receiveByte.endian = Laya.Byte.BIG_ENDIAN;
+
+        this._socket.on(Laya.Event.OPEN, this, this.onOpen);//连接正常打开抛出的事件   
+        this._socket.on(Laya.Event.MESSAGE, this, this.onReceive);//接收到消息抛出的事件    
+        this._socket.on(Laya.Event.CLOSE, this, this.onClose);//socket关闭抛出的事件    
+        this._socket.on(Laya.Event.ERROR, this, this.onError);//连接出错抛出的事件
     }
 
     /**
-     * 建立连接
-     * @param host 
-     * @param port 
-     * @param isTLS 
+     * 去连接一个url
+     * @param url 
+     * @param receiveHandler
+     * @param connectedHandler
      */
-    public connect(host:string, port:number, isTLS:boolean = false):void {
-        this._host = host;
-        this._port = port;
-        let url:string = (!isTLS ? "ws://" : "wss://") + host + ":" + port;
-        super.connectByUrl(url);
-    }
-
-    protected _onError(event:any = null):void {
-        console.error("Socket IO Error: ", event);
+    public connectByUrl(url: string, receiveHandler?: Laya.Handler, connectedHandler?: Laya.Handler, closedHandler?: Laya.Handler) {
+        this._connectedHandler = connectedHandler;
+        this._closedHandler = closedHandler;
+        this._receiveHandler = receiveHandler;
+        this._receiveHandler.once = false;
+        if (url.indexOf("ws:") >= 0 || url.indexOf("wss:") >= 0) {
+            this._socket.connectByUrl(url);
+        } else {
+            this._socket.connectByUrl("ws://" + url);
+        }
     }
 
     /**
-     * 监听socket连接建立
-     * @param call 
-     * @param callback 
+     * 发送消息
+     * @param msg 
      */
-    public onConnected(call:any, callback:Function):void {
-        this.on(Laya.Event.OPEN, call, callback);
-    }
-    /**
-     * 监听socket关闭
-     * @param caller 
-     * @param callback 
-     */
-    public onSocketClose(caller:any, callback:Function):void {
-        this.on(Laya.Event.CLOSE, caller, callback);
-    }
-    /**
-     * 监听消息数据
-     * @param caller 
-     * @param callback 
-     */
-    public onMessage(caller:any, callback:Function):void {
-        this.on(Laya.Event.MESSAGE, caller, callback);
-    }
-
-    public sendMsg(msg:any):void {
-        let by:Laya.Byte = new Laya.Byte();
-        by.endian = Laya.Byte.LITTLE_ENDIAN;
-        //然后将数据写入临时变量by
-        this._byte.writeArrayBuffer(by.buffer);
-        this.send(this._byte.buffer); //发送和写入的都是arrayBuffer
-        this._byte.clear(); //每次发送完清空数据
-    }
-
-    public get host():string {
-        return this._host;
-    }
-    public get port():number {
-        return this._port;
+    public sendMsg(msg: Laya.Byte) {
+        this._socket.send(msg.buffer);
+        Laya.timer.once(this._timeOut, this, this.onTimeOut);
     }
 
     /**
-     * 关闭连接
+     * 接收到消息
+     * @param msg 
+     * @returns 
      */
-    public close():void {
-        this.offAll(Laya.Event.OPEN);
-        this.offAll(Laya.Event.ERROR);
-        this.offAll(Laya.Event.MESSAGE);
-        this.offAll(Laya.Event.CLOSE);
-        this.cleanSocket();
+    private onReceive(msg: any = null) {
+        Laya.timer.clear(this, this.onTimeOut);
+        if (!msg) {
+            return;
+        }
+        this._receiveByte.clear();
+        this._receiveByte.writeArrayBuffer(msg)
+        this._receiveByte.pos = 0;
+        if (this._receiveHandler) {
+            this._receiveHandler.runWith(this._receiveByte);
+        }
+    }
 
-        this._byte = null;
-        this._host = null;
-        this._port = null;
+    /**
+     * 关闭连接。
+     */
+    public close() {
+        if (this._socket != null) {
+            this._socket.close();
+        }
+    }
+    /**
+     * 清理Socket：关闭Socket链接，关闭事件监听，重置Socket
+     */
+    public cleanSocket() {
+        this.close();
+        this._socket.cleanSocket();
+        this._socket = null;
+    }
+
+    private onOpen(event) {
+        console.log("服务器连接成功", event);
+        if (this._connectedHandler) {
+            this._connectedHandler.run();
+            this._connectedHandler = null;
+        }
+    }
+    private onError(event) {
+        console.error("服务器连接错误", event);
+        if (this._closedHandler) {
+            this._closedHandler.run();
+            this._closedHandler = null;
+        }
+    }
+    private onClose(event) {
+        console.error("服务器连接关闭", event);
+        if (this._closedHandler) {
+            this._closedHandler.run();
+            this._closedHandler = null;
+        }
+    }
+    private onTimeOut() {
+        console.error("消息发送超时");
+        if (this._closedHandler) {
+            this._closedHandler.run();
+            this._closedHandler = null;
+        }
+    }
+
+    /**
+     * 连接状态
+     */
+    public get connected(): boolean {
+        return this._socket ? this._socket.connected : false;
+    }
+
+    /**
+     * 超时时间(毫秒)
+     */
+    public set timeOut(val: number) {
+        this._timeOut = val;
     }
 }

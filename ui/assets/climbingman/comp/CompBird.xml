@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="223,88">
+  <displayList>
+    <movieclip id="n8_cq0p" name="ani0" src="fkdm10" fileName="img/bird/MovieClipBird.jta" xy="53,15"/>
+    <movieclip id="n9_cq0p" name="ani1" src="fkdm10" fileName="img/bird/MovieClipBird.jta" xy="114,15" scale="-1,1"/>
+    <movieclip id="n10_cq0p" name="ani2" src="fkdm10" fileName="img/bird/MovieClipBird.jta" xy="181,45" scale="-1,1"/>
+    <image id="n7_cq0p" name="n7" src="cq0p1x" fileName="img/taijiedizhuangshi3.png" xy="0,0"/>
+  </displayList>
+</component>

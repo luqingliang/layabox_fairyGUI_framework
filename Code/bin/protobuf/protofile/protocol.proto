@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+option java_package = "com.onesports.web.gms.protobuf.bol";
+option java_outer_classname = "Protocol";
+
+package gameProto;
+
+//枚举消息类型
+enum ArenasMessageEnum
+{
+  // 未知业务
+  UNKNOWN          = 0;
+  // 竞技场首页
+  ARENAS_HOMEPAGE  = 1;
+  // 进入战场
+  ENTER_BATTLE     = 2;
+  // 匹配对手
+  MATCH_PLAYER     = 3;
+  // 本场排(需提交比赛结果)
+  SINGLE_RANk      = 4;
+  // 游戏结束本-专场排名(整体排名、个人排名)
+  GAME_OVER        = 5;
+  // 我的比赛记录
+  RACE_RECORDS = 6;
+}
+

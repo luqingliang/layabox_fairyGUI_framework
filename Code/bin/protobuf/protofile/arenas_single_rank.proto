@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+option java_package = "com.onesports.web.gms.protobuf.bol";
+option java_outer_classname = "ArenasSingleRank";
+
+package gameProto;
+
+import "proto/arenas_base.proto";
+
+
+message ArenasSingleRankReq {
+    // 对局用户匹配玩家ID
+    int64 matchId = 1;
+    // 配置专场动作项目ID
+    int64 projectItemId = 2;
+    // 竞技玩家成绩(每个玩家的单项成绩)
+    repeated ArenasPlayerScore playerScore = 3;
+}
+
+// 动作运动项目片段
+message ArenasPlayerScore {
+    // 玩家ID
+    int64 playerId = 1;
+    // 玩家ID
+    int32 score = 2;
+}
+
+message ArenasSingleRankRsp {
+  int32                      code = 1;
+  string                     msg = 2;
+  // 竞技总成绩排名列表
+  repeated PlayerSingleScore scoreList = 3;
+  // 比赛序号 1,2,3,4
+  int32 orderNo = 4;
+}
+
+// 竞技玩家数据
+message PlayerSingleScore {
+    // 玩家信息
+    Player player = 1;
+    // 玩家勋章
+    Medal medal = 2;
+    // 玩家成绩
+    Score score = 3;
+
+}
+

@@ -1,0 +1,90 @@
+
+leopard.png
+size: 128,64
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+baoera1
+  rotate: true
+  xy: 91, 7
+  size: 10, 11
+  orig: 10, 11
+  offset: 0, 0
+  index: -1
+baoerb1
+  rotate: false
+  xy: 104, 6
+  size: 10, 11
+  orig: 10, 11
+  offset: 0, 0
+  index: -1
+baoshen2
+  rotate: false
+  xy: 2, 10
+  size: 61, 46
+  orig: 61, 46
+  offset: 0, 0
+  index: -1
+baoyana3
+  rotate: false
+  xy: 65, 31
+  size: 25, 25
+  orig: 25, 25
+  offset: 0, 0
+  index: -1
+baoyanb3
+  rotate: false
+  xy: 65, 31
+  size: 25, 25
+  orig: 25, 25
+  offset: 0, 0
+  index: -1
+baozibanbiyan1
+  rotate: false
+  xy: 92, 26
+  size: 25, 13
+  orig: 25, 13
+  offset: 0, 0
+  index: -1
+baozibanbiyan2
+  rotate: false
+  xy: 92, 26
+  size: 25, 13
+  orig: 25, 13
+  offset: 0, 0
+  index: -1
+baozibiyan1
+  rotate: false
+  xy: 2, 2
+  size: 25, 6
+  orig: 25, 6
+  offset: 0, 0
+  index: -1
+baozibiyan2
+  rotate: false
+  xy: 29, 2
+  size: 25, 6
+  orig: 25, 6
+  offset: 0, 0
+  index: -1
+baozizui
+  rotate: false
+  xy: 91, 19
+  size: 17, 5
+  orig: 17, 5
+  offset: 0, 0
+  index: -1
+luodiyanwu1
+  rotate: false
+  xy: 65, 14
+  size: 24, 15
+  orig: 24, 15
+  offset: 0, 0
+  index: -1
+luodiyanwu2
+  rotate: false
+  xy: 92, 41
+  size: 24, 15
+  orig: 24, 15
+  offset: 0, 0
+  index: -1

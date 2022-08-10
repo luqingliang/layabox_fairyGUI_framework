@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="52,1280">
+  <controller name="isRight" exported="true" pages="0,,1," selected="1"/>
+  <displayList>
+    <image id="n4_fkdm" name="n4" src="fkdm6" fileName="img/zuoyouzhuangshi2.png" xy="52,0" scale="-1,1">
+      <gearXY controller="isRight" pages="1" values="52,0" default="0,0"/>
+      <gearSize controller="isRight" pages="1" values="52,1280,-1,1" default="52,1280,1,1"/>
+      <relation target="" sidePair="height-height"/>
+    </image>
+    <image id="n3_fkdm" name="n3" src="fkdm5" fileName="img/zuoyouzhuangshi1.png" xy="52,0" scale="-1,1">
+      <gearXY controller="isRight" pages="1" values="52,0" default="0,0"/>
+      <gearSize controller="isRight" pages="0" values="47,1280,1,1" default="47,1280,-1,1"/>
+      <relation target="" sidePair="height-height"/>
+    </image>
+  </displayList>
+</component>

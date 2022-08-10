@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<packageDescription id="wkgp8jzc">
+  <resources>
+    <component id="jhc40" name="FloatScore.xml" path="/" exported="true"/>
+    <component id="89hi9o" name="ProcessLife.xml" path="/bar/" exported="true"/>
+    <image id="89hi9p" name="shengmingzhi1a.png" path="/img/" exported="true" scale="9grid" scale9grid="27,17,6,5"/>
+    <image id="89hi9q" name="shengmingzhi2a.png" path="/img/" exported="true" scale="tile" scale9grid="14,12,28,24"/>
+    <movieclip id="89hi9r" name="LifeBreak.jta" path="/ani/" exported="true"/>
+    <image id="lw8sbz" name="shengmingdi1.png" path="/img/" exported="true"/>
+    <font id="lw8scn" name="FontWhite.fnt" path="/font/fontWhite/" exported="true"/>
+    <image id="u1o6ff" name="bjianhao.png" path="/font/fontRed/"/>
+    <image id="u1o6fg" name="bshuzi0.png" path="/font/fontRed/"/>
+    <image id="u1o6fh" name="bshuzi1.png" path="/font/fontRed/"/>
+    <image id="u1o6fi" name="bshuzi2.png" path="/font/fontRed/"/>
+    <image id="u1o6fj" name="bshuzi3.png" path="/font/fontRed/"/>
+    <image id="u1o6fk" name="bshuzi4.png" path="/font/fontRed/"/>
+    <image id="u1o6fl" name="bshuzi5.png" path="/font/fontRed/"/>
+    <image id="u1o6fm" name="bshuzi6.png" path="/font/fontRed/"/>
+    <image id="u1o6fn" name="bshuzi7.png" path="/font/fontRed/"/>
+    <image id="u1o6fo" name="bshuzi8.png" path="/font/fontRed/"/>
+    <image id="u1o6fp" name="bshuzi9.png" path="/font/fontRed/"/>
+    <image id="u1o6fq" name="maohao3.png" path="/font/fontRed/"/>
+    <font id="u1o6fr" name="FontRed.fnt" path="/font/fontRed/" exported="true"/>
+    <component id="pixshj" name="BtnDefault.xml" path="/btn/" exported="true"/>
+    <image id="oylohk" name="b_-.png" path="/font/fontWhite/"/>
+    <image id="oylohl" name="b_+.png" path="/font/fontWhite/"/>
+    <image id="oylohm" name="b_0.png" path="/font/fontWhite/"/>
+    <image id="oylohn" name="b_1.png" path="/font/fontWhite/"/>
+    <image id="oyloho" name="b_2.png" path="/font/fontWhite/"/>
+    <image id="oylohp" name="b_3.png" path="/font/fontWhite/"/>
+    <image id="oylohq" name="b_4.png" path="/font/fontWhite/"/>
+    <image id="oylohr" name="b_5.png" path="/font/fontWhite/"/>
+    <image id="oylohs" name="b_6.png" path="/font/fontWhite/"/>
+    <image id="oyloht" name="b_7.png" path="/font/fontWhite/"/>
+    <image id="oylohu" name="b_8.png" path="/font/fontWhite/"/>
+    <image id="oylohv" name="b_9.png" path="/font/fontWhite/"/>
+    <image id="oylohw" name="b_maohao.png" path="/font/fontWhite/"/>
+    <component id="g5vsjq" name="DialogWindow.xml" path="/" exported="true"/>
+    <image id="g5vsjr" name="arena_popup_bg@2x.png" path="/img/"/>
+    <image id="g5vsju" name="arena_popup_btn_left@2x.png" path="/img/"/>
+    <image id="g5vsjv" name="arena_popup_btn_right@2x.png" path="/img/"/>
+    <image id="kd06jw" name="arena_btn_quit@2x.png" path="/img/" exported="true"/>
+  </resources>
+  <publish name="common" path="{respublish}/common" packageCount="2" genCode="true"/>
+</packageDescription>

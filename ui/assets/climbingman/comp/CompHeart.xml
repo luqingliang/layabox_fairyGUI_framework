@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="86,76">
+  <displayList>
+    <image id="n10_fkdm" name="n10" src="fkdmp" fileName="img/sxb.png" xy="0,0"/>
+    <movieclip id="n12_fkdm" name="ani" src="fkdm1p" fileName="img/heart/MovieClipHeart.jta" xy="-48,0" playing="false"/>
+  </displayList>
+</component>

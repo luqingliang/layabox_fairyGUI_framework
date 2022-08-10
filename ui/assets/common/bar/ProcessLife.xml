@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="59,51" extention="ProgressBar">
+  <controller name="img" pages="0,,1," selected="0"/>
+  <displayList>
+    <loader id="n5_89hi" name="barBg" xy="0,0" size="59,51" url="ui://wkgp8jzc89hi9p" align="center" vAlign="middle" fill="scale" autoSize="true">
+      <gearIcon controller="img" pages="1" values="ui://wkgp8jzcnaikd" default="ui://wkgp8jzc89hi9p"/>
+    </loader>
+    <loader id="n3_89hi" name="bar" xy="0,0" size="59,51" url="ui://wkgp8jzc89hi9q" align="center" vAlign="middle" fill="scale" autoSize="true" fillMethod="hz" fillOrigin="1">
+      <gearIcon controller="img" pages="1" values="ui://wkgp8jzcnaikc" default="ui://wkgp8jzc89hi9q"/>
+    </loader>
+  </displayList>
+  <ProgressBar/>
+  <relation target="n3_89hi" sidePair="width-width,height-height"/>
+</component>

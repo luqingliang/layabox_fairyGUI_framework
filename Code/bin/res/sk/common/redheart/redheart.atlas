@@ -1,0 +1,48 @@
+
+redheart.png
+size: 128,128
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+shengmingdi
+  rotate: false
+  xy: 2, 55
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+shengmingxin
+  rotate: false
+  xy: 2, 2
+  size: 56, 51
+  orig: 56, 51
+  offset: 0, 0
+  index: -1
+suipian1
+  rotate: false
+  xy: 60, 13
+  size: 18, 39
+  orig: 18, 39
+  offset: 0, 0
+  index: -1
+suipian2
+  rotate: false
+  xy: 68, 79
+  size: 29, 40
+  orig: 29, 40
+  offset: 0, 0
+  index: -1
+suipian3
+  rotate: true
+  xy: 99, 90
+  size: 29, 27
+  orig: 29, 27
+  offset: 0, 0
+  index: -1
+suipian4
+  rotate: true
+  xy: 68, 54
+  size: 23, 41
+  orig: 23, 41
+  offset: 0, 0
+  index: -1

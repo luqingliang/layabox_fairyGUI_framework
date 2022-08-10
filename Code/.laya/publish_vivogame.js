@@ -1,4 +1,4 @@
-// v1.8.5
+// v1.8.7
 const ideModuleDir = global.ideModuleDir;
 const workSpaceDir = global.workSpaceDir;
 
@@ -417,6 +417,30 @@ gulp.task("modifyFile_VIVO", ["deleteSignFile_VIVO"], function() {
 	manifestJson.icon = `/${path.basename(config.vivoInfo.icon)}`;
 	if (config.vivoInfo.subpack) { // 分包
 		manifestJson.subpackages = config.vivoSubpack;
+		// 检测分包目录是否有入口文件
+		console.log('检查分包文件...');
+		 
+		if (manifestJson.subpackages) { 
+			for(let i = 0; i < manifestJson.subpackages.length; i ++) {
+				let conf = manifestJson.subpackages[i];
+				if (conf.root) {
+					let rootPath = path.join(projSrc, conf.root);
+					if (!fs.existsSync(rootPath)) {
+
+						throw new Error(`分包文件/目录 ${rootPath} 不存在！`);
+					}
+					let jsIndex = rootPath.lastIndexOf('.js');
+					let jsPath = rootPath;
+					if (jsIndex < 0 || jsIndex !=  rootPath.length - 3) {
+						jsPath =  path.join(rootPath, 'game.js'); 
+					}
+					if (!fs.existsSync(jsPath)) {
+
+						throw new Error(`分包文件/目录 ${jsPath} 不存在！`);
+					}
+				}
+			}
+		}			
 	} else {
 		delete manifestJson.subpackages;
 	}

@@ -1,0 +1,50 @@
+syntax = "proto3";
+
+import "proto/arenas_base.proto";
+
+
+option java_package = "com.onesports.web.gms.protobuf.bol";
+option java_outer_classname = "ArenasHomepage";
+
+package gameProto;
+
+message ArenasHomepageReq {
+
+}
+
+message ArenasHomepageRsp {
+  int32                  code = 1;
+  string                 msg = 2;
+  // 竞技项目列表
+  Player  player = 3;
+  // 玩家等级
+  PlayerMedal  playMedal = 4;
+  // 上场比赛
+  LastGame  lastGame = 5;
+  // 竞技项目列表
+  repeated Project projectList = 6;
+}
+
+// 玩家等级
+message PlayerMedal {
+  // 勋章
+  Medal medal = 1;
+  // 最佳项目(开合跳/214分)
+  Score score = 2;
+  // 比赛次数
+  int32  total      = 3;
+  // 比赛胜率
+  double rate       = 4;
+
+}
+
+
+// 上场比赛
+message LastGame {
+  // 上次比赛专场信息
+  Project project = 1;
+  // 最佳项目(开合跳/214分)
+  Score score = 2;
+  // 排名 1/2/3/4
+  int32 rank = 3;
+}

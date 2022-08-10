@@ -8,14 +8,13 @@
 window.screenOrientation = "sensor_landscape";
 
 //-----libs-begin-----
+
 loadLib("libs/laya.core.js")
-loadLib("libs/laya.ui.js")
-loadLib("libs/laya.physics.js")
+loadLib("libs/fairygui.js")
+loadLib("libs/spine-core-3.7.js")
+loadLib("libs/laya.spine.js")
+loadLib("protobuf/library/protobuf-library.min.js")
+loadLib("protobuf/bundles/protobuf-bundles.min.js")
 
-loadLib("libs/fairygui/rawinflate.min.js");
-loadLib("libs/fairygui/fairygui.js");
-
-loadLib("protobuf/library/protobuf-library.js");
-loadLib("protobuf/bundles/protobuf-bundles.js");
 //-----libs-end-------
 loadLib("js/bundle.js");

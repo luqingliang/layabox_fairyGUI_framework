@@ -1,0 +1,27 @@
+
+star.png
+size: 256,64
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+star_blue
+  rotate: false
+  xy: 0, 0
+  size: 63, 63
+  orig: 63, 63
+  offset: 0, 0
+  index: -1
+star_green
+  rotate: false
+  xy: 130, 0
+  size: 63, 63
+  orig: 63, 63
+  offset: 0, 0
+  index: -1
+star_red
+  rotate: false
+  xy: 65, 0
+  size: 63, 63
+  orig: 63, 63
+  offset: 0, 0
+  index: -1

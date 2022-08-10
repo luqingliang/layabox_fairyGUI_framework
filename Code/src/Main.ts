@@ -1,11 +1,5 @@
+import { GameControl } from "./core/GameControl";
 import GameConfig from "./GameConfig";
-import LoginView from "./game/login/LoginView";
-import ViewManager from "./common/mvc/view/ViewManager";
-import JsonTemplate from "./common/templates/core/JsonTemplate";
-import { GameModel, Model } from "./common/mvc/model/Model";
-import JsonTemplateMap from "./common/templates/core/JsonTemplateMap";
-import WordFilter from "./common/utils/WordFilter";
-import SceneManager from "./common/manager/SceneManager";
 class Main {
 	constructor() {
 		//根据IDE设置初始化引擎		
@@ -20,31 +14,25 @@ class Main {
 		//兼容微信不支持加载scene后缀场景
 		Laya.URL.exportSceneToJson = GameConfig.exportSceneToJson;
 
+
 		//打开调试面板（通过IDE设置调试模式，或者url地址增加debug=true参数，均可打开调试面板）
 		if (GameConfig.debug || Laya.Utils.getQueryString("debug") == "true") Laya.enableDebugPanel();
 		if (GameConfig.physicsDebug && Laya["PhysicsDebugDraw"]) Laya["PhysicsDebugDraw"].enable();
 		if (GameConfig.stat) Laya.Stat.show();
-		Laya.alertGlobalError = true;
-		
-		//先加载公共包
-		fgui.UIPackage.loadPackage("res/fgui/Common", Laya.Handler.create(this, this.onConfigLoaded));
+		Laya.alertGlobalError(true);
+
+		//激活资源版本控制，version.json由IDE发布功能自动生成，如果没有也不影响后续流程
+		Laya.ResourceVersion.enable("version.json", Laya.Handler.create(this, this.onVersionLoaded), Laya.ResourceVersion.FILENAME_VERSION);
 	}
 
-	onConfigLoaded(): void {
-		WordFilter.initlize(Laya.Handler.create(this, () => {
-			console.log("敏感字库初始化完成");
-		}));
-		JsonTemplate.instance.initialize(Laya.Handler.create(this, () => {
-			console.log("测试读Json配置表", JsonTemplate.instance.getTemplate(JsonTemplateMap.TEST_JSON, "id", 1003));
-		}));
-
-		GameModel.initialize();
-		SceneManager.initialize();
-
-		Laya.stage.addChild(fgui.GRoot.inst.displayObject);
-
-		ViewManager.instance.open(LoginView);
-		console.log("测试Protobuf: ", Model.protocol.LoginType.ACCOUNT);
+	private onVersionLoaded(): void {
+		if (!GameConfig.logDebug) {
+			Laya.Browser.window.console["log"] = () => { };
+			Laya.Browser.window.console["error"] = () => { };
+			Laya.Browser.window.console["debug"] = () => { };
+			Laya.Browser.window.console["info"] = () => { };
+		}
+		GameControl.inst.start();
 	}
 }
 //激活启动类

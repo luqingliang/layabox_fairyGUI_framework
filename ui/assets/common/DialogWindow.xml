@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="580,356" designImageLayer="1">
+  <displayList>
+    <image id="n1_g5vs" name="n1" src="g5vsjr" fileName="img/arena_popup_bg@2x.png" xy="0,0"/>
+    <component id="n2_g5vs" name="btnConfirm" src="pixshj" fileName="btn/DefaultBtn.xml" xy="56,260" size="200,72">
+      <Button title="确定" titleFontSize="28" icon="ui://wkgp8jzcg5vsju"/>
+    </component>
+    <component id="n3_g5vs" name="btnCancel" src="pixshj" fileName="btn/DefaultBtn.xml" xy="324,260" size="200,72">
+      <Button title="取消" titleFontSize="28" icon="ui://wkgp8jzcg5vsjv"/>
+    </component>
+    <text id="n4_g5vs" name="textContent" xy="289,128" pivot="0.5,0" anchor="true" size="425,82" fontSize="28" color="#ffffff" align="center" leading="10" autoSize="height" autoClearText="true" text="现在退出，未结算的项目成绩将记为0分，确定要退出吗？"/>
+  </displayList>
+</component>

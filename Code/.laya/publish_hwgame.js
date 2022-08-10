@@ -1,4 +1,4 @@
-// v1.0.5
+// v1.0.7
 const ideModuleDir = global.ideModuleDir;
 const workSpaceDir = global.workSpaceDir;
 
@@ -264,6 +264,27 @@ gulp.task("modifyFile_HW", ["deleteSignFile_HW"], function() {
 			})
 		}
 		manifestJson.subpackages = hwSubpackList;
+
+		// 检测分包目录是否有入口文件
+		console.log('检查分包文件...');
+	
+		if (manifestJson.subpackages) { 
+			for(let i = 0; i < manifestJson.subpackages.length; i ++) {
+				let conf = manifestJson.subpackages[i];
+				if (conf.name) {
+					let rootPath = path.join(projDir, conf.name);
+					if (!fs.existsSync(rootPath)) {
+
+						throw new Error(`分包文件/目录 ${rootPath} 不存在！`);
+					} 
+					let jsPath =  path.join(rootPath, 'game.js'); ; 
+					if (!fs.existsSync(jsPath)) {
+
+						throw new Error(`分包文件/目录 ${jsPath} 不存在！`);
+					}
+				}
+			}
+		}
 	} else {
 		delete manifestJson.subpackages;
 	}
@@ -402,9 +423,21 @@ gulp.task("updateAPK_HW", ["getDevices_HW"], function(cb) {
 			reject(`获取远端快应用加载器失败: ${e}`);
 		});
 	}).then(() => {
-		return new Promise((resolve, reject) => {
-			let cmd = `${adbPath} shell dumpsys package com.huawei.fastapp.dev | ${process.platform === "darwin" ? "grep" : "findstr"} versionName`;
+		return new Promise((resolve, reject) => { 
+			// Unable为找不到快应用加载器
+			let cmd = `${adbPath} shell dumpsys package com.huawei.fastapp.dev | `;
+			if (process.platform === "darwin") {
+				cmd += `grep "versionName\\|Unable"`;
+			} else { 
+				cmd += `findstr "versionName Unable"`
+			} 
 			childProcess.exec(cmd, (error, stdout, stderr) => {
+				if (stdout && stdout.indexOf("Unable") >= 0) { 
+					// 未安装 
+					localAPKVer = '0.0.0.0_dev';
+					console.log("未安装快应用加载器");
+					return resolve();
+				}
 				if (error) {
 					console.log("获取快应用加载器本地版本号失败: ");
 					console.log(error);

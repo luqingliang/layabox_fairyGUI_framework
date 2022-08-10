@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="114,83" pivot="0.5,0.5" anchor="true" extention="Label">
+  <controller name="state" pages="0,,1," selected="1">
+    <remark page="0" value="white"/>
+    <remark page="1" value="red"/>
+  </controller>
+  <displayList>
+    <text id="n0_jhc4" name="title" xy="2,2" pivot="0.5,0.5" size="109,78" font="ui://wkgp8jzclw8scn" fontSize="8" color="#ffffff" align="center" vAlign="middle" text="+5">
+      <gearDisplay controller="state" pages="0"/>
+    </text>
+    <text id="n1_u1o6" name="title1" xy="-10,1" pivot="0.5,0.5" size="134,80" font="ui://wkgp8jzcu1o6fr" fontSize="12" color="#ffffff" align="center" vAlign="middle" text="-5">
+      <gearDisplay controller="state" pages="1"/>
+    </text>
+  </displayList>
+  <transition name="show">
+    <item time="0" type="Alpha" target="n0_jhc4" tween="true" startValue="0.6" endValue="1" duration="8"/>
+    <item time="0" type="Alpha" target="n1_u1o6" tween="true" startValue="0.6" endValue="1" duration="8"/>
+    <item time="0" type="Scale" target="n0_jhc4" tween="true" startValue="1,1" endValue="1.6,1.6" duration="8"/>
+    <item time="0" type="Scale" target="n1_u1o6" tween="true" startValue="1,1" endValue="1.6,1.6" duration="8"/>
+    <item time="0" type="XY" target="n0_jhc4" tween="true" startValue="-,0" endValue="-,-150" duration="18"/>
+    <item time="0" type="XY" target="n1_u1o6" tween="true" startValue="-,0" endValue="-,-150" duration="18"/>
+    <item time="8" type="Alpha" target="n0_jhc4" tween="true" startValue="1" endValue="0" duration="10"/>
+    <item time="8" type="Alpha" target="n1_u1o6" tween="true" startValue="1" endValue="0" duration="10"/>
+    <item time="8" type="Scale" target="n0_jhc4" tween="true" startValue="1.6,1.6" endValue="1.2,1.2" duration="10"/>
+    <item time="8" type="Scale" target="n1_u1o6" tween="true" startValue="1.6,1.6" endValue="1.2,1.2" duration="10"/>
+  </transition>
+</component>

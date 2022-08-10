@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<packageDescription id="8p08ilxi">
+  <resources>
+    <component id="ph4w0" name="ClimbingMan.xml" path="/" exported="true"/>
+    <component id="lgl11" name="CompSteps.xml" path="/comp/" exported="true"/>
+    <image id="fkdm3" name="beijingdi.png" path="/img/"/>
+    <image id="fkdm4" name="taijiedi.png" path="/img/" scale="9grid" scale9grid="25,0,13,38"/>
+    <image id="fkdm5" name="zuoyouzhuangshi1.png" path="/img/"/>
+    <image id="fkdm6" name="zuoyouzhuangshi2.png" path="/img/"/>
+    <component id="fkdm7" name="CompDecorativeStrip.xml" path="/comp/" exported="true"/>
+    <image id="fkdm8" name="wxjg1.png" path="/img/"/>
+    <image id="fkdm9" name="wxjg2.png" path="/img/"/>
+    <component id="fkdma" name="CompDangerous.xml" path="/comp/" exported="true"/>
+    <image id="fkdmb" name="fenshudi.png" path="/img/"/>
+    <image id="fkdmc" name="爬楼梯游戏1.png" path="/img/"/>
+    <image id="fkdmd" name="fenshu0.png" path="/font/"/>
+    <image id="fkdme" name="fenshu1.png" path="/font/"/>
+    <image id="fkdmf" name="fenshu2.png" path="/font/"/>
+    <image id="fkdmg" name="fenshu3.png" path="/font/"/>
+    <image id="fkdmh" name="fenshu4.png" path="/font/"/>
+    <image id="fkdmi" name="fenshu5.png" path="/font/"/>
+    <image id="fkdmj" name="fenshu6.png" path="/font/"/>
+    <image id="fkdmk" name="fenshu7.png" path="/font/"/>
+    <image id="fkdml" name="fenshu8.png" path="/font/"/>
+    <image id="fkdmm" name="fenshu9.png" path="/font/"/>
+    <font id="fkdmn" name="FontScore.fnt" path="/font/" exported="true"/>
+    <image id="fkdmo" name="sxa.png" path="/img/"/>
+    <image id="fkdmp" name="sxb.png" path="/img/"/>
+    <component id="fkdmq" name="CompHeart.xml" path="/comp/" exported="true"/>
+    <component id="fkdmr" name="CompScoreUIPanel.xml" path="/comp/" exported="true"/>
+    <image id="fkdms" name="yun1.png" path="/img/"/>
+    <image id="fkdmu" name="taijiedizhuangshi13a.png" path="/img/fire/"/>
+    <image id="fkdmv" name="taijiedizhuangshi13b.png" path="/img/fire/"/>
+    <image id="fkdmw" name="taijiedizhuangshi13c.png" path="/img/fire/"/>
+    <movieclip id="fkdmx" name="MovieClipFire.jta" path="/img/fire/"/>
+    <image id="fkdmy" name="taijiedizhuangshi14a.png" path="/img/bird/"/>
+    <image id="fkdmz" name="taijiedizhuangshi14b.png" path="/img/bird/"/>
+    <movieclip id="fkdm10" name="MovieClipBird.jta" path="/img/bird/"/>
+    <image id="fkdm11" name="hudie01.png" path="/img/butterfly/"/>
+    <image id="fkdm12" name="hudie10.png" path="/img/butterfly/"/>
+    <image id="fkdm13" name="hudie11.png" path="/img/butterfly/"/>
+    <image id="fkdm14" name="hudie12.png" path="/img/butterfly/"/>
+    <image id="fkdm15" name="hudie02.png" path="/img/butterfly/"/>
+    <image id="fkdm16" name="hudie03.png" path="/img/butterfly/"/>
+    <image id="fkdm17" name="hudie04.png" path="/img/butterfly/"/>
+    <image id="fkdm18" name="hudie05.png" path="/img/butterfly/"/>
+    <image id="fkdm19" name="hudie06.png" path="/img/butterfly/"/>
+    <image id="fkdm1a" name="hudie07.png" path="/img/butterfly/"/>
+    <image id="fkdm1b" name="hudie08.png" path="/img/butterfly/"/>
+    <image id="fkdm1c" name="hudie09.png" path="/img/butterfly/"/>
+    <movieclip id="fkdm1e" name="MovieClipButterfly.jta" path="/img/butterfly/"/>
+    <image id="fkdm1f" name="sx1.png" path="/img/heart/"/>
+    <image id="fkdm1g" name="sx2.png" path="/img/heart/"/>
+    <image id="fkdm1h" name="sx3.png" path="/img/heart/"/>
+    <image id="fkdm1i" name="sx4.png" path="/img/heart/"/>
+    <image id="fkdm1j" name="sx5.png" path="/img/heart/"/>
+    <image id="fkdm1k" name="sx6.png" path="/img/heart/"/>
+    <image id="fkdm1l" name="sx7.png" path="/img/heart/"/>
+    <image id="fkdm1m" name="sx8.png" path="/img/heart/"/>
+    <movieclip id="fkdm1p" name="MovieClipHeart.jta" path="/img/heart/"/>
+    <component id="81s31q" name="CompDangerousProgress.xml" path="/comp/" exported="true"/>
+    <image id="81s31r" name="taijiedi1.png" path="/img/"/>
+    <image id="81s31s" name="taijiedi2.png" path="/img/"/>
+    <component id="81s31t" name="CompUnderLand.xml" path="/comp/" exported="true"/>
+    <component id="cq0p1u" name="CompFire.xml" path="/comp/" exported="true"/>
+    <image id="cq0p1v" name="taijiedizhuangshi6.png" path="/img/"/>
+    <component id="cq0p1w" name="CompFlowers.xml" path="/comp/" exported="true"/>
+    <image id="cq0p1x" name="taijiedizhuangshi3.png" path="/img/"/>
+    <component id="cq0p1y" name="CompBird.xml" path="/comp/" exported="true"/>
+    <image id="cq0p1z" name="taijiedizhuangshi1.png" path="/img/"/>
+    <image id="cq0p20" name="taijiedizhuangshi2.png" path="/img/"/>
+    <component id="cq0p21" name="CompTrees.xml" path="/comp/" exported="true"/>
+    <component id="cq0p22" name="CompTree.xml" path="/comp/" exported="true"/>
+    <image id="cq0p23" name="taijiedizhuangshi7.png" path="/img/"/>
+    <component id="cq0p24" name="CompColumn.xml" path="/comp/" exported="true"/>
+    <image id="cq0p25" name="taijiedizhuangshi4.png" path="/img/"/>
+    <image id="cq0p26" name="taijiedizhuangshi5.png" path="/img/"/>
+    <component id="cq0p27" name="CompSmallStone.xml" path="/comp/" exported="true"/>
+    <component id="cq0p28" name="CompBigStone.xml" path="/comp/" exported="true"/>
+    <image id="cq0p29" name="taijiedizhuangshi8.png" path="/img/"/>
+    <image id="cq0p2a" name="taijiedizhuangshi9.png" path="/img/"/>
+    <component id="cq0p2b" name="CompEggs.xml" path="/comp/" exported="true"/>
+    <component id="cq0p2c" name="CompThorns.xml" path="/comp/" exported="true"/>
+    <image id="cq0p2d" name="taijiedizhuangshi10.png" path="/img/"/>
+    <image id="cq0p2e" name="taijiedizhuangshi11.png" path="/img/"/>
+    <component id="cq0p2f" name="CompSmallCrystal.xml" path="/comp/" exported="true"/>
+    <component id="cq0p2g" name="CompBigCrystal.xml" path="/comp/" exported="true"/>
+    <image id="cq0p2h" name="taijiedizhuangshi12.png" path="/img/"/>
+    <component id="cq0p2i" name="CompTreasure.xml" path="/comp/" exported="true"/>
+    <image id="jzlc2j" name="suduxian.png" path="/img/"/>
+    <component id="jzlc2k" name="CompSpeedUp.xml" path="/comp/"/>
+  </resources>
+  <publish name="climbingman" path="{respublish}/climbingman" packageCount="2" genCode="true"/>
+</packageDescription>

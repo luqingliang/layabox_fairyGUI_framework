@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="2160,23">
+  <displayList>
+    <image id="n7_fkdm" name="imgProgress" src="fkdm9" fileName="img/wxjg2.png" xy="1440,0">
+      <relation target="" sidePair="width-width,bottom-bottom"/>
+    </image>
+    <image id="n8_81s3" name="imgProgress" src="fkdm9" fileName="img/wxjg2.png" xy="720,0">
+      <relation target="" sidePair="width-width,bottom-bottom"/>
+    </image>
+    <image id="n9_81s3" name="imgProgress" src="fkdm9" fileName="img/wxjg2.png" xy="0,0">
+      <relation target="" sidePair="width-width,bottom-bottom"/>
+    </image>
+  </displayList>
+</component>

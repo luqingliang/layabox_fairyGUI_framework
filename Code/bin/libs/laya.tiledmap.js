@@ -213,7 +213,10 @@
         }
         getLayerProperties(name) {
             if (this._properties) {
-                return this._properties[name];
+                for (let properties of this._properties) {
+                    if (properties[name] == "layer")
+                        return properties.value;
+                }
             }
             return null;
         }
@@ -281,7 +284,6 @@
                         result.y = tV;
                     }
                     return true;
-                    break;
                 case IMap.TiledMap.ORIENTATION_STAGGERED:
                     if (result) {
                         var cx, cy, rx, ry;
@@ -303,7 +305,6 @@
                         result.y = tV;
                     }
                     return true;
-                    break;
                 case IMap.TiledMap.ORIENTATION_ORTHOGONAL:
                     tU = screenX / tTileW;
                     tV = screenY / tTileH;
@@ -312,7 +313,6 @@
                         result.y = tV;
                     }
                     return true;
-                    break;
                 case IMap.TiledMap.ORIENTATION_HEXAGONAL:
                     var tTileHeight = tTileH * 2 / 3;
                     tV = screenY / tTileHeight;
@@ -819,8 +819,13 @@
                         this._renderLayerArray.push(tMapLayer);
                     }
                     else {
-                        tLayerTarLayerName = tMapLayer.getLayerProperties("layer");
-                        isFirst = isFirst || (!preLayer) || (tLayerTarLayerName != preLayerTarName);
+                        tLayerTarLayerName = tMapLayer.getLayerProperties("name");
+                        if (tLayerTarLayerName) {
+                            isFirst = isFirst || (!preLayer) || (tLayerTarLayerName != preLayerTarName);
+                        }
+                        else {
+                            isFirst = true;
+                        }
                         if (isFirst) {
                             isFirst = false;
                             tMapLayer.tarLayer = tMapLayer;
@@ -1601,4 +1606,4 @@
     exports.TileTexSet = TileTexSet;
     exports.TiledMap = TiledMap;
 
-}(window.Laya = window.Laya|| {}, Laya));
+}(window.Laya = window.Laya || {}, Laya));

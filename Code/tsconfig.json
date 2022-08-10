@@ -3,8 +3,17 @@
     "module": "es6",
     "target": "es6",
     "noEmitHelpers": true,
-    "sourceMap": false
+    "sourceMap": true,
+    "lib": [
+      "ES6",
+      "ES2017",
+      "DOM"
+    ]
   },
+  "include": [
+    "src",
+    "libs",
+  ],
   "exclude": [
     "node_modules"
   ]

@@ -1,0 +1,117 @@
+syntax = "proto3";
+
+option java_package = "com.onesports.web.gms.protobuf.bol";
+option java_outer_classname = "ArenasBase";
+
+package gameProto;
+
+// 竞技专场项目
+message Project {
+  // 游戏专场ID
+  int64  projectId = 1;
+  // 游戏专场名称
+  string projectName     = 2;
+  // 游戏专场图纸地址(小图)
+  string pict   = 3;
+  // 游戏专场图纸地址(大图)
+  string pictPlus   = 4;
+  // 战场背景图
+  string pictBattle   = 5;
+  // 比赛结束背景图
+  string pictEnd   = 6;
+  // 游戏专场标题图片(小图)
+  string pictProjectName   = 7;
+  // 游戏专场标题图片(大图)
+  string pictProjectNamePlus   = 8;
+  // 首页背景图
+  string pictHomepage   = 9;
+
+}
+
+// 竞技专场-动作运动项目
+message ProjectAction {
+
+  // 配置专场动作项目ID
+  int64  itemId         = 1;
+  // 动作ID
+  int64  actionId         = 2;
+  // 动作项目名称
+  string actionName          = 3;
+  // 动作项目图片
+  string pict        = 4;
+  // 标签名称
+  string labelName      = 5;
+  // 计算方式(1-计时、2-计数、4-挑战)
+  int32  model          = 6;
+  // 计算数值(毫秒/个数)
+  string value          = 7;
+  // 入框引导视频
+  string actionInfoJson = 8;
+  // 标签名称图片
+  string pictLabel = 9;
+  // 动作项目路由ID
+  int32 gameId = 10;
+
+}
+
+
+// 玩家信息
+message Player {
+  // 玩家ID
+  int64  playerId     = 1;
+
+  // 玩家用户
+  int64  userId     = 2;
+
+  // 玩家昵称
+  string nickName     = 3;
+
+  // 玩家头像
+  string avatarUrl    = 4;
+
+  // 连赢次数(n表示正数): 赢2次=2 输2次=-2  不输不赢=0
+  int32 winCount    = 5;
+
+}
+
+// 勋章等级
+message Medal {
+  // 勋章名称
+  string medalName = 1;
+
+  // 勋章图片(不带星星)
+  string medalPictUrl = 2;
+
+  // 勋章图片(带星星)
+  string medalPictStarUrl = 3;
+
+  // 星星数量
+  int32 starNum = 4;
+
+  // 星星数量
+  int32 label = 5;
+
+}
+
+
+// 竞技玩家成绩
+message Score {
+  // 动作项目
+  ProjectAction action = 1;
+  // 玩家成绩
+  double  score = 2;
+  // 加分点 +8 +6 +4 +2
+  int32  bonusPoint = 3;
+  // 玩家排名
+  int32  rank = 4;
+
+}
+
+// 分页
+message Page {
+  // 页码(默认为1)
+  int32 pageNo   = 1;
+  // 每页记录条数(默认为10)
+  int32 pageSize = 2;
+}
+

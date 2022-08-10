@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="65,38">
+  <displayList>
+    <image id="n2_fkdm" name="bg" src="fkdm4" fileName="img/taijiedi.png" xy="0,0">
+      <relation target="" sidePair="width-width,height-height"/>
+    </image>
+    <component id="n3_81s3" name="underLand" src="81s31t" fileName="comp/CompUnderLand.xml" xy="0,38"/>
+  </displayList>
+</component>

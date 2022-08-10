@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="720,1280" designImage="ui://8p08ilxifkdmc" designImageLayer="1">
+  <displayList>
+    <image id="n11_jzlc" name="left0" src="jzlc2j" fileName="img/suduxian.png" xy="42,1284"/>
+    <image id="n5_jzlc" name="left1" src="jzlc2j" fileName="img/suduxian.png" xy="82,1283"/>
+    <image id="n6_jzlc" name="left2" src="jzlc2j" fileName="img/suduxian.png" xy="107,1288"/>
+    <image id="n0_jzlc" name="left3" src="jzlc2j" fileName="img/suduxian.png" xy="146,1285"/>
+    <image id="n7_jzlc" name="left4" src="jzlc2j" fileName="img/suduxian.png" xy="184,1282"/>
+    <image id="n8_jzlc" name="left5" src="jzlc2j" fileName="img/suduxian.png" xy="213,1280"/>
+    <image id="n9_jzlc" name="left6" src="jzlc2j" fileName="img/suduxian.png" xy="246,1284"/>
+    <image id="n10_jzlc" name="left7" src="jzlc2j" fileName="img/suduxian.png" xy="283,1285"/>
+    <image id="n12_jzlc" name="right7" src="jzlc2j" fileName="img/suduxian.png" xy="440,1284"/>
+    <image id="n13_jzlc" name="right6" src="jzlc2j" fileName="img/suduxian.png" xy="475,1286"/>
+    <image id="n14_jzlc" name="right5" src="jzlc2j" fileName="img/suduxian.png" xy="504,1289"/>
+    <image id="n15_jzlc" name="right4" src="jzlc2j" fileName="img/suduxian.png" xy="527,1289"/>
+    <image id="n16_jzlc" name="right3" src="jzlc2j" fileName="img/suduxian.png" xy="553,1288"/>
+    <image id="n17_jzlc" name="right2" src="jzlc2j" fileName="img/suduxian.png" xy="589,1282"/>
+    <image id="n18_jzlc" name="right1" src="jzlc2j" fileName="img/suduxian.png" xy="633,1285"/>
+    <image id="n20_jzlc" name="right0" src="jzlc2j" fileName="img/suduxian.png" xy="675,1285"/>
+  </displayList>
+</component>

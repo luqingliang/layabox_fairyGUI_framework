@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="720,1280" designImage="ui://8p08ilxifkdmc" designImageLayer="1">
+  <displayList>
+    <image id="n2_fkdm" name="n2" src="fkdm3" fileName="img/beijingdi.png" xy="0,0">
+      <relation target="" sidePair="width-width,height-height"/>
+    </image>
+    <component id="n17_jzlc" name="speedUp" src="jzlc2k" fileName="comp/CompSpeedUp.xml" xy="0,0">
+      <relation target="" sidePair="width-width,height-height"/>
+    </component>
+    <image id="n9_jzlc" name="cloud0" src="fkdms" fileName="img/yun1.png" xy="-184,114" group="n15_jzlc"/>
+    <image id="n10_jzlc" name="cloud2" src="fkdms" fileName="img/yun1.png" xy="-184,479" group="n15_jzlc"/>
+    <image id="n11_jzlc" name="cloud1" src="fkdms" fileName="img/yun1.png" xy="721,274" group="n15_jzlc"/>
+    <image id="n12_jzlc" name="cloud3" src="fkdms" fileName="img/yun1.png" xy="721,664" group="n15_jzlc"/>
+    <image id="n13_jzlc" name="cloud4" src="fkdms" fileName="img/yun1.png" xy="-184,854" group="n15_jzlc"/>
+    <image id="n14_jzlc" name="cloud5" src="fkdms" fileName="img/yun1.png" xy="721,1059" group="n15_jzlc"/>
+    <group id="n15_jzlc" name="n15" xy="-184,114" size="1089,1052" advanced="true">
+      <relation target="" sidePair="middle-middle"/>
+    </group>
+    <component id="n4_fkdm" name="n4" src="fkdm7" fileName="comp/CompDecorativeStrip.xml" xy="0,0">
+      <relation target="" sidePair="left-left,top-top,bottomext-bottom"/>
+    </component>
+    <component id="n5_fkdm" name="n5" src="fkdm7" fileName="comp/CompDecorativeStrip.xml" xy="668,0" controller="isRight,1">
+      <relation target="" sidePair="right-right,top-top,bottomext-bottom"/>
+    </component>
+    <component id="n6_fkdm" name="compDangerous" src="fkdma" fileName="comp/CompDangerous.xml" xy="0,0">
+      <relation target="" sidePair="width-width,height-height"/>
+    </component>
+    <component id="n8_fkdm" name="scoreUI" src="fkdmr" fileName="comp/CompScoreUIPanel.xml" xy="14,1156">
+      <relation target="" sidePair="bottom-bottom"/>
+    </component>
+  </displayList>
+</component>

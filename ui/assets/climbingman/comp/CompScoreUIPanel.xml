@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="673,91">
+  <controller name="lifeValue" pages="0,,1,,2,,3,,4,,5," selected="0"/>
+  <displayList>
+    <image id="n8_fkdm" name="n8" src="fkdmb" fileName="img/fenshudi.png" xy="0,0"/>
+    <text id="n9_fkdm" name="textScore" xy="80,14" pivot="0.5,0" anchor="true" size="53,62" font="ui://8p08ilxifkdmn" fontSize="16" align="center" text="0"/>
+    <component id="n10_fkdm" name="heart2" src="fkdmq" fileName="comp/CompHeart.xml" xy="384,9">
+      <gearDisplay controller="lifeValue" pages="3,4,5"/>
+    </component>
+    <component id="n12_fkdm" name="heart1" src="fkdmq" fileName="comp/CompHeart.xml" xy="487,9">
+      <gearDisplay controller="lifeValue" pages="2,3,4,5"/>
+    </component>
+    <component id="n13_fkdm" name="heart0" src="fkdmq" fileName="comp/CompHeart.xml" xy="587,9">
+      <gearDisplay controller="lifeValue" pages="1,2,3,4,5"/>
+    </component>
+    <component id="n14_oxao" name="heart3" src="fkdmq" fileName="comp/CompHeart.xml" xy="281,9">
+      <gearDisplay controller="lifeValue" pages="4,5"/>
+    </component>
+    <component id="n15_oxao" name="heart4" src="fkdmq" fileName="comp/CompHeart.xml" xy="178,9">
+      <gearDisplay controller="lifeValue" pages="5"/>
+    </component>
+  </displayList>
+</component>

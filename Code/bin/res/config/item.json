@@ -1,8 +1,0 @@
-[
-    {"id":1,"itemName":"金币","itemType":1,"itemQuality":1,"stackingCount":9999999999,"canSell":0,"canUse":0,"part1":0,"part2":"0","icon":"100000","specialEffects":"100000","getWay":1,"itemDec":"鼠鼠鼠"},
-    {"id":2,"itemName":"钻石","itemType":2,"itemQuality":2,"stackingCount":4294967296,"canSell":0,"canUse":0,"part1":0,"part2":"0","icon":"100001","specialEffects":"100001","getWay":1,"itemDec":"牛牛牛"},
-    {"id":3,"itemName":"伙伴经验","itemType":3,"itemQuality":2,"stackingCount":9999999999,"canSell":0,"canUse":0,"part1":0,"part2":"0","icon":"100001","specialEffects":"100001","getWay":1,"itemDec":"牛牛牛"},
-    {"id":10002,"itemName":"英雄整卡道具","itemType":102,"itemQuality":3,"stackingCount":9999,"canSell":100,"canUse":1,"part1":10,"part2":"","icon":"100002","specialEffects":"100002","getWay":1,"itemDec":"虎虎虎虎虎虎虎"},
-    {"id":10003,"itemName":"宝箱道具","itemType":103,"itemQuality":4,"stackingCount":9999,"canSell":100,"canUse":1,"part1":10001,"part2":"50;10001#1|10002#1|10003#1","icon":"100003","specialEffects":"100003","getWay":1,"itemDec":"兔兔兔兔兔兔兔"},
-    {"id":10004,"itemName":"进阶道具","itemType":101,"itemQuality":5,"stackingCount":9999,"canSell":100,"canUse":1,"part1":10,"part2":"0","icon":"10004","specialEffects":"0","getWay":1,"itemDec":"进阶道具"}    
-]

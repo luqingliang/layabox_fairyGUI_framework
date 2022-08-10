@@ -25,6 +25,7 @@
     }
     HTMLExtendStyle.EMPTY = new HTMLExtendStyle();
     Laya.ClassUtils.regClass("laya.html.utils.HTMLExtendStyle", HTMLExtendStyle);
+    Laya.ClassUtils.regClass("Laya.HTMLExtendStyle", HTMLExtendStyle);
 
     class HTMLStyle {
         constructor() {
@@ -173,6 +174,12 @@
         }
         set bold(value) {
             value ? (this._type |= HTMLStyle._BOLD) : (this._type &= ~HTMLStyle._BOLD);
+        }
+        get fontWeight() {
+            return (this._type & HTMLStyle._BOLD) ? "bold" : "none";
+        }
+        set fontWeight(value) {
+            value == "bold" ? (this._type |= HTMLStyle._BOLD) : (this._type &= ~HTMLStyle._BOLD);
         }
         get italic() {
             return (this._type & HTMLStyle._ITALIC) != 0;
@@ -339,7 +346,7 @@
     }
     HTMLStyle._CSSTOVALUE = { 'letter-spacing': 'letterSpacing', 'white-space': 'whiteSpace', 'line-height': 'lineHeight', 'font-family': 'family', 'vertical-align': 'valign', 'text-decoration': 'textDecoration', 'background-color': 'bgColor', 'border-color': 'borderColor' };
     HTMLStyle._parseCSSRegExp = new RegExp("([\.\#]\\w+)\\s*{([\\s\\S]*?)}", "g");
-    HTMLStyle._inheritProps = ["italic", "align", "valign", "leading", "stroke", "strokeColor", "bold", "fontSize", "lineHeight", "wordWrap", "color"];
+    HTMLStyle._inheritProps = ["italic", "align", "valign", "leading", "letterSpacing", "stroke", "strokeColor", "bold", "fontWeight", "fontSize", "lineHeight", "wordWrap", "color"];
     HTMLStyle.ALIGN_LEFT = "left";
     HTMLStyle.ALIGN_CENTER = "center";
     HTMLStyle.ALIGN_RIGHT = "right";
@@ -365,10 +372,11 @@
     HTMLStyle._ALIGN = 0x30;
     HTMLStyle._VALIGN = 0xc0;
     Laya.ClassUtils.regClass("laya.html.utils.HTMLStyle", HTMLStyle);
+    Laya.ClassUtils.regClass("Laya.HTMLStyle", HTMLStyle);
 
     class HTMLDocument {
         constructor() {
-            this.all = [];
+            this.all = {};
             this.styleSheets = HTMLStyle.styleSheets;
         }
         getElementById(id) {
@@ -380,6 +388,7 @@
     }
     HTMLDocument.document = new HTMLDocument();
     Laya.ClassUtils.regClass("laya.html.dom.HTMLDocument", HTMLDocument);
+    Laya.ClassUtils.regClass("Laya.HTMLDocument", HTMLDocument);
 
     class HTMLHitRect {
         constructor() {
@@ -399,6 +408,7 @@
         }
     }
     Laya.ClassUtils.regClass("laya.html.dom.HTMLHitRect", HTMLHitRect);
+    Laya.ClassUtils.regClass("Laya.HTMLHitRect", HTMLHitRect);
 
     class IHtml {
     }
@@ -461,6 +471,7 @@
         }
     }
     Laya.ClassUtils.regClass("laya.html.utils.LayoutLine", LayoutLine);
+    Laya.ClassUtils.regClass("Laya.LayoutLine", LayoutLine);
 
     class Layout {
         static later(element) {
@@ -550,6 +561,8 @@
                 }
                 else if (oneLayout._isChar()) {
                     htmlWord = oneLayout;
+                    w = htmlWord.width + htmlWord.style.letterSpacing;
+                    h = htmlWord.height;
                     if (!htmlWord.isWord) {
                         if (lines.length > 0 && (x + w) > width && curLine.wordStartIndex > 0) {
                             var tLineWord = 0;
@@ -566,8 +579,6 @@
                         newLine = nextNewline || (htmlWord.char === '\n');
                         curLine.wordStartIndex = curLine.elements.length;
                     }
-                    w = htmlWord.width + htmlWord.style.letterSpacing;
-                    h = htmlWord.height;
                     nextNewline = false;
                     newLine = newLine || ((x + w) > width);
                     newLine && addLine();
@@ -613,6 +624,7 @@
     }
     Layout.DIV_ELEMENT_PADDING = 0;
     Laya.ClassUtils.regClass("laya.html.utils.Layout", Layout);
+    Laya.ClassUtils.regClass("Laya.Layout", Layout);
 
     (function (HTMLElementType) {
         HTMLElementType[HTMLElementType["BASE"] = 0] = "BASE";
@@ -970,7 +982,7 @@
             var cssStyle = this.style;
             var hasLine;
             hasLine = cssStyle.textDecoration != "none";
-            var i, len;
+            var i = 0, len;
             len = wordList.length;
             var tStartWord;
             tStartWord = wordList[i];
@@ -1006,6 +1018,7 @@
     Laya.ILaya.regClass(HTMLElement);
     IHtml.HTMLElementType = exports.HTMLElementType;
     Laya.ClassUtils.regClass("laya.html.dom.HTMLElement", HTMLElement);
+    Laya.ClassUtils.regClass("Laya.HTMLElement", HTMLElement);
 
     class HTMLBrElement {
         _addToLayout(out) {
@@ -1039,6 +1052,7 @@
     IHtml.HTMLBrElement = HTMLBrElement;
     Laya.ILaya.regClass(HTMLBrElement);
     Laya.ClassUtils.regClass("laya.html.dom.HTMLBrElement", HTMLBrElement);
+    Laya.ClassUtils.regClass("Laya.HTMLBrElement", HTMLBrElement);
 
     class HTMLStyleElement extends HTMLElement {
         _creates() {
@@ -1057,6 +1071,7 @@
     }
     Laya.ILaya.regClass(HTMLStyleElement);
     Laya.ClassUtils.regClass("laya.html.dom.HTMLStyleElement", HTMLStyleElement);
+    Laya.ClassUtils.regClass("Laya.HTMLStyleElement", HTMLStyleElement);
 
     class HTMLLinkElement extends HTMLElement {
         _creates() {
@@ -1103,6 +1118,7 @@
     HTMLLinkElement._cuttingStyle = new RegExp("((@keyframes[\\s\\t]+|)(.+))[\\t\\n\\r\\\s]*{", "g");
     Laya.ILaya.regClass(HTMLLinkElement);
     Laya.ClassUtils.regClass("laya.html.dom.HTMLLinkElement", HTMLLinkElement);
+    Laya.ClassUtils.regClass("Laya.HTMLLinkElement", HTMLLinkElement);
 
     class HTMLDivParser extends HTMLElement {
         constructor() {
@@ -1205,6 +1221,65 @@
     IHtml.HTMLDivParser = HTMLDivParser;
     Laya.ILaya.regClass(HTMLDivParser);
     Laya.ClassUtils.regClass("laya.html.dom.HTMLDivParser", HTMLDivParser);
+    Laya.ClassUtils.regClass("Laya.HTMLDivParser", HTMLDivParser);
+
+    class HTMLImageElement extends HTMLElement {
+        constructor() {
+            super();
+            this.eletype = exports.HTMLElementType.IMAGE;
+        }
+        reset() {
+            super.reset();
+            if (this._tex) {
+                this._tex.off(Laya.Event.LOADED, this, this.onloaded);
+            }
+            this._tex = null;
+            this._url = null;
+            return this;
+        }
+        set src(url) {
+            url = this.formatURL(url);
+            if (this._url === url)
+                return;
+            this._url = url;
+            var tex = this._tex = Laya.Loader.getRes(url);
+            if (!tex) {
+                this._tex = tex = new Laya.Texture();
+                tex.load(url);
+                Laya.Loader.cacheTexture(url, tex);
+            }
+            tex.getIsReady() ? this.onloaded() : tex.once(Laya.Event.READY, this, this.onloaded);
+        }
+        onloaded() {
+            if (!this._style)
+                return;
+            var style = this._style;
+            var w = style.widthed(this) ? -1 : this._tex.width;
+            var h = style.heighted(this) ? -1 : this._tex.height;
+            if (!style.widthed(this) && this._width != this._tex.width) {
+                this.width = this._tex.width;
+                this.parent && this.parent._layoutLater();
+            }
+            if (!style.heighted(this) && this._height != this._tex.height) {
+                this.height = this._tex.height;
+                this.parent && this.parent._layoutLater();
+            }
+            this.repaint();
+        }
+        _addToLayout(out) {
+            var style = this._style;
+            !style.absolute && out.push(this);
+        }
+        renderSelfToGraphic(graphic, gX, gY, recList) {
+            if (!this._tex)
+                return;
+            graphic.drawImage(this._tex, gX, gY, this.width || this._tex.width, this.height || this._tex.height);
+        }
+    }
+    IHtml.HTMLImageElement = HTMLImageElement;
+    Laya.ILaya.regClass(HTMLImageElement);
+    Laya.ClassUtils.regClass("laya.html.dom.HTMLImageElement", HTMLImageElement);
+    Laya.ClassUtils.regClass("Laya.HTMLImageElement", HTMLImageElement);
 
     class HTMLParse {
         static getInstance(type) {
@@ -1324,6 +1399,7 @@
     Laya.ClassUtils.regClass('#text', HTMLElement);
     Laya.ClassUtils.regClass('link', HTMLLinkElement);
     Laya.ClassUtils.regClass("laya.html.utils.HTMLParse", HTMLParse);
+    Laya.ClassUtils.regClass("Laya.HTMLParse", HTMLParse);
 
     class HTMLDivElement extends Laya.Sprite {
         constructor() {
@@ -1405,6 +1481,18 @@
                 this._element.innerHTML = this._innerHTML;
             this._setGraphicDirty();
         }
+        set width(value) {
+            this._element.width = value;
+        }
+        get width() {
+            return this._element.width;
+        }
+        set height(value) {
+            this._element.height = value;
+        }
+        get height() {
+            return this._element.height;
+        }
         get contextWidth() {
             return this._element.contextWidth;
         }
@@ -1431,6 +1519,7 @@
     IHtml.HTMLDivElement = HTMLDivElement;
     IHtml.HTMLParse = HTMLParse;
     Laya.ClassUtils.regClass("laya.html.dom.HTMLDivElement", HTMLDivElement);
+    Laya.ClassUtils.regClass("Laya.HTMLDivElement", HTMLDivElement);
 
     class HTMLIframeElement extends HTMLDivElement {
         constructor() {
@@ -1440,7 +1529,7 @@
         set href(url) {
             url = this._element.formatURL(url);
             var l = new Laya.Loader();
-            l.once(Laya.Event.COMPLETE, null, function (data) {
+            l.once(Laya.Event.COMPLETE, null, (data) => {
                 var pre = this._element.URI;
                 this._element.URI = new Laya.URL(url);
                 this.innerHTML = data;
@@ -1450,63 +1539,7 @@
         }
     }
     Laya.ClassUtils.regClass("laya.html.dom.HTMLIframeElement", HTMLIframeElement);
-
-    class HTMLImageElement$1 extends HTMLElement {
-        constructor() {
-            super();
-            this.eletype = exports.HTMLElementType.IMAGE;
-        }
-        reset() {
-            super.reset();
-            if (this._tex) {
-                this._tex.off(Laya.Event.LOADED, this, this.onloaded);
-            }
-            this._tex = null;
-            this._url = null;
-            return this;
-        }
-        set src(url) {
-            url = this.formatURL(url);
-            if (this._url === url)
-                return;
-            this._url = url;
-            var tex = this._tex = Laya.Loader.getRes(url);
-            if (!tex) {
-                this._tex = tex = new Laya.Texture();
-                tex.load(url);
-                Laya.Loader.cacheRes(url, tex);
-            }
-            tex.getIsReady() ? this.onloaded() : tex.once(Laya.Event.READY, this, this.onloaded);
-        }
-        onloaded() {
-            if (!this._style)
-                return;
-            var style = this._style;
-            var w = style.widthed(this) ? -1 : this._tex.width;
-            var h = style.heighted(this) ? -1 : this._tex.height;
-            if (!style.widthed(this) && this._width != this._tex.width) {
-                this.width = this._tex.width;
-                this.parent && this.parent._layoutLater();
-            }
-            if (!style.heighted(this) && this._height != this._tex.height) {
-                this.height = this._tex.height;
-                this.parent && this.parent._layoutLater();
-            }
-            this.repaint();
-        }
-        _addToLayout(out) {
-            var style = this._style;
-            !style.absolute && out.push(this);
-        }
-        renderSelfToGraphic(graphic, gX, gY, recList) {
-            if (!this._tex)
-                return;
-            graphic.drawImage(this._tex, gX, gY, this.width || this._tex.width, this.height || this._tex.height);
-        }
-    }
-    IHtml.HTMLImageElement = HTMLImageElement$1;
-    Laya.ILaya.regClass(HTMLImageElement$1);
-    Laya.ClassUtils.regClass("laya.html.dom.HTMLImageElement", HTMLImageElement$1);
+    Laya.ClassUtils.regClass("Laya.HTMLIframeElement", HTMLIframeElement);
 
     exports.HTMLBrElement = HTMLBrElement;
     exports.HTMLDivElement = HTMLDivElement;
@@ -1516,7 +1549,7 @@
     exports.HTMLExtendStyle = HTMLExtendStyle;
     exports.HTMLHitRect = HTMLHitRect;
     exports.HTMLIframeElement = HTMLIframeElement;
-    exports.HTMLImageElement = HTMLImageElement$1;
+    exports.HTMLImageElement = HTMLImageElement;
     exports.HTMLLinkElement = HTMLLinkElement;
     exports.HTMLParse = HTMLParse;
     exports.HTMLStyle = HTMLStyle;
@@ -1525,4 +1558,4 @@
     exports.Layout = Layout;
     exports.LayoutLine = LayoutLine;
 
-}(window.Laya = window.Laya|| {}, Laya));
+}(window.Laya = window.Laya || {}, Laya));

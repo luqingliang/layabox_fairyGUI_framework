@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="143,29">
+  <displayList>
+    <image id="n3_81s3" name="rightLand" src="81s31r" fileName="img/taijiedi1.png" xy="0,0"/>
+    <image id="n4_81s3" name="leftLand" src="81s31s" fileName="img/taijiedi2.png" xy="0,0"/>
+  </displayList>
+</component>
