@@ -1,2 +1,2 @@
 # layabox_fairyGUI_framework
-LayaBox + FairyGUI 的h5游戏开发示例
+使用 LayaBox + FairyGUI 的 TypeScript H5游戏快速开发框架
