@@ -2,22 +2,25 @@
   "libview.firstColumnWidth": 330,
   "libview.iconScale": 0,
   "doc.openedDocs": [
-    "ui://wkgp8jzcjhc40"
+    "ui://wkgp8jzcjhc40",
+    "ui://1w640g96cesm0"
   ],
   "test.device": "iPhone Xs Max",
   "canvasColor": 10066329,
   "auxline2": true,
-  "doc.activeDoc": "ui://wkgp8jzcjhc40",
+  "doc.activeDoc": "ui://1w640g96cesm0",
   "libview.twoColumn": false,
   "libview.expandedNodes": [
-    "8p08ilxi",
-    "/",
     "wkgp8jzc",
     "/",
     "wkgp8jzc",
     "/ani/",
     "wkgp8jzc",
-    "/img/"
+    "/btn/",
+    "wkgp8jzc",
+    "/img/",
+    "1w640g96",
+    "/"
   ],
   "auxline1": true,
   "snapToGrid": true,
