@@ -1961,6 +1961,21 @@
         }
     }
 
+    class MainUI extends UIBase {
+        constructor() {
+            super("main", "Main", LayerType.Interface);
+        }
+        Start() {
+            this.contentPane.btnAlert.onClick(this, this.onClickAlert);
+            this.contentPane.btnEnterGame.onClick(this, this.onClickEnterGame);
+        }
+        onClickAlert() {
+        }
+        onClickEnterGame() {
+            UIManager.inst.openUI(UIType.ClimbingMan);
+        }
+    }
+
     class UI_CompDangerousProgress extends fgui.GComponent {
         static createInstance() {
             return (fgui.UIPackage.createObject("climbingman", "CompDangerousProgress"));
@@ -2103,6 +2118,23 @@
         }
     }
 
+    class UI_Main extends fgui.GComponent {
+        static createInstance() {
+            return (fgui.UIPackage.createObject("main", "Main"));
+        }
+        onConstruct() {
+            this.btnEnterGame = (this.getChild("btnEnterGame"));
+            this.btnAlert = (this.getChild("btnAlert"));
+        }
+    }
+    UI_Main.URL = "ui://1w640g96cesm0";
+
+    class mainBinder {
+        static bindAll() {
+            fgui.UIObjectFactory.setExtension(UI_Main.URL, UI_Main);
+        }
+    }
+
     var UIType;
     (function (UIType) {
         UIType[UIType["ClimbingMan"] = 35] = "ClimbingMan";
@@ -2112,6 +2144,7 @@
     class UIRegister {
         static init(cb) {
             const uc = new Map();
+            uc.set(UIType.Main, MainUI);
             uc.set(UIType.ClimbingMan, ClimbingMan);
             uc.set(UIType.DialogWindow, DialogWindow);
             UIManager.inst.init(uc, cb);
@@ -2120,6 +2153,7 @@
         }
         static bindAll() {
             commonBinder.bindAll();
+            mainBinder.bindAll();
             climbingmanBinder.bindAll();
         }
     }
@@ -2247,7 +2281,7 @@
             return this._inst;
         }
         start() {
-            fgui.UIPackage.loadPackage(["res/fgui/common/common", "res/fgui/guide/guide"], Laya.Handler.create(this, () => {
+            fgui.UIPackage.loadPackage(["res/fgui/common/common"], Laya.Handler.create(this, () => {
                 UIRegister.init(Laya.Handler.create(this, this.initGame));
             }));
         }

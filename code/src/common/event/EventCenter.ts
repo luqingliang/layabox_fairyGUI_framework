@@ -1,4 +1,4 @@
-import IEventHandler from "../interface/ICenterEventHandler";
+import IEventHandler from "../interface/IEventHandler";
 
 /**
  * 事件中心

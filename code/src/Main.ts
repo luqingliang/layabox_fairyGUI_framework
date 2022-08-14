@@ -1,4 +1,4 @@
-import { GameControl } from "./core/GameControl";
+import { GameControl } from "./game/core/GameControl";
 import GameConfig from "./GameConfig";
 class Main {
 	constructor() {

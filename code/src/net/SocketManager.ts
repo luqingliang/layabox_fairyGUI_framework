@@ -1,6 +1,6 @@
 import { ICMDHandler } from "../common/interface/ICMDHandler";
 import GameSocket from "../common/net/GameSocket";
-import { GameData } from "../data/GameData";
+import { GameData } from "../game/data/DateDriver";
 import ModelBase from "./msg/base/ModelBase";
 
 /**
